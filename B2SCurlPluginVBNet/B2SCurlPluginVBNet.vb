@@ -82,31 +82,37 @@ Public Class B2SCurlPluginVBNet
     ''' <param name="Number">The number of the table element.</param>
     ''' <param name="Value">The value of the table element.</param>
     Public Sub DataReceive(TableElementTypeChar As Char, Number As Integer, Value As Integer) Implements IDirectPlugin.DataReceive
-        If TableElementTypeChar = "S" Then
-            Return
-        ElseIf TableElementTypeChar = "L" Then
-            Return
-        ElseIf TableElementTypeChar = "M" Then
-            Return
-        ElseIf TableElementTypeChar = "N" Then
-            Return
-        ElseIf TableElementTypeChar = "W" Then
-            Return
-        ElseIf TableElementTypeChar = "B" Then
-            Return
-        ElseIf TableElementTypeChar = "C" Then
-            Return
+        Dim filterEvents As Boolean = False
+        Dim writeLogFile As Boolean = False
+
+        If filterEvents Then
+            If TableElementTypeChar = "S" Then
+                Return
+            ElseIf TableElementTypeChar = "L" Then
+                Return
+            ElseIf TableElementTypeChar = "M" Then
+                Return
+            ElseIf TableElementTypeChar = "N" Then
+                Return
+            ElseIf TableElementTypeChar = "W" Then
+                Return
+            ElseIf TableElementTypeChar = "B" Then
+                Return
+            ElseIf TableElementTypeChar = "C" Then
+                Return
+            End If
         End If
 
         Dim cmd As String = TableElementTypeChar & Number
         Dim cmdValue As String = cmd & Value
-        Dim request As String = String.Format("http://localhost/b2s?type={0}&number={1}&value={2}", TableElementTypeChar, Number, Value)
+        Dim request As String = String.Format("http://localhost/b2s/cmd?type={0}&number={1}&value={2}", TableElementTypeChar, Number, Value)
         Dim result As String = webClient.DownloadString(request)
 
-        'sw.WriteLine(
-        'IIf(fileExists,
-        'cmdValue,
-        '           "Start Error Log for today"))
+        If writeLogFile Then
+            sw.WriteLine(
+                IIf(fileExists,
+                cmdValue, "Start Error Log for today"))
+        End If
     End Sub
 
 #End Region

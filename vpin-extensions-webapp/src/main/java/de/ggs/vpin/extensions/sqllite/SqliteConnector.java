@@ -20,15 +20,14 @@ public class SqliteConnector implements InitializingBean {
   private SystemInfoService systemInfoService;
 
   @Override
-  public void afterPropertiesSet() throws Exception {
+  public void afterPropertiesSet() {
     File dbFile = new File(this.systemInfoService.getPopperInstallationFolder(), "PUPDatabase.db");
     String dbFilePath = dbFile.getAbsolutePath().replaceAll("\\\\", "/");
     this.connect(dbFilePath);
   }
 
   /**
-   * Connect to a sample database
-   * @param dbFilePath
+   * Connect to a database
    */
   private void connect(String dbFilePath) {
     try {
@@ -67,8 +66,19 @@ public class SqliteConnector implements InitializingBean {
       rs.close();
       statement.close();
     } catch (SQLException e) {
-      LOG.error("Failed to read startup script or " + emuName + ": " + e.getMessage(), e);
+      LOG.error("Failed to read exit script or " + emuName + ": " + e.getMessage(), e);
     }
     return script;
+  }
+
+  public void updateScript(String scriptName, String content) {
+    try {
+      Statement stmt = conn.createStatement();
+      String sql = "INSERT INTO Emulators (" + scriptName + ") VALUES ('" + content + "');";
+      stmt.executeUpdate(sql);
+      stmt.close();
+    } catch (Exception e) {
+      LOG.error("Failed to update script script " + scriptName + ": " + e.getMessage(), e);
+    }
   }
 }

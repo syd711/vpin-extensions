@@ -18,7 +18,7 @@ public class InstallationChecker implements InitializingBean {
   private SqliteConnector sqliteConnector;
 
   @Override
-  public void afterPropertiesSet() throws Exception {
+  public void afterPropertiesSet() {
     String startupScript = sqliteConnector.getEmulatorStartupScript("Visual Pinball X");
     if (!startupScript.contains(CURL_COMMAND_TABLE_START)) {
       LOG.warn("Table Start Command not installed");

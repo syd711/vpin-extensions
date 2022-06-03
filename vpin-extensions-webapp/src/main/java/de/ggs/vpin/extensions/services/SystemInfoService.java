@@ -21,7 +21,7 @@ public class SystemInfoService implements InitializingBean {
     File vpxInstallationFolder = this.getVPXInstallationFolder();
     LOG.info("Resolved VPX installation folder:\t\t\t\t" + vpxInstallationFolder.getAbsolutePath());
     File popperInstallationFolder = this.getPopperInstallationFolder();
-    LOG.info("Resolved PinUP Popper installation folder:\t\t" + popperInstallationFolder.getAbsolutePath());
+    LOG.info("Resolved PinUP Popper installation folder:\t" + popperInstallationFolder.getAbsolutePath());
   }
 
   public File getVPXInstallationFolder() {
@@ -65,6 +65,7 @@ public class SystemInfoService implements InitializingBean {
       }
     } catch (Exception e) {
       LOG.error("Failed to read installation folder: " + e.getMessage(), e);
+      System.exit(-1);
     }
     return null;
   }

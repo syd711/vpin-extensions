@@ -1,0 +1,1 @@
+start jdk/bin/java -jar vpin-extensions-webapp.war

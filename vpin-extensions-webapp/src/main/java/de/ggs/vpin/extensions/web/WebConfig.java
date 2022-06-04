@@ -1,4 +1,4 @@
-package de.ggs.vpin.extensions.security;
+package de.ggs.vpin.extensions.web;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,9 @@
-package de.ggs.vpin.extensions.security;
+package de.ggs.vpin.extensions.web;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,11 +23,13 @@ import java.io.FileInputStream;
 import java.nio.charset.Charset;
 
 @ControllerAdvice
-public class ResourceHandler {
+public class ResourceHandler implements InitializingBean {
   private final static Logger LOG = LoggerFactory.getLogger(ResourceHandler.class);
 
   @Value("${server.resources.folder}")
   private String resourcesFolder;
+
+  private String computedResourceFolder;
 
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<Object> renderDefaultPage() {
@@ -36,7 +39,7 @@ public class ResourceHandler {
       if (requestURI.equals("/")) {
         requestURI = "index.html";
       }
-      File indexFile = ResourceUtils.getFile(resourcesFolder + requestURI);
+      File indexFile = ResourceUtils.getFile(computedResourceFolder + requestURI);
       MediaType mimeType = getMimeType(requestURI);
       FileInputStream inputStream = new FileInputStream(indexFile);
 
@@ -50,7 +53,7 @@ public class ResourceHandler {
       inputStream.close();
       return ResponseEntity.ok().contentType(mimeType).body(body);
     } catch (Exception e) {
-      LOG.error("Failed to return resources: " + e.getMessage());
+      LOG.warn("Failed to return resources: " + e.getMessage());
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("There was an error completing the action.");
     }
   }
@@ -87,5 +90,16 @@ public class ResourceHandler {
       return request;
     }
     return null;
+  }
+
+  @Override
+  public void afterPropertiesSet() {
+    File folder = new File(this.resourcesFolder);
+    if(folder.exists()) {
+      this.computedResourceFolder = this.resourcesFolder;
+    }
+    else {
+      this.computedResourceFolder = "./static/";
+    }
   }
 }

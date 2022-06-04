@@ -10,13 +10,15 @@ vpin-extensions.log
 *.pdf
 *.iml
 
+deployment
+
 # testing
 coverage
 # production
 build
 .idea/
 local/
-target/
+target/**
 
 VPReg
 
@@ -36,3 +38,5 @@ yarn-error.log*
 *.log
 *.gz
 /B2SCurlPluginVBNet/.vs/
+/vpin-extensions-webapp/target/**
+/vpin-extensions-webapp/src/main/resources/de/ggs/vpin/extensions/B2SCurlPluginVBNet.dll

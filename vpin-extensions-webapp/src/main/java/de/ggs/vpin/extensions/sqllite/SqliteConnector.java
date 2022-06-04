@@ -1,23 +1,27 @@
 package de.ggs.vpin.extensions.sqllite;
 
-import de.ggs.vpin.extensions.services.SystemInfoService;
+import de.ggs.vpin.extensions.services.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.sql.*;
 
-@Service
+@Component
 public class SqliteConnector implements InitializingBean {
   private final static Logger LOG = LoggerFactory.getLogger(SqliteConnector.class);
+
+  public static final String POST_SCRIPT = "PostScript";
+  public static final String LAUNCH_SCRIPT = "LaunchScript";
+  public static final String ROM = "ROM";
 
   private Connection conn;
 
   @Autowired
-  private SystemInfoService systemInfoService;
+  private SystemInfo systemInfoService;
 
   @Override
   public void afterPropertiesSet() {
@@ -47,7 +51,7 @@ public class SqliteConnector implements InitializingBean {
       Statement statement = conn.createStatement();
       ResultSet rs = statement.executeQuery("SELECT * FROM Emulators where EmuName = '" + emuName + "';");
       rs.next();
-      script = rs.getString("LaunchScript");
+      script = rs.getString(LAUNCH_SCRIPT);
       rs.close();
       statement.close();
     } catch (SQLException e) {
@@ -62,7 +66,7 @@ public class SqliteConnector implements InitializingBean {
       Statement statement = conn.createStatement();
       ResultSet rs = statement.executeQuery("SELECT * FROM Emulators where EmuName = '" + emuName + "';");
       rs.next();
-      script = rs.getString("PostScript");
+      script = rs.getString(POST_SCRIPT);
       rs.close();
       statement.close();
     } catch (SQLException e) {
@@ -71,14 +75,43 @@ public class SqliteConnector implements InitializingBean {
     return script;
   }
 
-  public void updateScript(String scriptName, String content) {
+  public String getRomName(String tableFileName) {
+    String rom = null;
+    try {
+      Statement statement = conn.createStatement();
+      ResultSet rs = statement.executeQuery("SELECT * FROM Games where GameFileName = '" + tableFileName + "';");
+      if (rs.next()) {
+        rom = rs.getString(ROM);
+      }
+      rs.close();
+      statement.close();
+    } catch (SQLException e) {
+      LOG.error("Failed to read rom info for " + tableFileName + ": " + e.getMessage(), e);
+    }
+    return rom;
+  }
+
+  public void updateScript(String emuName, String scriptName, String content) {
     try {
       Statement stmt = conn.createStatement();
-      String sql = "INSERT INTO Emulators (" + scriptName + ") VALUES ('" + content + "');";
+      String sql = "UPDATE Emulators SET '" + scriptName + "'='" + content + "' WHERE EmuName = '" + emuName + "';";
       stmt.executeUpdate(sql);
       stmt.close();
+      LOG.info("Update of " + scriptName + " successful.");
     } catch (Exception e) {
       LOG.error("Failed to update script script " + scriptName + ": " + e.getMessage(), e);
+    }
+  }
+
+  public void updateRomName(String gameFileName, String romName) {
+    try {
+      Statement stmt = conn.createStatement();
+      String sql = "UPDATE Games SET 'ROM'='" + romName + "' WHERE GameFileName = '" + gameFileName + "';";
+      stmt.executeUpdate(sql);
+      stmt.close();
+      LOG.info("Update of " + gameFileName + " successful, written ROM name '"+  romName + "'");
+    } catch (Exception e) {
+      LOG.error("Failed to update script script " + gameFileName + ": " + e.getMessage(), e);
     }
   }
 }

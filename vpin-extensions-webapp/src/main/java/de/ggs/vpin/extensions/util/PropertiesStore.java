@@ -14,7 +14,7 @@ public class PropertiesStore {
 
   public static void init(String home) {
     try {
-      propertiesFile = new File(home,"data.properties");
+      propertiesFile = new File(home,"table.properties");
       properties.load(new FileInputStream(propertiesFile));
     } catch (IOException e) {
      LOG.error("Failed to load data store: " + e.getMessage(), e);

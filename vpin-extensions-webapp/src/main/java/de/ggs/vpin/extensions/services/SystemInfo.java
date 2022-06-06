@@ -21,6 +21,11 @@ public class SystemInfo {
     return new File(vpxInstallationFolder, "Tables/plugins/");
   }
 
+  public File getMameRomFolder() {
+    File vpxInstallationFolder = this.getVPXInstallationFolder();
+    return new File(vpxInstallationFolder, "VPinMAME/roms/");
+  }
+
   public File[] getVPXTables() {
     File vpxInstallationFolder = this.getVPXInstallationFolder();
     File folder = new File(vpxInstallationFolder, "Tables/");

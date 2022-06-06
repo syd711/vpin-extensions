@@ -63,7 +63,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>vpin-extensions-webapp/src/main/resources/de/ggs/vpin/extensions</outputDirectory>
+                            <outputDirectory>${basedir}/deployment/PinballExtensions/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>B2SCurlPluginVBNet/bin/Debug</directory>
@@ -109,6 +109,25 @@
                                     <directory>vpin-extensions-webapp/target/</directory>
                                     <includes>
                                         <include>vpin-extensions-webapp-1.0-SNAPSHOT.war</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>config-copy</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/deployment/PinballExtensions/config/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>config/</directory>
+                                    <includes>
+                                        <include>settings.properties</include>
                                     </includes>
                                 </resource>
                             </resources>

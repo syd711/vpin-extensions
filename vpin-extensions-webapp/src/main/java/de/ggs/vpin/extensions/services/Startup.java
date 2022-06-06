@@ -2,7 +2,7 @@ package de.ggs.vpin.extensions.services;
 
 import de.ggs.vpin.extensions.sqllite.SqliteConnector;
 import de.ggs.vpin.extensions.util.FileUtils;
-import de.ggs.vpin.extensions.util.PropertiesStore;
+import de.ggs.vpin.extensions.util.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class Startup {
     LOG.info("*******************************************************************************************************");
     LOG.info("************************* Startup Checks **************************************************************");
     LOG.info("*******************************************************************************************************");
-    PropertiesStore.init("./config/");
+    Settings.init("./config/");
 
     File vpxInstallationFolder = systemInfo.getVPXInstallationFolder();
     LOG.info("Resolved VPX installation folder: " + vpxInstallationFolder.getAbsolutePath());

@@ -2,11 +2,13 @@ E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\services\Game.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\util\SystemCommandExecutor.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\Application.java
-E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\services\ExtensionsService.java
+E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\services\Startup.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\services\SystemInfo.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\util\FileUtils.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\util\ThreadedStreamHandler.java
-E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\services\InstallationChecker.java
+E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\resources\TableScriptsResource.java
+E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\services\TableInfo.java
+E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\services\TableInfoService.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\web\WebConfig.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\web\ResourceHandler.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\sqllite\SqliteConnector.java
@@ -14,5 +16,6 @@ E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\resources\PinUpPlayerResource.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\util\WindowsRegistry.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\resources\B2SResource.java
+E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\util\KeyUtil.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\services\GameService.java
 E:\Development\workspace\vpin-extensions\vpin-extensions-webapp\src\main\java\de\ggs\vpin\extensions\util\CommandResultParser.java

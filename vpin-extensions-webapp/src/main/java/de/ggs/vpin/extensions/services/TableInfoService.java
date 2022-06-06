@@ -1,6 +1,7 @@
 package de.ggs.vpin.extensions.services;
 
 import de.ggs.vpin.extensions.sqllite.SqliteConnector;
+import de.ggs.vpin.extensions.util.Settings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,6 +35,7 @@ public class TableInfoService {
 
     LOG.info("*********************** Executing ROM Checks **********************************************************");
     File[] vpxTables = systemInfo.getVPXTables();
+    File romFolder = systemInfo.getMameRomFolder();
     for (File vpxTable : vpxTables) {
       String romName = sqliteConnector.getRomName(vpxTable.getName());
       if(StringUtils.isAllEmpty(romName)) {
@@ -50,8 +50,16 @@ public class TableInfoService {
           continue;
         }
       }
+
+      File romFile = new File(romFolder, romName + ".zip");
+      if(!romFile.exists()) {
+        LOG.warn("No rom file '" + romFile.getAbsolutePath() + " found.");
+      }
+
+
       LOG.info("Loaded ROM name for " + vpxTable.getAbsolutePath() + ": [" + romName+ "]");
-      TableInfo tableInfo = new TableInfo(vpxTable, romName);
+      String terminationSignal = Settings.get(romName + ".terminationSignal");
+      TableInfo tableInfo = new TableInfo(vpxTable, romName, terminationSignal);
       tableInfoByFilename.put(vpxTable.getName(), tableInfo);
     }
   }

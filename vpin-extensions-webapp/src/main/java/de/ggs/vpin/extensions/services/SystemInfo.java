@@ -1,16 +1,18 @@
 package de.ggs.vpin.extensions.services;
 
 import de.ggs.vpin.extensions.util.CommandResultParser;
+import de.ggs.vpin.extensions.util.Settings;
 import de.ggs.vpin.extensions.util.WindowsRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FilenameFilter;
 
-@Component
-public class SystemInfo {
+@Service
+public class SystemInfo implements InitializingBean {
   private final static Logger LOG = LoggerFactory.getLogger(SystemInfo.class);
 
   private final static String REG_KEY = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Applications\\VPinballX.exe\\shell\\open\\command";
@@ -46,9 +48,10 @@ public class SystemInfo {
         return folder;
       }
 
-      File popperFolder = new File("C:/Visual Pinball");
-      if (popperFolder.exists()) {
-        return popperFolder;
+      path = Settings.get("vpx.folder");
+      File vpxFolder = new File(path);
+      if (vpxFolder.exists()) {
+        return vpxFolder;
       }
     } catch (Exception e) {
       LOG.error("Failed to read installation folder: " + e.getMessage(), e);
@@ -67,12 +70,8 @@ public class SystemInfo {
         }
       }
 
-      File popperFolder = new File(getPopperInstallationFolder().getParentFile(), "PinUPSystem");
-      if (popperFolder.exists()) {
-        return popperFolder;
-      }
-
-      popperFolder = new File("C:/PinUPSystem");
+      String path = Settings.get("pinupsystem.folder");
+      File popperFolder = new File(path);
       if (popperFolder.exists()) {
         return popperFolder;
       }
@@ -81,5 +80,10 @@ public class SystemInfo {
       System.exit(-1);
     }
     return null;
+  }
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    Settings.init("./config");
   }
 }

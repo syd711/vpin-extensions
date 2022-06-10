@@ -70,7 +70,7 @@ public class TableInfoService {
       BufferedReader br = new BufferedReader(new FileReader(vpxTable));
       String line;
       while ((line = br.readLine()) != null) {
-        if (line.contains("cGameName")) {
+        if (line.contains("cGameName") && line.contains("=") && line.length() < 160) {
           romName = line.substring(line.indexOf("\"") + 1);
           romName = romName.substring(0, romName.indexOf("\""));
           break;
@@ -78,6 +78,8 @@ public class TableInfoService {
       }
       br.close();
     } catch (Exception e) {
+
+
       LOG.error("Failed to read " + vpxTable.getAbsolutePath() + ": " + e.getMessage(), e);
     }
     return romName;

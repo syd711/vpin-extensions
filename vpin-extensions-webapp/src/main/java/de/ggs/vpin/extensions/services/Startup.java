@@ -35,8 +35,6 @@ public class Startup {
     LOG.info("*******************************************************************************************************");
     LOG.info("************************* Startup Checks **************************************************************");
     LOG.info("*******************************************************************************************************");
-    Settings.init("./config/");
-
     File vpxInstallationFolder = systemInfo.getVPXInstallationFolder();
     LOG.info("Resolved VPX installation folder: " + vpxInstallationFolder.getAbsolutePath());
     File popperInstallationFolder = systemInfo.getPopperInstallationFolder();

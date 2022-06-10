@@ -8,8 +8,8 @@ de\ggs\vpin\extensions\sqllite\SqliteConnector.class
 de\ggs\vpin\extensions\resources\PinUpPlayerResource.class
 de\ggs\vpin\extensions\web\WebConfig.class
 de\ggs\vpin\extensions\util\ThreadedStreamHandler.class
+de\ggs\vpin\extensions\util\Settings$1.class
 de\ggs\vpin\extensions\Application.class
-de\ggs\vpin\extensions\util\PropertiesStore.class
 de\ggs\vpin\extensions\util\WindowsRegistry.class
 de\ggs\vpin\extensions\util\SystemCommandExecutor$1.class
 de\ggs\vpin\extensions\services\GameService.class
@@ -22,5 +22,6 @@ de\ggs\vpin\extensions\resources\B2SEvent.class
 de\ggs\vpin\extensions\util\SystemCommandExecutor.class
 de\ggs\vpin\extensions\services\SystemInfo$1.class
 de\ggs\vpin\extensions\web\ResourceHandler.class
+de\ggs\vpin\extensions\util\Settings.class
 de\ggs\vpin\extensions\resources\B2SResource.class
 de\ggs\vpin\extensions\util\CommandResultParser.class

@@ -85,14 +85,15 @@ Public Class B2SCurlPluginVBNet
         Dim filterEvents As Boolean = False
         Dim writeLogFile As Boolean = False
 
+        If TableElementTypeChar = "N" Then
+            Return
+        End If
+
+
         If filterEvents Then
             If TableElementTypeChar = "S" Then
                 Return
-            ElseIf TableElementTypeChar = "L" Then
-                Return
             ElseIf TableElementTypeChar = "M" Then
-                Return
-            ElseIf TableElementTypeChar = "N" Then
                 Return
             ElseIf TableElementTypeChar = "W" Then
                 Return

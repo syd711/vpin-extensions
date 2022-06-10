@@ -34,41 +34,60 @@ public class GameService implements InitializingBean {
     this.activeGame = new Game(tableInfo);
   }
 
-  public void notifyB2SEvent(B2SEvent event) {
-    if(!this.activeGame.isInitializeStarted()) {
-      initTable();
+  public void
+
+  notifyB2SEvent(B2SEvent event) {
+    if (!this.activeGame.isInitializeStarted()) {
+      initTable(event);
     }
 
-    if(!this.activeGame.isInitializedFinished()) {
+    if (!this.activeGame.isInitializedFinished()) {
       return;
     }
 
     this.activeGame.trackEvent(event);
 
-    if(event.toString().equals(activeGame.getTableInfo().getTerminationSignal())) {
+    if (event.toString().equals(activeGame.getTableInfo().getTerminationSignal())) {
       exitTable();
     }
   }
 
-  private void initTable() {
+  public void exitGame() {
+    if (this.activeGame != null) {
+      this.activeGame.logEventStats();
+      this.activeGame.exit();
+    }
+  }
+
+  private void initTable(B2SEvent event) {
     this.activeGame.setInitializedStarted();
 
-    LOG.info("First b2s event captured, initializing table.");
-    new Thread(){
+    LOG.info("First b2s event captured (" + event + "), initializing table.");
+    new Thread() {
       public void run() {
         try {
-          String initDelay = Settings.get(activeGame.getTableInfo().getRom() + ".init.delay.ms");
-          if(initDelay == null) {
-            initDelay = Settings.get("game.init.delay.ms");
+          String initDelay = Settings.get(activeGame.getTableInfo().getRom() + ".credits.delay.ms");
+          if (initDelay == null) {
+            initDelay = Settings.get("game.credits.delay.ms");
           }
+          LOG.info("Waiting " + initDelay + "ms for credits input.");
           int delay = Integer.parseInt(initDelay);
+          Thread.sleep(delay);
+
           int credits = activeGame.getTableInfo().getCredits();
-          if(credits > 0) {
-            for(int i=0; i<credits; i++) {
+          if (credits > 0) {
+            for (int i = 0; i < credits; i++) {
               KeyUtil.pressKey(KeyEvent.VK_3, 80);
               Thread.sleep(1500);
             }
-            Thread.sleep(2000);
+
+            String startDelay = Settings.get(activeGame.getTableInfo().getRom() + ".start.delay.ms");
+            if (startDelay == null) {
+              startDelay = Settings.get("game.start.delay.ms");
+            }
+            LOG.info("Waiting " + startDelay + "ms for start input.");
+            int d = Integer.parseInt(startDelay);
+            Thread.sleep(d);
           }
           KeyUtil.pressKey(KeyEvent.VK_1, 1000);
           Thread.sleep(2000);
@@ -82,11 +101,11 @@ public class GameService implements InitializingBean {
 
   private void exitTable() {
     LOG.info("Registered termination signal, existing " + activeGame.getTableInfo().getFilename());
-    new Thread(){
+    new Thread() {
       public void run() {
         try {
           String exitDelay = Settings.get(activeGame.getTableInfo().getRom() + ".exit.delay.ms");
-          if(exitDelay == null) {
+          if (exitDelay == null) {
             exitDelay = Settings.get("game.exit.delay.ms");
           }
           int delay = Integer.parseInt(exitDelay);
@@ -100,13 +119,6 @@ public class GameService implements InitializingBean {
       }
     }.start();
     KeyUtil.pressKey(KeyEvent.VK_ESCAPE, 500);
-  }
-
-  public void exitGame() {
-    if(this.activeGame != null) {
-      this.activeGame.logEventStats();
-      this.activeGame.exit();
-    }
   }
 
   @Override

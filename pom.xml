@@ -77,6 +77,26 @@
 
 
                     <execution>
+                        <id>dll-copy2</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/vpin-extensions-webapp/src/main/resources/de/ggs/vpin/extensions</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>B2SCurlPluginVBNet/bin/Debug</directory>
+                                    <includes>
+                                        <include>B2SCurlPluginVBNet.dll</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+
+                    <execution>
                         <id>frontend-copy</id>
                         <phase>generate-sources</phase>
                         <goals>

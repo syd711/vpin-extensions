@@ -106,7 +106,7 @@ public class SqliteConnector implements InitializingBean {
   public void updateRomName(String gameFileName, String romName) {
     try {
       Statement stmt = conn.createStatement();
-      String sql = "UPDATE Games SET 'ROM'='" + romName + "' WHERE GameFileName = '" + gameFileName + "';";
+      String sql = "UPDATE Games SET 'ROM'='" + romName.trim() + "' WHERE GameFileName = '" + gameFileName + "';";
       stmt.executeUpdate(sql);
       stmt.close();
       LOG.info("Update of " + gameFileName + " successful, written ROM name '"+  romName + "'");

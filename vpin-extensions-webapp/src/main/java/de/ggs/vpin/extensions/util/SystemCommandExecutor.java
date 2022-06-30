@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -192,6 +193,13 @@ public class SystemCommandExecutor {
 
   public void setDir(File dir) {
     this.dir = dir;
+  }
+
+  public static void main(String args[]) throws IOException, InterruptedException {
+    SystemCommandExecutor exec = new SystemCommandExecutor(Arrays.asList("./DOFTest/DirectOutputTest.exe", "8 3 255 7 128"), false);
+    exec.execute();
+    StringBuilder standardOutputFromCommand = exec.getStandardOutputFromCommand();
+    System.out.println(standardOutputFromCommand.toString());
   }
 }
 

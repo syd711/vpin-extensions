@@ -49,7 +49,11 @@ public class Settings {
   }
 
   public static String get(String key) {
-    return properties.getProperty(key);
+    String value = properties.getProperty(key);
+    if(value != null) {
+      value = value.trim();
+    }
+    return value;
   }
 
   public static void set(String key, String value) {

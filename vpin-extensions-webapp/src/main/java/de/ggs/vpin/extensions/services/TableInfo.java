@@ -36,4 +36,9 @@ public class TableInfo {
   public String getFilename() {
     return this.tableFile.getName();
   }
+
+  @Override
+  public String toString() {
+    return this.tableFile.getAbsolutePath();
+  }
 }

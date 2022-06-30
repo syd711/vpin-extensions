@@ -95,6 +95,24 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>dof-test-copy</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/deployment/PinballExtensions/DOFTest/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>DOFTest/</directory>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
 
                     <execution>
                         <id>frontend-copy</id>

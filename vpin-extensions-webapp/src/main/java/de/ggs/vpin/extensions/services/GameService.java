@@ -3,14 +3,17 @@ package de.ggs.vpin.extensions.services;
 import de.ggs.vpin.extensions.resources.B2SEvent;
 import de.ggs.vpin.extensions.util.KeyUtil;
 import de.ggs.vpin.extensions.util.Settings;
+import de.ggs.vpin.extensions.util.SystemCommandExecutor;
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Queue;
 
 @Service
 public class GameService implements InitializingBean {
@@ -24,6 +27,11 @@ public class GameService implements InitializingBean {
 
   private Game activeGame;
 
+  private Queue<String> eventQueue;
+
+  private String[] terminationSignals;
+  private String terminationSignal;
+
   public Game getGame() {
     return activeGame;
   }
@@ -32,6 +40,9 @@ public class GameService implements InitializingBean {
     File gameFile = new File(table);
     TableInfo tableInfo = tableInfoService.getTableInfo(gameFile);
     this.activeGame = new Game(tableInfo);
+    this.terminationSignal = activeGame.getTableInfo().getTerminationSignal();
+    this.terminationSignals = this.terminationSignal.split(",");
+    this.eventQueue = new CircularFifoQueue<>(terminationSignals.length);
   }
 
   public void
@@ -41,20 +52,47 @@ public class GameService implements InitializingBean {
       initTable(event);
     }
 
-    if (!this.activeGame.isInitializedFinished()) {
+    if (!this.activeGame.isInitializedFinished() || this.activeGame.isTerminating()) {
       return;
     }
 
     this.activeGame.trackEvent(event);
 
-    if (event.toString().equals(activeGame.getTableInfo().getTerminationSignal())) {
-      exitTable();
+    if (isTerminationSignal(event)) {
+      this.activeGame.setTerminating(true);
+      LOG.info("Registered termination signal '" + event + "', existing " + activeGame.getTableInfo().getFilename());
+      if (Settings.get("debug.autoExit").equals("1")) {
+        LOG.info("Auto exit is enabled, triggering exit call for " + activeGame.getTableInfo().getFilename());
+        exitTable();
+      }
+
+      String dofCommand = Settings.get("doftest.parameters").trim();
+      if (dofCommand.length() > 0) {
+        LOG.info("Executing DOF Command Test: " + dofCommand);
+        SystemCommandExecutor executor = new SystemCommandExecutor(Arrays.asList("./DOFTest/DirectOutputTest.exe", dofCommand), false);
+        executor.executeCommandAsync();
+      }
     }
   }
 
+  private boolean isTerminationSignal(B2SEvent event) {
+    if (!terminationSignal.contains(",") && terminationSignal.equals(event.toString())) {
+      return true;
+    }
+    this.eventQueue.add(event.toString());
+
+    String eventCSVList = String.join(",", this.eventQueue);
+    return this.terminationSignal.equals(eventCSVList);
+  }
+
+  /**
+   * Called by Pinup Popper exit script
+   */
   public void exitGame() {
     if (this.activeGame != null) {
-      this.activeGame.logEventStats();
+      if (Settings.get("debug.logEventStats").equals("1")) {
+        this.activeGame.logEventStats();
+      }
       this.activeGame.exit();
     }
   }
@@ -77,7 +115,7 @@ public class GameService implements InitializingBean {
           int credits = activeGame.getTableInfo().getCredits();
           if (credits > 0) {
             for (int i = 0; i < credits; i++) {
-              KeyUtil.pressKey(KeyEvent.VK_3, 80);
+              KeyUtil.pressKey(Settings.get("button.insertCoin.key"), 80);
               Thread.sleep(1500);
             }
 
@@ -89,7 +127,7 @@ public class GameService implements InitializingBean {
             int d = Integer.parseInt(startDelay);
             Thread.sleep(d);
           }
-          KeyUtil.pressKey(KeyEvent.VK_1, 1000);
+          KeyUtil.pressKey(Settings.get("button.start.key"), 1000);
           Thread.sleep(2000);
           activeGame.setInitializedFinished();
         } catch (InterruptedException e) {
@@ -100,7 +138,6 @@ public class GameService implements InitializingBean {
   }
 
   private void exitTable() {
-    LOG.info("Registered termination signal, existing " + activeGame.getTableInfo().getFilename());
     new Thread() {
       public void run() {
         try {
@@ -108,17 +145,15 @@ public class GameService implements InitializingBean {
           if (exitDelay == null) {
             exitDelay = Settings.get("game.exit.delay.ms");
           }
+          LOG.info("Waiting " + exitDelay + "ms before table exit of " + activeGame.getTableInfo());
           int delay = Integer.parseInt(exitDelay);
           Thread.sleep(delay);
-          KeyUtil.pressKey(KeyEvent.VK_ESCAPE, 500);
+          KeyUtil.pressKey(Settings.get("button.tableExit.key"), 500);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
-
-
       }
     }.start();
-    KeyUtil.pressKey(KeyEvent.VK_ESCAPE, 500);
   }
 
   @Override

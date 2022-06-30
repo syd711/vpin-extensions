@@ -107,9 +107,14 @@ public class SqliteConnector implements InitializingBean {
     try {
       Statement stmt = conn.createStatement();
       String sql = "UPDATE Games SET 'ROM'='" + romName.trim() + "' WHERE GameFileName = '" + gameFileName + "';";
-      stmt.executeUpdate(sql);
+      int result = stmt.executeUpdate(sql);
       stmt.close();
-      LOG.info("Update of " + gameFileName + " successful, written ROM name '"+  romName + "'");
+      if (result > 0) {
+        LOG.info("Update of " + gameFileName + " successful, written ROM name '" + romName + "'");
+      }
+      else {
+        LOG.info("Skipped writing rom name '" + romName + "' to database, the game '" + gameFileName + "' was not found there.");
+      }
     } catch (Exception e) {
       LOG.error("Failed to update script script " + gameFileName + ": " + e.getMessage(), e);
     }

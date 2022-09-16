@@ -184,6 +184,7 @@
                                         <include>*.png</include>
                                         <include>*.jpg</include>
                                         <include>*.ttf</include>
+                                        <include>DOFTest/*</include>
                                         <include>overlay.properties</include>
                                     </includes>
                                 </resource>

@@ -1,0 +1,15 @@
+{
+  "commandList": [
+    {
+      "id": 1,
+      "unit": 1,
+      "portNumber": 5,
+      "value": 255,
+      "durationMs": 0,
+      "trigger": "KeyEvent",
+      "keyBinding": "2+1",
+      "toggle": true,
+      "description": "yyyyy"
+    }
+  ]
+}

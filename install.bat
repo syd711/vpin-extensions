@@ -13,20 +13,20 @@ IF EXIST "jdk" (
 )
 
 
-ECHO Writing run.bat
+ECHO Writing startService.bat
 
 (
   echo cd /D %cd%
-  echo start jdk/bin/javaw -jar overlay.jar
-) > run.bat
+  echo start jdk/bin/javaw -jar vpin-extensions.jar
+) > startService.bat
 
 
-ECHO Writing editOverlayConfig.bat
+ECHO Writing VPinExtensions.bat
 
 (
   echo cd /D %cd%
-  echo start jdk/bin/javaw -jar overlay.jar config
-) > editOverlayConfig.bat
+  echo start jdk/bin/javaw -jar vpin-extensions.jar config
+) > VPinExtensions.bat
 
 
 ECHO Writing autostart.bat
@@ -40,7 +40,7 @@ ECHO Writing generateOverlay.bat
 
 (
   echo cd /D %cd%
-  echo start jdk/bin/java -jar overlay.jar overlay
+  echo start jdk/bin/java -jar vpin-extensions.jar overlay
 ) > generateOverlay.bat
 
 ECHO Writing install-autostart.bat

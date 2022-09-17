@@ -29,3 +29,7 @@ hs_err_pid*
 /resources/repository.properties
 /overlay.iml
 /deployment/
+/releases/
+/doftest/DirectOutputTest/bin/Debug/
+/doftest/DirectOutputTest/obj/Debug/
+/doftest/.vs/DirectOutputTest/

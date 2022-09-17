@@ -1,8 +1,5 @@
 package de.mephisto.vpin.popper.overlay;
 
-import de.mephisto.vpin.GameInfo;
-import de.mephisto.vpin.ServiceListener;
-import de.mephisto.vpin.highscores.HighscoreChangedEvent;
 import de.mephisto.vpin.popper.overlay.generator.OverlayGenerator;
 import de.mephisto.vpin.popper.overlay.generator.OverlayGraphics;
 import de.mephisto.vpin.popper.overlay.resources.ResourceLoader;
@@ -27,7 +24,7 @@ import java.io.FileInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class OverlayWindowFX extends Application implements NativeKeyListener, ServiceListener {
+public class OverlayWindowFX extends Application implements NativeKeyListener {
   private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(OverlayGraphics.class);
 
   private KeyChecker keyChecker;
@@ -100,16 +97,6 @@ public class OverlayWindowFX extends Application implements NativeKeyListener, S
 
   @Override
   public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-
-  }
-
-  @Override
-  public void gameScanned(GameInfo gameInfo) {
-
-  }
-
-  @Override
-  public void highscoreChanged(HighscoreChangedEvent highscoreChangedEvent) {
 
   }
 }

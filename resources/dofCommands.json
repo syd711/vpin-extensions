@@ -8,7 +8,7 @@
       "durationMs": 0,
       "trigger": "KeyEvent",
       "keyBinding": "2+1",
-      "toggle": true,
+      "toggle": false,
       "description": "yyyyy"
     }
   ]

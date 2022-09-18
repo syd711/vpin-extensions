@@ -133,7 +133,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>de.mephisto.vpin.popper.overlay.SuperMain</mainClass>
+                                    <mainClass>de.mephisto.vpin.extensions.SuperMain</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

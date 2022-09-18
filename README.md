@@ -1,10 +1,23 @@
 # VPin Extensions
 
 VPin Extensions provides an easy generation of highscore cards for Visual Pinball tables running with VPX 
-and PinUP Popper.
+and PinUP Popper. A user interface allows you customize the size, color, fonts and design of highscore cards,
+which are generated everytime a highscore changes.
+
+![](./documentation/screen-cards-1.png)
+*Configuration screen for highscore card generation.*
+
+<img src="/documentation/sample-card-1.png" width="300">
+![](./documentation/sample-card-1.png | width=400)
+*Sample generated with the highscore card generator.*
+![](./documentation/sample-card-2.png | width=400)
+*Sample generated with the highscore card generator.*
 
 Additionally, the service runner provides the generation of a global highscore card which includes multiple tables.
 This overlay can be opend via configurable shortcut every time using PinUP popper or playing a table.
+
+
+
 
 #Overview 
 ###[Installation](#installation)

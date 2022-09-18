@@ -21,12 +21,12 @@ ECHO Writing startService.bat
 ) > startService.bat
 
 
-ECHO Writing VPinExtensions.bat
+ECHO Writing VPinExtensions-Config.bat
 
 (
   echo cd /D %cd%
   echo start jdk/bin/javaw -jar vpin-extensions.jar config
-) > VPinExtensions.bat
+) > VPinExtensions-Config.bat
 
 
 ECHO Writing autostart.bat
@@ -36,17 +36,6 @@ ECHO Writing autostart.bat
   echo start jdk/bin/javaw -jar vpin-extensions.jar
 ) > autostart.bat
 
-
-
-ECHO Writing generateOverlay.bat
-
-(
-  echo ECHO OFF
-  echo cd /D %cd%
-  echo start jdk/bin/java -jar vpin-extensions.jar overlay
-  echo ECHO Overlay generation finished, check for updates in the resources folder.
-  echo pause
-) > generateOverlay.bat
 
 ECHO Writing install-autostart.bat
 

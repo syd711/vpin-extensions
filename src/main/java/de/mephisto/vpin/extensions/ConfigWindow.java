@@ -110,6 +110,8 @@ public class ConfigWindow extends JFrame {
       if(option == JOptionPane.YES_OPTION) {
         try {
           Updater.update(nextVersion);
+          JOptionPane.showMessageDialog(null, "Update downloaded successfully. Please restart application.", "Information", JOptionPane.INFORMATION_MESSAGE);
+          System.exit(0);
         } catch (Exception e) {
           JOptionPane.showMessageDialog(null, "Update Failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

@@ -8,10 +8,10 @@ which are generated everytime a highscore changes.
 
 This section gives a brief overview about the functionality provided by this project.
 
-![](./documentation/screen-cards-1.png)
+<img src="./documentation/screen-cards-1.png" width="500">
 *Configuration screen for highscore card generation.*
 
-<img src="/documentation/sample-card-1.png" width="400"><img src="/documentation/sample-card-2.png" width="400">
+<img src="/documentation/sample-card-1.png" width="300"><img src="/documentation/sample-card-2.png" width="300">
 
 *Samples generated with the highscore card generator.*
 
@@ -19,14 +19,14 @@ Additionally, the service runner provides the generation of a global highscore c
 This overlay can be opend via configurable shortcut.
 
 
-![](./documentation/screen-overlay-1.png)
+<img src="./documentation/screen-overlay-1.png" width="500">
 *Configuration screen for overlay screen generation.*
 
 
 The __DOF Event Rules__ sections allows to trigger DOF commands based on events emitted by the 
 system or PinUP Popper:
 
-![](./documentation/screen-dof-1.png)
+<img src="./documentation/screen-dof-1.png" width="500">
 *Configuration screen for DOF rules.*
 
 
@@ -87,10 +87,10 @@ The given screenshots are showing the setup where highscore cards are shown on t
 
 __Make sure that the screen is active in the global settings:__
 
-<img src="/documentation/display-configuration.png" width="400">
+<img src="/documentation/display-configuration.png" width="500">
 
 
-<img src="/documentation/display-settings.png" width="400">
+<img src="/documentation/display-settings.png" width="500">
 
 ![](./documentation/key-binding.png)
 

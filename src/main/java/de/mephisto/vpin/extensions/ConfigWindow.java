@@ -5,6 +5,7 @@ import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.cardsettings.CardSettingsTab;
 import de.mephisto.vpin.extensions.commands.CommandsTab;
 import de.mephisto.vpin.extensions.resources.ResourceLoader;
+import de.mephisto.vpin.extensions.updates.Updater;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
 import de.mephisto.vpin.extensions.overlaysettings.OverlaySettingsTab;
@@ -51,9 +52,10 @@ public class ConfigWindow extends JFrame {
     setResizable(false);
 
     // setting the title of Frame
-    setTitle("VPin Extensions");
+    setTitle("VPin Extensions (" + Updater.getVersionSegment() + ")");
     setIconImage(ResourceLoader.getResource("logo.png"));
 
+    checkForUpdates();
     runInitialCheck();
 
     try {
@@ -98,6 +100,20 @@ public class ConfigWindow extends JFrame {
     } catch (Exception e) {
       LOG.error("Failed to create UI: " + e.getMessage(), e);
       JOptionPane.showMessageDialog(null, "Failed to create VPinExtension window: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  private void checkForUpdates() {
+    String nextVersion = Updater.checkForUpdate();
+    if(!StringUtils.isEmpty(nextVersion)) {
+      int option = JOptionPane.showConfirmDialog(this, "New version " + nextVersion + " found. Download and install update?", "New Update Found", JOptionPane.YES_NO_OPTION);
+      if(option == JOptionPane.YES_OPTION) {
+        try {
+          Updater.update(nextVersion);
+        } catch (Exception e) {
+          JOptionPane.showMessageDialog(null, "Update Failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
     }
   }
 

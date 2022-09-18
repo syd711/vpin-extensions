@@ -4,11 +4,19 @@ VPin Extensions provides an easy generation of highscore cards for Visual Pinbal
 and PinUP Popper. A user interface allows you customize the size, color, fonts and design of highscore cards,
 which are generated everytime a highscore changes.
 
+* Overview
+* Installation
+* Configure Highscore Overlay
+* Configure Highscore Cards
+* Configure DOF Rules
+* Table Overview
+
 ## Overview
 
 This section gives a brief overview about the functionality provided by this project.
 
-<img src="./documentation/screen-cards-1.png" width="700">
+<img src="./documentation/screen-cards-1.png" width="800">
+
 *Configuration screen for highscore card generation.*
 
 <img src="/documentation/sample-card-1.png" width="300"><img src="/documentation/sample-card-2.png" width="300">
@@ -19,14 +27,16 @@ Additionally, the service runner provides the generation of a global highscore c
 This overlay can be opend via configurable shortcut.
 
 
-<img src="./documentation/screen-overlay-1.png" width="700">
+<img src="./documentation/screen-overlay-1.png" width="800">
+
 *Configuration screen for overlay screen generation.*
 
 
 The __DOF Event Rules__ sections allows to trigger DOF commands based on events emitted by the 
 system or PinUP Popper:
 
-<img src="./documentation/screen-dof-1.png" width="700">
+<img src="./documentation/screen-dof-1.png" width="800">
+
 *Configuration screen for DOF rules.*
 
 
@@ -34,7 +44,8 @@ The __Table Overview__ gives an overview about all tables installed in PinUP Pop
 and their VPin Extensions support status.
 
 
-<img src="./documentation/screen-tables-1.png" width="700">
+<img src="./documentation/screen-tables-1.png" width="800">
+
 *Configuration screen for the table overview.*
 
 ## Installation
@@ -87,34 +98,22 @@ The given screenshots are showing the setup where highscore cards are shown on t
 
 __Make sure that the screen is active in the global settings:__
 
-<img src="/documentation/display-settings.png" width="600">
+<img src="/documentation/display-settings.png" width="800">
 
 __Also check that the screen is visible in the screen settings...__
 
-<img src="/documentation/display-configuration.png" width="600">
+<img src="/documentation/display-configuration.png" width="800">
 
 __...and that the screen ratio matches the one selected for the card background image.__
 
-<img src="/documentation/screen-configuration.png" width="600">
+<img src="/documentation/screen-configuration.png" width="800">
 
 
 __In the controller section, make sure that you have a shortcut defined for showing the highscore card.__
 
-<img src="/documentation/key-binding.png" width="600">
+<img src="/documentation/key-binding.png" width="800">
 
 If everything is configured properly, you can press the configured control for the "Show Other 2" screen
 and the generated highscore card should pop up (if already been generated!).
 
 ## Configure DOF Rules
-
-The usual modifier keys are numeric here:
-
-Strg/Ctrl-Left: 2
-Strg/Ctrl-Right: 32
-
-Shift-Left: 1
-Shift-Right: 16
-
-Alt-Left: 8
-
-E.g. for Ctrl+C => 2+c

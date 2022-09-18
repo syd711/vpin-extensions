@@ -123,7 +123,7 @@ public class OverlayGraphics extends VPinGraphics {
 
       for (String score : scores) {
         position++;
-        int scoreY = tableNameY + position * TITLE_FONT_SIZE + ROW_SEPARATOR;
+        int scoreY = tableNameY + (position * SCORE_FONT_SIZE) + ROW_SEPARATOR;
         g.drawString(score, imageWidth / 2 - totalScoreAndWheelWidth / 2 + wheelWidth + ROW_SEPARATOR, scoreY);
       }
 
@@ -175,7 +175,7 @@ public class OverlayGraphics extends VPinGraphics {
 
       if (wheelIconFile.exists()) {
         BufferedImage wheelImage = ImageIO.read(wheelIconFile);
-        g.drawImage(wheelImage, ROW_PADDING_LEFT, yStart, ROW_HEIGHT, ROW_HEIGHT, null);
+        g.drawImage(wheelImage, ROW_PADDING_LEFT, yStart + 12, ROW_HEIGHT, ROW_HEIGHT, null);
       }
 
       int x = ROW_HEIGHT + ROW_PADDING_LEFT + ROW_HEIGHT / 3;

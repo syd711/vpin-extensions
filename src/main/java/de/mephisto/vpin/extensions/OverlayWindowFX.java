@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
@@ -41,7 +42,12 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
   public void start(Stage primaryStage) throws Exception {
     this.stage = primaryStage;
     String hotkey = Config.getOverlayGeneratorConfig().getString("overlay.hotkey");
-    keyChecker = new KeyChecker(hotkey);
+    if(StringUtils.isEmpty(hotkey)) {
+      LOG.error("No overlay hotkey defined! Define a key binding on the overlay configuration tab and restart the service.");
+    }
+    else {
+      keyChecker = new KeyChecker(hotkey);
+    }
 
     Platform.setImplicitExit(false);
 
@@ -81,7 +87,7 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
 
   @Override
   public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-    if (keyChecker.matches(nativeKeyEvent)) {
+    if (keyChecker != null && keyChecker.matches(nativeKeyEvent)) {
       this.visible = !visible;
       Platform.runLater(() -> {
         LOG.info("Toggle show");

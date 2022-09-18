@@ -17,7 +17,7 @@ ECHO Writing startService.bat
 
 (
   echo cd /D %cd%
-  echo start jdk/bin/javaw -jar vpin-extensions.jar
+  echo start jdk/bin/java -jar vpin-extensions.jar
 ) > startService.bat
 
 
@@ -33,22 +33,26 @@ ECHO Writing autostart.bat
 
 (
   echo cd /D %cd%
-  echo start jdk/bin/javaw -jar overlay.jar
+  echo start jdk/bin/javaw -jar vpin-extensions.jar
 ) > autostart.bat
+
+
 
 ECHO Writing generateOverlay.bat
 
 (
+  echo ECHO OFF
   echo cd /D %cd%
   echo start jdk/bin/java -jar vpin-extensions.jar overlay
-  ECHO Overlay generation finished, check for updates in the resources folder.
+  echo ECHO Overlay generation finished, check for updates in the resources folder.
   echo pause
 ) > generateOverlay.bat
 
 ECHO Writing install-autostart.bat
 
 (
-copy autostart.bat "C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
-ECHO autostart.bat copied, installation finished.
+echo ECHO OFF
+echo copy autostart.bat "C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" >NUL
+echo ECHO autostart.bat copied to users autostart folder, installation finished.
 echo pause
 ) > install-autostart.bat

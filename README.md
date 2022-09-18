@@ -7,10 +7,7 @@ which are generated everytime a highscore changes.
 ![](./documentation/screen-cards-1.png)
 *Configuration screen for highscore card generation.*
 
-<img src="/documentation/sample-card-1.png" width="300">
-![](./documentation/sample-card-1.png | width=400)
-*Sample generated with the highscore card generator.*
-![](./documentation/sample-card-2.png | width=400)
+<img src="/documentation/sample-card-1.png" width="300"><img src="/documentation/sample-card-2.png" width="300">
 *Sample generated with the highscore card generator.*
 
 Additionally, the service runner provides the generation of a global highscore card which includes multiple tables.

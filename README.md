@@ -95,12 +95,12 @@ __Also check that the screen is visible in the screen settings...__
 
 __...and that the screen ratio matches the one selected for the card background image.__
 
-<img src="/documentation/screen-configuration" width="600">
+<img src="/documentation/screen-configuration.png" width="600">
 
 
 __In the controller section, make sure that you have a shortcut defined for showing the highscore card.__
 
-<img src="/documentation/key-binding" width="600">
+<img src="/documentation/key-binding.png" width="600">
 
 If everything is configured properly, you can press the configured control for the "Show Other 2" screen
 and the generated highscore card should pop up (if already been generated!).

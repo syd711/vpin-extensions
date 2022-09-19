@@ -1,4 +1,4 @@
-package de.mephisto.vpin.extensions.updates;
+package de.mephisto.vpin.extensions.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

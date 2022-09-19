@@ -238,6 +238,7 @@
                                     <directory>./</directory>
                                     <includes>
                                         <include>*.bat</include>
+                                        <include>*.properties</include>
                                     </includes>
                                 </resource>
                             </resources>

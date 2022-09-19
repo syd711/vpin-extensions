@@ -5,7 +5,7 @@ import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.cardsettings.CardSettingsTab;
 import de.mephisto.vpin.extensions.commands.CommandsTab;
 import de.mephisto.vpin.extensions.resources.ResourceLoader;
-import de.mephisto.vpin.extensions.updates.Updater;
+import de.mephisto.vpin.extensions.util.Updater;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
 import de.mephisto.vpin.extensions.overlaysettings.OverlaySettingsTab;

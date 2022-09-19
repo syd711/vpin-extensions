@@ -24,6 +24,7 @@ public class CommandsTab extends JPanel implements ActionListener {
 
   JButton editButton;
   JButton deleteButton;
+  private JButton testButton;
 
   public CommandsTab(ConfigWindow configWindow, VPinService service) {
     this.configWindow = configWindow;
@@ -50,6 +51,7 @@ public class CommandsTab extends JPanel implements ActionListener {
     WidgetFactory.createButton(toolBar, "createRule", "Create Rule", this);
     editButton = WidgetFactory.createButton(toolBar, "editRule", "Edit Rule", this);
     deleteButton = WidgetFactory.createButton(toolBar, "deleteRule", "Delete Rule", this);
+    testButton = WidgetFactory.createButton(toolBar, "test", "DOF Command Test", this);
     editButton.setEnabled(false);
     deleteButton.setEnabled(false);
   }
@@ -58,7 +60,7 @@ public class CommandsTab extends JPanel implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     String cmd = e.getActionCommand();
     switch (cmd) {
-      case "createRule":
+      case "createRule": {
         DOFCommand dofCommand = new DOFCommand(getNextId(), 1, 1, 0, 0, Trigger.TableStart, null, false, "");
         RuleDialog ruleDialog = new RuleDialog(configWindow, service, dofCommand);
         int result = ruleDialog.showDialog();
@@ -68,6 +70,12 @@ public class CommandsTab extends JPanel implements ActionListener {
         }
 
         break;
+      }
+      case "test": {
+        DOFCommandTestDialog d = new DOFCommandTestDialog(configWindow, service);
+        d.showDialog();
+        break;
+      }
       case "editRule": {
         editRule();
         break;

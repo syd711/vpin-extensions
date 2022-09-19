@@ -7,20 +7,19 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Updater {
   private final static Logger LOG = LoggerFactory.getLogger(Updater.class);
 
-  private final static String VERSION = "1.0.1";
-  private final static String BASE_URL = "https://github.com/syd711/vpin-extensions/releases/tag/";
+  private final static String VERSION = "1.0.2";
+  private final static String BASE_URL = "https://github.com/syd711/vpin-extensions/releases/download/%s/";
   private final static String VERSION_PROPERTIES = "https://raw.githubusercontent.com/syd711/vpin-extensions/main/version.properties";
 
   public static void update(String versionSegment) throws Exception {
     File out = new File("./vpin-extensions.jar");
-    String url = BASE_URL + versionSegment + "/vpin-extensions.jar";
+    String url = String.format(BASE_URL, versionSegment) + "vpin-extensions.jar";
     download(url, out);
   }
 

@@ -227,7 +227,6 @@ public class RuleDialog extends JDialog {
   }
 
   private void addBoardCombo(JPanel rootPanel, String key, PropertiesStore store) {
-    String property = key + ".trigger";
     Vector<Unit> data = new Vector<>(service.getUnits());
     final JComboBox boardSelector = new JComboBox(data);
     boardSelector.addActionListener(e -> {
@@ -236,9 +235,9 @@ public class RuleDialog extends JDialog {
       if (selectedItem != null) {
         value = String.valueOf(selectedItem.getId());
       }
-      store.set(property, value);
+      store.set(key, value);
     });
-    String selection = store.getString(property);
+    String selection = store.getString(key);
     if (!StringUtils.isEmpty(selection)) {
       boardSelector.setSelectedItem(selection);
     }

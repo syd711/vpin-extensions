@@ -43,11 +43,6 @@ system or PinUP Popper:
 The __Table Overview__ gives an overview about all tables installed in PinUP Popper
 and their VPin Extensions support status.
 
-
-<img src="./documentation/screen-tables-1.png" width="800">
-
-*Configuration screen for the table overview.*
-
 ## Installation
 
 Check https://github.com/syd711/vpin-extensions/releases for latest releases 
@@ -117,6 +112,21 @@ If everything is configured properly, you can press the configured control for t
 and the generated highscore card should pop up (if already been generated!).
 
 ## Configure DOF Rules
+
+The __Highscore Overlay__ tab allows to to configure a shortcut and generation of a
+full screen highscore overview over recently played tables and an optional special table
+(e.g. for a monthly challange.). The user interface provides different configuration
+options for the overview genertation. The overview is after every table exit, so
+that the recently played table are always up-to-date.
+
+When you want to customize the overlay, ensure that the background image dimensions
+match the resolution of the playfield screen. The highscore information are generated
+on this image - no additional scaling or cropping is done.
+
+Once the VPin-Extension service is running, the configured key binding is valid until
+the service is restarted. __Be aware that the key binding is executed, no matter if PinUP Popper
+is running or not!__
+
 
 ## Table Overview
 

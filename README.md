@@ -117,3 +117,24 @@ If everything is configured properly, you can press the configured control for t
 and the generated highscore card should pop up (if already been generated!).
 
 ## Configure DOF Rules
+
+## Table Overview
+
+The __Table Overview__ gives you an overview of the tables configured for PinUP popper.
+It also shows the current state for the highscore resolving.
+
+<img src="/documentation/missing-rom.png">
+
+E.g. if a ROM name was not found, an error indicator is shown with a corresponding message.
+_The name if the table's ROM is required to resolve the highscore file of the table
+and must be present._ 
+
+Another valid message is that no highscore was found. This isn't necessarily a problem
+when a table has not been played yet.
+
+<img src="/documentation/missing-highscore.png">
+
+If a table shows no configuration errors, you click on the __Show Highscore__ button
+to see the current highscores of the selected table.
+
+<img src="/documentation/highscore.png">

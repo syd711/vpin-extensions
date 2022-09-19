@@ -1,6 +1,7 @@
 package de.mephisto.vpin.extensions.util;
 
 import de.mephisto.vpin.util.PropertiesStore;
+import org.slf4j.MDC;
 
 /**
  * Utility for accessing the different config files.
@@ -9,6 +10,7 @@ public class Config {
   private final static String GENERATOR_CONFIG_FILENAME = "overlay-generator.properties";
   private final static String CARD_CONFIG_FILENAME = "card-generator.properties";
   private final static String COMMAND_CONFIG_FILENAME = "commands.properties";
+  private final static String VERSION_CONFIG_FILENAME = "../version.properties";
 
   private static PropertiesStore generatorConfig;
   private static PropertiesStore cardConfig;
@@ -33,5 +35,16 @@ public class Config {
       commandConfig = PropertiesStore.create(COMMAND_CONFIG_FILENAME);
     }
     return commandConfig;
+  }
+
+  public static PropertiesStore getVersionConfig() {
+    if (commandConfig == null) {
+      commandConfig = PropertiesStore.create(VERSION_CONFIG_FILENAME);
+    }
+    return commandConfig;
+  }
+
+  public static PropertiesStore getConfig(String name) {
+    return PropertiesStore.create(name);
   }
 }

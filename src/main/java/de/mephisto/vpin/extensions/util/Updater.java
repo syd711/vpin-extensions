@@ -1,5 +1,6 @@
 package de.mephisto.vpin.extensions.util;
 
+import de.mephisto.vpin.util.PropertiesStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,18 +14,23 @@ import java.net.URL;
 public class Updater {
   private final static Logger LOG = LoggerFactory.getLogger(Updater.class);
 
-  private final static int VERSION = 1;
+  private final static String VERSION = "1.0.1";
   private final static String BASE_URL = "https://github.com/syd711/vpin-extensions/releases/tag/";
+  private final static String VERSION_PROPERTIES = "https://raw.githubusercontent.com/syd711/vpin-extensions/main/version.properties";
 
   public static void update(String versionSegment) throws Exception {
+    File out = new File("./vpin-extensions.jar");
+    String url = BASE_URL + versionSegment + "/vpin-extensions.jar";
+    download(url, out);
+  }
+
+  private static void download(String downloadUrl, File target) throws Exception {
     try {
-      URL url = new URL(getDownloadSegment(versionSegment));
+      URL url = new URL(downloadUrl);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-      connection.addRequestProperty ("Accept", "application/zip");
       connection.setDoOutput(true);
       BufferedInputStream in = new BufferedInputStream(url.openStream());
-      File out = new File("./vpin-extensions.jar");
-      FileOutputStream fileOutputStream = new FileOutputStream(out);
+      FileOutputStream fileOutputStream = new FileOutputStream(target);
       byte dataBuffer[] = new byte[1024];
       int bytesRead;
       while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
@@ -32,56 +38,27 @@ public class Updater {
       }
       in.close();
       fileOutputStream.close();
-      LOG.info("Downloaded update file " + out.getAbsolutePath());
+      LOG.info("Downloaded update file " + target.getAbsolutePath());
     } catch (Exception e) {
       LOG.error("Failed to execute update: " + e.getMessage(), e);
       throw e;
     }
   }
 
-  public static String getVersionSegment() {
-    return "1.0." + VERSION;
+  public static String getCurrentVersion() {
+    return VERSION;
   }
 
-  public static String checkForUpdate() {
-    boolean updateAvailable = false;
-    int nextVersion = VERSION + 1;
-    String segment = "1.0." + nextVersion;
-    while (pingUpdate(segment)) {
-      nextVersion = nextVersion + 1;
-      segment = "1.0." + nextVersion;
-      updateAvailable = true;
+  public static String checkForUpdate() throws Exception {
+    File target = File.createTempFile("vpin-version", "properties");
+    target.deleteOnExit();
+    download(VERSION_PROPERTIES, target);
+    PropertiesStore store = PropertiesStore.create(target);
+    String latestVersion = store.getString("version");
+    target.delete();
+    if(latestVersion.equals(VERSION)) {
+      return null;
     }
-
-    if (updateAvailable) {
-      nextVersion = nextVersion - 1;
-      segment = "1.0." + nextVersion;
-      return segment;
-    }
-    return null;
-  }
-
-  private static boolean pingUpdate(String versionSegment) {
-    String url = BASE_URL + versionSegment;
-    try {
-      HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-      connection.setConnectTimeout(5000);
-      connection.setReadTimeout(500);
-      connection.setRequestMethod("HEAD");
-      int responseCode = connection.getResponseCode();
-      return (200 <= responseCode && responseCode <= 399);
-    } catch (IOException exception) {
-      return false;
-    }
-  }
-
-  /**
-   * E.g. https://github.com/syd711/vpin-extensions/releases/download/1.0.2/VPinExtensions.zip
-   *
-   * @param versionSegment
-   * @return
-   */
-  private static String getDownloadSegment(String versionSegment) {
-    return BASE_URL + versionSegment + "/vpin-extensions.jar";
+    return latestVersion;
   }
 }

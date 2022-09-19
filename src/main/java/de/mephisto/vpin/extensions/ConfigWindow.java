@@ -52,7 +52,7 @@ public class ConfigWindow extends JFrame {
     setResizable(false);
 
     // setting the title of Frame
-    setTitle("VPin Extensions (" + Updater.getVersionSegment() + ")");
+    setTitle("VPin Extensions (" + Updater.getCurrentVersion() + ")");
     setIconImage(ResourceLoader.getResource("logo.png"));
 
     checkForUpdates();
@@ -104,18 +104,22 @@ public class ConfigWindow extends JFrame {
   }
 
   private void checkForUpdates() {
-    String nextVersion = Updater.checkForUpdate();
-    if(!StringUtils.isEmpty(nextVersion)) {
-      int option = JOptionPane.showConfirmDialog(this, "New version " + nextVersion + " found. Download and install update?", "New Update Found", JOptionPane.YES_NO_OPTION);
-      if(option == JOptionPane.YES_OPTION) {
-        try {
-          Updater.update(nextVersion);
-          JOptionPane.showMessageDialog(null, "Update downloaded successfully. Please restart application.", "Information", JOptionPane.INFORMATION_MESSAGE);
-          System.exit(0);
-        } catch (Exception e) {
-          JOptionPane.showMessageDialog(null, "Update Failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    try {
+      String nextVersion = Updater.checkForUpdate();
+      if(!StringUtils.isEmpty(nextVersion)) {
+        int option = JOptionPane.showConfirmDialog(this, "New version " + nextVersion + " found. Download and install update?", "New Update Found", JOptionPane.YES_NO_OPTION);
+        if(option == JOptionPane.YES_OPTION) {
+          try {
+            Updater.update(nextVersion);
+            JOptionPane.showMessageDialog(null, "Update downloaded successfully. Please restart application.", "Information", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+          } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Update Failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          }
         }
       }
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(null, "Error checking for updates: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
 

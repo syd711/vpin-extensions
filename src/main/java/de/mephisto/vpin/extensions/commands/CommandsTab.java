@@ -52,6 +52,7 @@ public class CommandsTab extends JPanel implements ActionListener {
     editButton = WidgetFactory.createButton(toolBar, "editRule", "Edit Rule", this);
     deleteButton = WidgetFactory.createButton(toolBar, "deleteRule", "Delete Rule", this);
     testButton = WidgetFactory.createButton(toolBar, "test", "DOF Command Test", this);
+
     editButton.setEnabled(false);
     deleteButton.setEnabled(false);
   }
@@ -86,6 +87,8 @@ public class CommandsTab extends JPanel implements ActionListener {
         if (delete == JOptionPane.YES_OPTION) {
           service.removeDOFCommand(selection);
           commandTableModel.fireTableDataChanged();
+          editButton.setEnabled(false);
+          deleteButton.setEnabled(false);
         }
         break;
       }

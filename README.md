@@ -64,6 +64,28 @@ Once the installation is completed (including a JDK download), the folder should
 
 ## Configure Highscore Overlay
 
+The __Highscore Overlay__ tab allows to to configure a shortcut and generation of a
+full screen highscore overview over recently played tables and an optional special table
+(e.g. for a monthly challange.). The user interface provides different configuration
+options for the overview genertation. The overview is after every table exit, so
+that the recently played table are always up-to-date.
+
+When you want to customize the overlay, ensure that the background image dimensions
+match the resolution of the playfield screen. The highscore information are generated
+on this image - no additional scaling or cropping is done.
+
+
+![](./documentation/overlay-shortcut.png)
+
+*Overlay Shotcut Configuration*
+
+Once the VPin-Extension service is running, the configured key binding is valid until
+the service is restarted. __Be aware that the key binding is executed, no matter if PinUP Popper
+is running or not!__
+
+
+
+
 
 ## Configure Highscore Cards
 
@@ -113,19 +135,6 @@ and the generated highscore card should pop up (if already been generated!).
 
 ## Configure DOF Rules
 
-The __Highscore Overlay__ tab allows to to configure a shortcut and generation of a
-full screen highscore overview over recently played tables and an optional special table
-(e.g. for a monthly challange.). The user interface provides different configuration
-options for the overview genertation. The overview is after every table exit, so
-that the recently played table are always up-to-date.
-
-When you want to customize the overlay, ensure that the background image dimensions
-match the resolution of the playfield screen. The highscore information are generated
-on this image - no additional scaling or cropping is done.
-
-Once the VPin-Extension service is running, the configured key binding is valid until
-the service is restarted. __Be aware that the key binding is executed, no matter if PinUP Popper
-is running or not!__
 
 
 ## Table Overview
@@ -147,4 +156,5 @@ when a table has not been played yet.
 If a table shows no configuration errors, you click on the __Show Highscore__ button
 to see the current highscores of the selected table.
 
-<img src="/documentation/highscore.png">
+
+![](./documentation/highscore.png)

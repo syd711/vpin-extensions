@@ -20,8 +20,8 @@ import static de.mephisto.vpin.extensions.ConfigWindow.setUIFont;
 class Splash extends JWindow {
   private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(Splash.class);
 
-  static JProgressBar progressBar = new JProgressBar();
   private VPinService vPinService;
+  private JProgressBar progressBar = new JProgressBar();
 
   public Splash() {
     try {
@@ -57,6 +57,9 @@ class Splash extends JWindow {
       label.setForeground(Color.WHITE);
       panel.add(label);
 
+
+      progressBar.setBackground(Color.WHITE);
+      progressBar.setForeground(Color.decode("#9999CC"));
       progressBar.setIndeterminate(true);
       progressBar.setMaximum(100);
       container.add(progressBar, BorderLayout.SOUTH);

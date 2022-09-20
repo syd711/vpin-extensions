@@ -24,5 +24,5 @@ ECHO Writing startService.bat
 
 (
   echo cd /D %cd%
-  echo start jdk/bin/javaw -jar vpin-extensions.jar
+  echo start jdk/bin/java -jar vpin-extensions.jar
 ) > startService.bat

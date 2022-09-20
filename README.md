@@ -4,13 +4,14 @@ VPin Extensions provides an easy generation of highscore cards for Visual Pinbal
 and PinUP Popper. A user interface allows you customize the size, color, fonts and design of highscore cards,
 which are generated everytime a highscore changes.
 
-* Overview
-* Installation
-* Configure Highscore Overlay
-* Configure Highscore Cards
-* Configure DOF Rules
-* Table Overview
-* Service Status
+
+* [Overview](#overview)
+* [Installation](#installation)
+* [Configure Highscore Overlay](#configure-highscore-overlay)
+* [Configure Highscore Cards](#configure-highscore-cards)
+* [Configure DOF Rules](#configure-dof-rules)
+* [Table Overview](#table-overview)
+* [Service Status](#service-status)
 
 ## Overview
 
@@ -62,6 +63,14 @@ Once the installation is completed (including a JDK download), the folder should
 
 ![](./documentation/install-30.png)
 
+
+That was the hard part. Now you can execute the __VPinExtensions-Config.bat__ file.
+You will be greeted with the following dialog:
+
+![](./documentation/startup.png)
+
+You should execute the table scan. The scan determines the ROM name for every table available
+so that the highscore file can be derived from it.
 
 ## Configure Highscore Overlay
 
@@ -136,6 +145,15 @@ and the generated highscore card should pop up (if already been generated!).
 
 ## Configure DOF Rules
 
+__Experimental (not tested yet, board resolving may be broken)__
+
+The DOF rules allow you to react on specific system and PinUP Popper events.
+The can be used to trigger certain toys when a table is started or exited.
+
+![](./documentation/dof-rule.png)
+
+Every rule has a starts with a description and additional attributes defining
+which pin should be triggered when and/or for how long.
 
 
 ## Table Overview
@@ -159,3 +177,16 @@ to see the current highscores of the selected table.
 
 
 ![](./documentation/highscore.png)
+
+## Service Status
+
+The service status tab gives an overview about the the installation status of the VPin Extensions service.
+You can (and should) press the __Install Service__ button there to ensure that the service is running
+everytime your VPin is booted.
+
+![](./documentation/screen-service-1.png)
+
+Additionally, a __Test Service__ can be started. This service is alive as long as the configuration
+window stays open. Once started, you can use test the shortcut defined for the overlay or your DOF rules.
+
+As an alternative, the __startService.bat__ script can be executed to start a temporary service instance. 

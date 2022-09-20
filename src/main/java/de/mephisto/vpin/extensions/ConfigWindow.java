@@ -5,6 +5,7 @@ import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.cardsettings.CardSettingsTab;
 import de.mephisto.vpin.extensions.commands.CommandsTab;
 import de.mephisto.vpin.extensions.resources.ResourceLoader;
+import de.mephisto.vpin.extensions.service.ServiceTab;
 import de.mephisto.vpin.extensions.util.Updater;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
@@ -75,12 +76,17 @@ public class ConfigWindow extends JFrame {
       tabbedPane.addTab("Table Overview", null, tablesTab, "Status of all tables");
       tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
+      ServiceTab serviceTab = new ServiceTab(this, service);
+      tabbedPane.addTab("Service Status", null, serviceTab, "Status of the VPin Service");
+      tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
+
 
       tabbedPane.setBackground(DEFAULT_BG_COLOR);
       tabbedPane.setBackgroundAt(0, DEFAULT_BG_COLOR);
       tabbedPane.setBackgroundAt(1, DEFAULT_BG_COLOR);
       tabbedPane.setBackgroundAt(2, DEFAULT_BG_COLOR);
       tabbedPane.setBackgroundAt(3, DEFAULT_BG_COLOR);
+      tabbedPane.setBackgroundAt(4, DEFAULT_BG_COLOR);
       add(tabbedPane);
 
       setVisible(true);

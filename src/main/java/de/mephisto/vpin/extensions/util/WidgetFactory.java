@@ -26,13 +26,28 @@ import java.util.stream.Collectors;
 public class WidgetFactory {
   private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(WidgetFactory.class);
 
+  public static JButton createConfigButton(JPanel parent,
+                                           String actionCommand,
+                                           String text,
+                                           String label,
+                                           ActionListener actionListener) {
+    parent.add(new JLabel(label));
+    JButton button = new JButton(text);
+    button.setActionCommand(actionCommand);
+    button.setToolTipText(text);
+    button.addActionListener(actionListener);
+    parent.add(button, "span 3");
+    parent.add(new JLabel(""), "wrap");
+    return button;
+  }
+
   public static JButton createButton(JPanel parent,
                                      String actionCommand,
-                                     String toolTipText,
+                                     String text,
                                      ActionListener actionListener) {
-    JButton button = new JButton(toolTipText);
+    JButton button = new JButton(text);
     button.setActionCommand(actionCommand);
-    button.setToolTipText(toolTipText);
+    button.setToolTipText(text);
     button.addActionListener(actionListener);
     parent.add(button);
     return button;
@@ -91,6 +106,14 @@ public class WidgetFactory {
     parent.add(new JLabel(""));
     JLabel label = new JLabel(title);
     label.setForeground(color);
+    parent.add(label, "span 4");
+    parent.add(new JLabel(""), "wrap");
+    return label;
+  }
+
+  public static JLabel createLabel(JPanel parent, String title, String value) {
+    parent.add(new JLabel(title));
+    JLabel label = new JLabel(value);
     parent.add(label, "span 4");
     parent.add(new JLabel(""), "wrap");
     return label;

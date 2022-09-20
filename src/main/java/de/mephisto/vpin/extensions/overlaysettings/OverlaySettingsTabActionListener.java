@@ -34,7 +34,9 @@ public class OverlaySettingsTabActionListener implements ActionListener {
       this.saveOverlayKeyBinding();
     }
     else if (cmd.equals("generateOverlay")) {
+      overlaySettingsTab.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
       this.overlaySettingsTab.generateOverlay();
+      overlaySettingsTab.setCursor(null);
     }
     else if (cmd.equals("showOverlay")) {
       try {

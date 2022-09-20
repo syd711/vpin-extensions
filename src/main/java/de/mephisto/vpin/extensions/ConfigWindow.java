@@ -34,32 +34,27 @@ public class ConfigWindow extends JFrame {
     return instance;
   }
 
-  public ConfigWindow() throws Exception {
-    ConfigWindow.instance = this;
-
-    setUIFont(new javax.swing.plaf.FontUIResource("Tahoma", Font.PLAIN, 14));
-//    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
-
-    service = VPinService.create(false);
-
-
-    setSize(1346, 990);
-    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-    int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
-    int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
-    setLocation(x, y);
-    setResizable(false);
-
-    // setting the title of Frame
-    setTitle("VPin Extensions (" + Updater.getCurrentVersion() + ")");
-    setIconImage(ResourceLoader.getResource("logo.png"));
-
-    checkForUpdates();
-    runInitialCheck();
-
+  public ConfigWindow(VPinService service) {
+    this.service = service;
     try {
+      ConfigWindow.instance = this;
+
+      setSize(1346, 990);
+      Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+      int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
+      int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
+      setLocation(x, y);
+      setResizable(false);
+
+      // setting the title of Frame
+      setTitle("VPin Extensions (" + Updater.getCurrentVersion() + ")");
+      setIconImage(ResourceLoader.getResource("logo.png"));
+
+      setUIFont(new javax.swing.plaf.FontUIResource("Tahoma", Font.PLAIN, 14));
+      UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+
+
+
       this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
       JTabbedPane tabbedPane = new JTabbedPane();
@@ -89,8 +84,6 @@ public class ConfigWindow extends JFrame {
       tabbedPane.setBackgroundAt(4, DEFAULT_BG_COLOR);
       add(tabbedPane);
 
-      setVisible(true);
-
       Action escapeAction = new AbstractAction() {
         private static final long serialVersionUID = 5572504000935312338L;
 
@@ -109,51 +102,6 @@ public class ConfigWindow extends JFrame {
     }
   }
 
-  private void checkForUpdates() {
-    try {
-      String nextVersion = Updater.checkForUpdate();
-      if(!StringUtils.isEmpty(nextVersion)) {
-        int option = JOptionPane.showConfirmDialog(this, "New version " + nextVersion + " found. Download and install update?", "New Update Found", JOptionPane.YES_NO_OPTION);
-        if(option == JOptionPane.YES_OPTION) {
-          try {
-            Updater.update(nextVersion);
-            JOptionPane.showMessageDialog(null, "Update downloaded successfully. Please restart application.", "Information", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-          } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Update Failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-          }
-        }
-      }
-    } catch (Exception e) {
-      JOptionPane.showMessageDialog(null, "Error checking for updates: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-  }
-
-  private void runInitialCheck() {
-    List<GameInfo> gameInfos = service.getGameInfos();
-    boolean romFound = false;
-    for (GameInfo gameInfo : gameInfos) {
-      if (!StringUtils.isEmpty(gameInfo.getRom())) {
-        romFound = true;
-        break;
-      }
-    }
-    if (!romFound) {
-      int option = JOptionPane.showConfirmDialog(this, "It seems that no ROM scan has been performed yet.\n" +
-          "The ROM name of each table is required in order to scan the highscore information.\n\nScan for ROM names? (This may take a while)", "Table Scan", JOptionPane.YES_NO_OPTION);
-      if(option == JOptionPane.YES_OPTION) {
-        ProgressDialog d = new ProgressDialog(this, new TableScanProgressModel(service, "Resolving ROM Names"));
-        ProgressResultModel progressResultModel = d.showDialog();
-
-        JOptionPane.showMessageDialog(this, "Finished ROM scan, found ROM names of "
-                + (progressResultModel.getProcessed()-progressResultModel.getSkipped()) + " from " + progressResultModel.getProcessed() + " tables.",
-            "Generation Finished", JOptionPane.INFORMATION_MESSAGE);
-        LOG.info("Finished global ROM scan.");
-        service.refreshGameInfos();
-      }
-    }
-  }
-
   public static void setUIFont(javax.swing.plaf.FontUIResource f) {
     java.util.Enumeration keys = UIManager.getDefaults().keys();
     while (keys.hasMoreElements()) {
@@ -162,9 +110,5 @@ public class ConfigWindow extends JFrame {
       if (value instanceof javax.swing.plaf.FontUIResource)
         UIManager.put(key, f);
     }
-  }
-
-  public static void main(String[] args) throws Exception {
-    new ConfigWindow();
   }
 }

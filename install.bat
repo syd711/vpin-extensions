@@ -18,3 +18,11 @@ ECHO Writing VPinExtensions-Config.bat
   echo cd /D %cd%
   echo start jdk/bin/javaw -jar vpin-extensions.jar config
 ) > VPinExtensions-Config.bat
+
+
+ECHO Writing startService.bat
+
+(
+  echo cd /D %cd%
+  echo start jdk/bin/javaw -jar vpin-extensions.jar
+) > startService.bat

@@ -10,6 +10,7 @@ which are generated everytime a highscore changes.
 * Configure Highscore Cards
 * Configure DOF Rules
 * Table Overview
+* Service Status
 
 ## Overview
 

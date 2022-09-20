@@ -1,6 +1,7 @@
 package de.mephisto.vpin.extensions.util;
 
 import de.mephisto.vpin.extensions.ConfigWindow;
+import de.mephisto.vpin.extensions.resources.ResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ public class ProgressDialog extends JDialog implements ActionListener {
   public ProgressDialog(ConfigWindow parent, ProgressModel model) {
     super(parent, model.getTitle(), true);
     setSize(500, 200);
+    setIconImage(ResourceLoader.getResource("logo.png"));
     setLayout(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(4, 4, 4, 4);

@@ -155,7 +155,7 @@ public class OverlayGraphics extends VPinGraphics {
     int yStart = highscoreListYOffset + ROW_SEPARATOR + TITLE_FONT_SIZE / 2;
 
     List<GameInfo> gameInfos = service.getGameInfos();
-    gameInfos.sort((o1, o2) -> (int) (o2.getLastPlayed().getTime() - o1.getLastPlayed().getTime()));
+    gameInfos.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
 
     for (GameInfo game : gameInfos) {
       Highscore highscore = game.resolveHighscore();

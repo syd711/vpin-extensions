@@ -20,7 +20,6 @@ public class OverlayGenerator extends GraphicsGenerator {
   public static void main(String[] args) throws Exception {
     VPinService service = VPinService.create(false);
     generateOverlay(service);
-    service.shutdown();
   }
 
   public static void generateOverlay(VPinService service) throws Exception {

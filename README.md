@@ -1,8 +1,8 @@
 # VPin Extensions
 
 VPin Extensions provides an easy generation of highscore cards for Visual Pinball tables running with VPX 
-and PinUP Popper. A user interface allows you customize the size, color, fonts and design of highscore cards,
-which are generated everytime a highscore changes.
+and PinUP Popper. The user interface allows customize the size, color, fonts and design of highscore cards,
+which are generated everytime a table highscore changes.
 
 
 * [Overview](#overview)
@@ -25,8 +25,8 @@ This section gives a brief overview about the functionality provided by this pro
 
 *Samples generated with the highscore card generator.*
 
-Additionally, the service runner provides the generation of a global highscore card which includes multiple tables.
-This overlay can be opend via configurable shortcut.
+Additionally, the service instance provides the generation of a global highscore card which includes multiple tables.
+This overlay can be opend with a configurable shortcut while playing.
 
 
 <img src="./documentation/screen-overlay-1.png" width="800">
@@ -74,14 +74,14 @@ so that the highscore file can be derived from it.
 
 ## Configure Highscore Overlay
 
-The __Highscore Overlay__ tab allows to to configure a shortcut and generation of a
-full screen highscore overview over recently played tables and an optional special table
-(e.g. for a monthly challange.). The user interface provides different configuration
-options for the overview genertation. The overview is after every table exit, so
-that the recently played table are always up-to-date.
+The __Highscore Overlay__ tab allows to configure a shortcut and generation of a
+full screen highscore overview which shows the recently played tables and an optional special table
+(e.g. for a monthly challange). The user interface provides different configuration
+options for the overlay generation. The overlay is generated after every table exit, so
+that the recently played table list is always up-to-date.
 
-When you want to customize the overlay, ensure that the background image dimensions
-match the resolution of the playfield screen. The highscore information are generated
+When you want to customize the overlay, __ensure that the background image dimensions
+match the resolution of the playfield screen__. The highscore information are generated
 on this image - no additional scaling or cropping is done.
 
 
@@ -90,8 +90,8 @@ on this image - no additional scaling or cropping is done.
 *Overlay Shotcut Configuration*
 
 Once the VPin-Extension service is running, the configured key binding is valid until
-the service is restarted. __Be aware that the key binding is executed, no matter if PinUP Popper
-is running or not!__
+the service is restarted. __Be aware that once the service is running the key binding is active, 
+no matter if PinUP Popper is running or not!__
 
 
 
@@ -102,14 +102,16 @@ is running or not!__
 The highscore card generation is enabled once a PinUP Popper screen has been selected.
 Currently, the screens __Other2__, __GameInfo__ and __GameHelp__ are supported.
 Be aware that if the __VPin Extensions Service__ is started, existing media in the
-corresponding PinUP Popper folder will be overwritten. An additional warning of this is visible in the UI for this.
+corresponding PinUP Popper folder will be overwritten. 
+An additional warning is also shown by the UI for this:
 
 ![](./documentation/card-warning.png)
 
-If no screen is selected, not highscore card is generation is disabled.
+If no screen is selected, the highscore card is generation is disabled.
 
-For testing the generator output, a sample table can be selected and the button
-__Generate Sample Card__ will generate a sample highscore image and preview it in the right panel of the editor.
+For testing the generator output, a sample table can be selected and clicking the 
+__Generate Sample Card__ button will generate a sample highscore image and preview 
+it in the right panel next to the editor.
 
 ![](./documentation/screen-cards-2.png)
 
@@ -140,7 +142,7 @@ __In the controller section, make sure that you have a shortcut defined for show
 
 <img src="/documentation/key-binding.png" width="800">
 
-If everything is configured properly, you can press the configured control for the "Show Other 2" screen
+If everything is configured properly, you can press the configured control for the __Other 2__ screen
 and the generated highscore card should pop up (if already been generated!).
 
 ## Configure DOF Rules
@@ -148,11 +150,11 @@ and the generated highscore card should pop up (if already been generated!).
 __Experimental (not tested yet, board resolving may be broken)__
 
 The DOF rules allow you to react on specific system and PinUP Popper events.
-The can be used to trigger certain toys when a table is started or exited.
+They can be used to trigger toys when a table is started or exited.
 
 ![](./documentation/dof-rule.png)
 
-Every rule has a starts with a description and additional attributes defining
+Every rule starts with a description and has additional attributes defining
 which pin should be triggered when and/or for how long.
 
 
@@ -164,16 +166,16 @@ It also shows the current state for the highscore resolving.
 <img src="/documentation/missing-rom.png">
 
 E.g. if a ROM name was not found, an error indicator is shown with a corresponding message.
-_The name if the table's ROM is required to resolve the highscore file of the table
-and must be present._ 
+__The name if the table's ROM is required to resolve the highscore file of the table
+and must be present.__ 
 
-Another valid message is that no highscore was found. This isn't necessarily a problem
-when a table has not been played yet.
+It is also possible that no highscore file was found for a table. This isn't necessarily a problem
+when a table has not been played yet. 
 
 <img src="/documentation/missing-highscore.png">
 
-If a table shows no configuration errors, you click on the __Show Highscore__ button
-to see the current highscores of the selected table.
+If a table shows no configuration errors, a click on the __Show Highscore__ button
+shows the current highscores of the selected table.
 
 
 ![](./documentation/highscore.png)
@@ -190,3 +192,9 @@ Additionally, a __Test Service__ can be started. This service is alive as long a
 window stays open. Once started, you can use test the shortcut defined for the overlay or your DOF rules.
 
 As an alternative, the __startService.bat__ script can be executed to start a temporary service instance. 
+
+
+## See Also
+[Used Third-Party Libraries](./documentation/third-party-licenses/licenses.xml)
+
+For license texts have a look at [Third-Party Libraries](./documentation/third-party-licenses/)

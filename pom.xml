@@ -11,6 +11,7 @@
 
 
     <properties>
+        <docs.directory>./documentation</docs.directory>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -127,7 +128,8 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>de.mephisto.vpin.extensions.SuperMain</mainClass>
                                 </transformer>
                             </transformers>
@@ -261,7 +263,8 @@
                             <goal>rename</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>${basedir}/deployment/VPinExtensions/vpin-extensions-${project.version}.jar</sourceFile>
+                            <sourceFile>${basedir}/deployment/VPinExtensions/vpin-extensions-${project.version}.jar
+                            </sourceFile>
                             <destinationFile>${basedir}/deployment/VPinExtensions/vpin-extensions.jar</destinationFile>
                         </configuration>
                     </execution>
@@ -287,6 +290,29 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>2.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>download-licenses</id>
+                            <goals>
+                                <goal>download-licenses</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <cleanLicensesOutputDirectory>true</cleanLicensesOutputDirectory>
+                        <errorRemedy>ignore</errorRemedy>
+                        <excludeTransitiveDependencies>true</excludeTransitiveDependencies>
+                        <includeTransitiveDependencies>false</includeTransitiveDependencies>
+                        <licensesOutputFile>${docs.directory}/third-party-licenses/licenses.xml</licensesOutputFile>
+                        <licensesOutputDirectory>${docs.directory}/third-party-licenses</licensesOutputDirectory>
+                        <outputDirectory>${docs.directory}</outputDirectory>
+                        <sortByGroupIdAndArtifactId>true</sortByGroupIdAndArtifactId>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -241,7 +241,7 @@
                                 <resource>
                                     <directory>./</directory>
                                     <includes>
-                                        <include>*.bat</include>
+                                        <include>install.bat</include>
                                         <include>*.properties</include>
                                     </includes>
                                 </resource>

@@ -219,6 +219,8 @@ public class CardSettingsTab extends JPanel {
       int warning = JOptionPane.showConfirmDialog(this.configWindow, "This will overwrite all existing media for screen '" + getScreen()
           + "'.\nThese files will be updated or created once a highscore of a table has been updated.\n\nStart Card Generation?", "Warning", JOptionPane.YES_NO_OPTION);
       if (warning == JOptionPane.OK_OPTION) {
+        service.refreshGameInfos();
+
         generateButton.setEnabled(false);
 
         ProgressDialog d = new ProgressDialog(configWindow, new GeneratorProgressModel(service, this.getScreen(), "Generating Cards"));

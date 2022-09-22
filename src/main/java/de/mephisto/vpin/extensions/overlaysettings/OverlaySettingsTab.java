@@ -91,9 +91,9 @@ public class OverlaySettingsTab extends JPanel {
     WidgetFactory.createFileChooser(settingsPanel, "Background Image:", "Select File", store, "overlay.background", "background4k.jpg");
     WidgetFactory.createTextField(settingsPanel, "Challenge Title:", store, "overlay.title.text", "Table of the Month");
     WidgetFactory.createTextField(settingsPanel, "Highscores Title:", store, "overlay.highscores.text", "Latest Highscores");
-    WidgetFactory.createFontSelector(settingsPanel, "Title Font:", store, "overlay.title.font");
-    WidgetFactory.createFontSelector(settingsPanel, "Table Name Font:", store, "overlay.table.font");
-    WidgetFactory.createFontSelector(settingsPanel, "Score Font:", store, "overlay.score.font");
+    WidgetFactory.createFontSelector(settingsPanel, "Title Font:", store, "overlay.title.font", 130);
+    WidgetFactory.createFontSelector(settingsPanel, "Table Name Font:", store, "overlay.table.font", 120);
+    WidgetFactory.createFontSelector(settingsPanel, "Score Font:", store, "overlay.score.font", 100);
     WidgetFactory.createColorChooser(configWindow, settingsPanel, "Font Color:", store, "overlay.font.color");
     WidgetFactory.createSpinner(settingsPanel, "Padding Top:", "px", store, "overlay.title.y.offset", 80);
     WidgetFactory.createSpinner(settingsPanel, "Padding Left:", "px", store, "overlay.highscores.row.padding.left", 60);

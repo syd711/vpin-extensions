@@ -69,9 +69,9 @@ public class CardSettingsTab extends JPanel {
     /******************************** Generator Fields ****************************************************************/
     WidgetFactory.createFileChooser(settingsPanel, "Background Image:", "Select File", store, "card.background", "highscore-card-background.jpg");
     WidgetFactory.createTextField(settingsPanel, "Card Title:", store, "card.title.text", "Highscore");
-    WidgetFactory.createFontSelector(settingsPanel, "Title Font:", store, "card.title.font");
-    WidgetFactory.createFontSelector(settingsPanel, "Table Name Font:", store, "card.table.font");
-    WidgetFactory.createFontSelector(settingsPanel, "Score Font:", store, "card.score.font");
+    WidgetFactory.createFontSelector(settingsPanel, "Title Font:", store, "card.title.font", 120);
+    WidgetFactory.createFontSelector(settingsPanel, "Table Name Font:", store, "card.table.font", 100);
+    WidgetFactory.createFontSelector(settingsPanel, "Score Font:", store, "card.score.font", 80);
     WidgetFactory.createColorChooser(configWindow, settingsPanel, "Font Color:", store, "card.font.color");
     WidgetFactory.createSpinner(settingsPanel, "Padding Top:", "px", store, "card.title.y.offset", 80);
     WidgetFactory.createSpinner(settingsPanel, "Padding Left:", "px", store, "card.highscores.row.padding.left", 60);

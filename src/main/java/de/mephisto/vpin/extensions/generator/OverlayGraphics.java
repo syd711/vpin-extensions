@@ -94,7 +94,9 @@ public class OverlayGraphics extends VPinGraphics {
       g.setFont(new Font(TABLE_FONT_NAME, TABLE_FONT_STYLE, TABLE_FONT_SIZE));
       String challengedTable = challengedGame.getGameDisplayName();
       int width = g.getFontMetrics().stringWidth(challengedTable);
-      int tableNameY = titleY + ROW_SEPARATOR + TITLE_FONT_SIZE;
+
+
+      int tableNameY = titleY + (2* ROW_SEPARATOR) + TITLE_FONT_SIZE;
       g.drawString(challengedTable, imageWidth / 2 - width / 2, tableNameY);
 
       g.setFont(new Font(SCORE_FONT_NAME, SCORE_FONT_STYLE, SCORE_FONT_SIZE));
@@ -118,12 +120,12 @@ public class OverlayGraphics extends VPinGraphics {
       }
 
       int position = 0;
-      int wheelWidth = 3 * TITLE_FONT_SIZE + 3 * ROW_SEPARATOR;
+      int wheelWidth = (3 * SCORE_FONT_SIZE) + (3 * ROW_SEPARATOR);
       int totalScoreAndWheelWidth = scoreWidth + wheelWidth;
 
       for (String score : scores) {
         position++;
-        int scoreY = tableNameY + (position * SCORE_FONT_SIZE) + ROW_SEPARATOR;
+        int scoreY = tableNameY + (position * SCORE_FONT_SIZE) +  (position * ROW_SEPARATOR);
         g.drawString(score, imageWidth / 2 - totalScoreAndWheelWidth / 2 + wheelWidth + ROW_SEPARATOR, scoreY);
       }
 

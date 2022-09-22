@@ -223,10 +223,10 @@ public class WidgetFactory {
     });
   }
 
-  public static void createFontSelector(JPanel parent, String label, PropertiesStore store, String property) {
+  public static void createFontSelector(JPanel parent, String label, PropertiesStore store, String property, int defaultSize) {
     parent.add(new JLabel(label));
     String name = store.getString(property + ".name", "Arial");
-    int size = store.getInt(property + ".size", 48);
+    int size = store.getInt(property + ".size", defaultSize);
     final JLabel titleFontLabel = new JLabel(name + " / " + size);
     parent.add(titleFontLabel, "span 3");
     JButton fontChooserButton = new JButton("Choose Font");

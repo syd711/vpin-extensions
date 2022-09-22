@@ -107,6 +107,11 @@ An additional warning is also shown by the UI for this:
 
 ![](./documentation/card-warning.png)
 
+You may get the additional warning that the screen is not bound to any key.
+Check the controller settings in PinUP Popper for this screen so that you can hide it if you want.
+
+![](./documentation/key-binding-error.png)
+
 If no screen is selected, the highscore card is generation is disabled.
 
 For testing the generator output, a sample table can be selected and clicking the 
@@ -144,6 +149,13 @@ __In the controller section, make sure that you have a shortcut defined for show
 
 If everything is configured properly, you can press the configured control for the __Other 2__ screen
 and the generated highscore card should pop up (if already been generated!).
+
+*Note that all tables will have a highscore card. So you may want to delete the default media stored
+for the screen you selected. 
+The emulator defaults are stored in __pinupsystem\POPMEDIA\<EACH EMULTAOR>\SYTEM__. 
+You can change or remove the screen's default media there (remember you need to do this for each emulator in system).*
+
+See also https://www.nailbuster.com/wikipinup/doku.php?id=faq
 
 ## Configure DOF Rules
 

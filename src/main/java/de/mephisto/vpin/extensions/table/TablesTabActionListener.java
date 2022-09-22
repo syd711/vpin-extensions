@@ -16,7 +16,7 @@ import java.util.List;
 public class TablesTabActionListener implements ActionListener {
   private final static Logger LOG = LoggerFactory.getLogger(TablesTabActionListener.class);
 
-  private ConfigWindow configWindow;
+  private final ConfigWindow configWindow;
   private final VPinService service;
   private final TablesTab tablesTab;
 
@@ -70,6 +70,7 @@ public class TablesTabActionListener implements ActionListener {
   }
 
   public void scanAll() {
+    service.refreshGameInfos();
     tablesTab.scanAllButton.setEnabled(false);
     ProgressDialog d = new ProgressDialog(configWindow, new TableScanProgressModel(service, "Resolving ROM Names"));
     ProgressResultModel progressResultModel = d.showDialog();

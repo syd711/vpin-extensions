@@ -85,7 +85,7 @@ public class OverlaySettingsTab extends JPanel {
     separator.setPreferredSize(new Dimension(1, 30));
     settingsPanel.add(separator, "wrap");
 
-    WidgetFactory.createTableSelector(service, settingsPanel, "Challenged Table:", store, "overlay.challengedTable");
+    WidgetFactory.createTableSelector(service, settingsPanel, "Challenged Table:", store, "overlay.challengedTable", false);
 
     /******************************** Generator Fields ****************************************************************/
     WidgetFactory.createFileChooser(settingsPanel, "Background Image:", "Select File", store, "overlay.background", "background4k.jpg");

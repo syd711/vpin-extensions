@@ -2,9 +2,9 @@ package de.mephisto.vpin.extensions.generator;
 
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
+import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.highscores.Highscore;
 import de.mephisto.vpin.highscores.Score;
-import de.mephisto.vpin.extensions.util.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,32 +79,33 @@ public class OverlayGraphics extends VPinGraphics {
   private static int renderTableChallenge(BufferedImage image, GameInfo challengedGame, int highscoreListYOffset) throws Exception {
     Highscore highscore = challengedGame.resolveHighscore();
     int returnOffset = highscoreListYOffset;
+    Graphics g = image.getGraphics();
+    setDefaultColor(g, Config.getOverlayGeneratorConfig().getString("overlay.font.color"));
+    int imageWidth = image.getWidth();
+
+    g.setFont(new Font(TITLE_FONT_NAME, TITLE_FONT_STYLE, TITLE_FONT_SIZE));
+
+    String title = TITLE_TEXT;
+    int titleWidth = g.getFontMetrics().stringWidth(title);
+    int titleY = ROW_SEPARATOR + TITLE_FONT_SIZE + TITLE_Y_OFFSET;
+    g.drawString(title, imageWidth / 2 - titleWidth / 2, titleY);
+
+    g.setFont(new Font(TABLE_FONT_NAME, TABLE_FONT_STYLE, TABLE_FONT_SIZE));
+    String challengedTable = challengedGame.getGameDisplayName();
+    int width = g.getFontMetrics().stringWidth(challengedTable);
+
+
+    int tableNameY = titleY + (2 * ROW_SEPARATOR) + TITLE_FONT_SIZE;
+    g.drawString(challengedTable, imageWidth / 2 - width / 2, tableNameY);
+
+    g.setFont(new Font(SCORE_FONT_NAME, SCORE_FONT_STYLE, SCORE_FONT_SIZE));
+
+    int count = 0;
+    int scoreWidth = 0;
+
+
+    List<String> scores = new ArrayList<>();
     if (highscore != null) {
-      Graphics g = image.getGraphics();
-      setDefaultColor(g, Config.getOverlayGeneratorConfig().getString("overlay.font.color"));
-      int imageWidth = image.getWidth();
-
-      g.setFont(new Font(TITLE_FONT_NAME, TITLE_FONT_STYLE, TITLE_FONT_SIZE));
-
-      String title = TITLE_TEXT;
-      int titleWidth = g.getFontMetrics().stringWidth(title);
-      int titleY = ROW_SEPARATOR + TITLE_FONT_SIZE + TITLE_Y_OFFSET;
-      g.drawString(title, imageWidth / 2 - titleWidth / 2, titleY);
-
-      g.setFont(new Font(TABLE_FONT_NAME, TABLE_FONT_STYLE, TABLE_FONT_SIZE));
-      String challengedTable = challengedGame.getGameDisplayName();
-      int width = g.getFontMetrics().stringWidth(challengedTable);
-
-
-      int tableNameY = titleY + (2* ROW_SEPARATOR) + TITLE_FONT_SIZE;
-      g.drawString(challengedTable, imageWidth / 2 - width / 2, tableNameY);
-
-      g.setFont(new Font(SCORE_FONT_NAME, SCORE_FONT_STYLE, SCORE_FONT_SIZE));
-
-      int count = 0;
-      int scoreWidth = 0;
-
-      List<String> scores = new ArrayList<>();
       for (Score score : highscore.getScores()) {
         String scoreString = score.getPosition() + ". " + score.getUserInitials() + " " + score.getScore();
         scores.add(scoreString);
@@ -118,27 +119,32 @@ public class OverlayGraphics extends VPinGraphics {
           break;
         }
       }
-
-      int position = 0;
-      int wheelWidth = (3 * SCORE_FONT_SIZE) + (3 * ROW_SEPARATOR);
-      int totalScoreAndWheelWidth = scoreWidth + wheelWidth;
-
-      for (String score : scores) {
-        position++;
-        int scoreY = tableNameY + (position * SCORE_FONT_SIZE) +  (position * ROW_SEPARATOR);
-        g.drawString(score, imageWidth / 2 - totalScoreAndWheelWidth / 2 + wheelWidth + ROW_SEPARATOR, scoreY);
-      }
-
-      File wheelIconFile = challengedGame.getWheelIconFile();
-      int wheelY = tableNameY + ROW_SEPARATOR;
-      returnOffset = wheelY * 2 + SCORE_FONT_SIZE * 2;
-      if (wheelIconFile.exists()) {
-        BufferedImage wheelImage = ImageIO.read(wheelIconFile);
-        g.drawImage(wheelImage, imageWidth / 2 - totalScoreAndWheelWidth / 2, wheelY, wheelWidth, wheelWidth, null);
+    }
+    else {
+      for(int i=1; i<= 3; i++) {
+        scores.add( i + ". ??? 000.000.000");
       }
     }
 
-    returnOffset+= TITLE_FONT_SIZE /2;
+    int position = 0;
+    int wheelWidth = (3 * SCORE_FONT_SIZE) + (3 * ROW_SEPARATOR);
+    int totalScoreAndWheelWidth = scoreWidth + wheelWidth;
+
+    for (String score : scores) {
+      position++;
+      int scoreY = tableNameY + (position * SCORE_FONT_SIZE) + (position * ROW_SEPARATOR);
+      g.drawString(score, imageWidth / 2 - totalScoreAndWheelWidth / 2 + wheelWidth + ROW_SEPARATOR, scoreY);
+    }
+
+    File wheelIconFile = challengedGame.getWheelIconFile();
+    int wheelY = tableNameY + ROW_SEPARATOR;
+    returnOffset = wheelY * 2 + SCORE_FONT_SIZE * 2;
+    if (wheelIconFile.exists()) {
+      BufferedImage wheelImage = ImageIO.read(wheelIconFile);
+      g.drawImage(wheelImage, imageWidth / 2 - totalScoreAndWheelWidth / 2, wheelY, wheelWidth, wheelWidth, null);
+    }
+
+    returnOffset += TITLE_FONT_SIZE / 2;
     return returnOffset;
   }
 
@@ -171,10 +177,11 @@ public class OverlayGraphics extends VPinGraphics {
       }
 
       File wheelIconFile = game.getWheelIconFile();
-      if(!wheelIconFile.exists() && Config.getOverlayGeneratorConfig().getBoolean("overlay.skipWithMissingWheels")) {
+      if (!wheelIconFile.exists() && Config.getOverlayGeneratorConfig().getBoolean("overlay.skipWithMissingWheels")) {
         continue;
       }
 
+      LOG.info("Rendering row for table " + game + ", last played " + game.getLastPlayed());
       if (wheelIconFile.exists()) {
         BufferedImage wheelImage = ImageIO.read(wheelIconFile);
         g.drawImage(wheelImage, ROW_PADDING_LEFT, yStart + 12, ROW_HEIGHT, ROW_HEIGHT, null);
@@ -182,9 +189,6 @@ public class OverlayGraphics extends VPinGraphics {
 
       int x = ROW_HEIGHT + ROW_PADDING_LEFT + ROW_HEIGHT / 3;
       g.setFont(new Font(TABLE_FONT_NAME, TABLE_FONT_SIZE, TABLE_FONT_SIZE));
-
-      String tableName = game.getGameDisplayName();
-      tableName = "<p color=\"#00FF00\"" + tableName + "</p>";
       g.drawString(game.getGameDisplayName(), x, yStart + SCORE_FONT_SIZE);
 
       g.setFont(new Font(SCORE_FONT_NAME, SCORE_FONT_STYLE, SCORE_FONT_SIZE));

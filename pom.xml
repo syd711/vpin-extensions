@@ -179,7 +179,10 @@
                                         <include>4k-generator.properties</include>
                                         <include>*.exe</include>
                                         <include>*.png</include>
-                                        <include>*.jpg</include>
+                                        <include>background2k.jpg</include>
+                                        <include>background4k.jpg</include>
+                                        <include>highscore-card-background.jpg</include>
+                                        <include>highscore-card-background-2.jpg</include>
                                         <include>*.ttf</include>
                                         <include>DOFTest/*</include>
                                         <include>overlay.properties</include>

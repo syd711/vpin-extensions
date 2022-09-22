@@ -53,10 +53,12 @@ public class WidgetFactory {
     return button;
   }
 
-  public static void createTableSelector(VPinService service, JPanel parent, String title, PropertiesStore store, String property) {
+  public static void createTableSelector(VPinService service, JPanel parent, String title, PropertiesStore store, String property, boolean filterForHighscores) {
     List<GameInfo> gameInfos = service.getActiveGameInfos();
-    List<GameInfo> collect = gameInfos.stream().filter(g -> g.hasHighscore()).collect(Collectors.toList());
-    Vector<GameInfo> data = new Vector<>(collect);
+    if(filterForHighscores) {
+      gameInfos = gameInfos.stream().filter(g -> g.hasHighscore()).collect(Collectors.toList());
+    }
+    Vector<GameInfo> data = new Vector<>(gameInfos);
     data.insertElementAt(null, 0);
     final JComboBox tableSelection = new JComboBox(data);
     tableSelection.addActionListener(e -> {

@@ -2,13 +2,13 @@ package de.mephisto.vpin.extensions.cardsettings;
 
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
-import de.mephisto.vpin.popper.PopperScreen;
 import de.mephisto.vpin.extensions.ConfigWindow;
 import de.mephisto.vpin.extensions.generator.HighscoreCardGenerator;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
 import de.mephisto.vpin.extensions.util.WidgetFactory;
+import de.mephisto.vpin.popper.PopperScreen;
 import de.mephisto.vpin.util.PropertiesStore;
 import de.mephisto.vpin.util.SystemInfo;
 import net.miginfocom.swing.MigLayout;
@@ -63,7 +63,7 @@ public class CardSettingsTab extends JPanel {
     separator.setPreferredSize(new Dimension(1, 30));
     settingsPanel.add(separator, "wrap");
 
-    WidgetFactory.createTableSelector(service, settingsPanel, "Sample Table:", store, "card.sampleTable");
+    WidgetFactory.createTableSelector(service, settingsPanel, "Sample Table:", store, "card.sampleTable", true);
 
 
     /******************************** Generator Fields ****************************************************************/
@@ -130,8 +130,10 @@ public class CardSettingsTab extends JPanel {
     previewPanel.setBorder(b);
     add(previewPanel, BorderLayout.CENTER);
     previewPanel.setLayout(new MigLayout("gap rel 8 insets 10", "left"));
-    iconLabel = new JLabel(getPreviewImage());
+    iconLabel = new JLabel("");
     iconLabel.setBackground(Color.BLACK);
+
+    iconLabel.setIcon(getPreviewImage());
     previewPanel.add(iconLabel);
   }
 
@@ -160,7 +162,7 @@ public class CardSettingsTab extends JPanel {
         }
         BufferedImage image = ImageIO.read(file);
         int maxWidth = 540;
-        int percentage = (maxWidth * 100 / image.getWidth());
+        int percentage = (maxWidth * 100 / image.getWidth()) - 7;
         Image newimg = image.getScaledInstance(image.getWidth() * percentage / 100, image.getHeight() * percentage / 100, Image.SCALE_SMOOTH); // scale it the smooth way
         return new ImageIcon(newimg);  // transform it back
       }
@@ -197,7 +199,7 @@ public class CardSettingsTab extends JPanel {
     try {
       GameInfo sampleGame = getSampleGame();
       if (sampleGame.resolveHighscore() == null) {
-        JOptionPane.showMessageDialog(this, "No highscore files found for " + sampleGame.toString() + ".", "Error", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "No highscore files found for " + sampleGame.toString() + ".\nCheck the 'Table Overview' tab for tables with existing highscore files.", "Error", JOptionPane.INFORMATION_MESSAGE);
         return;
       }
 

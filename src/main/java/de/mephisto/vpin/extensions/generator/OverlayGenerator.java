@@ -32,6 +32,8 @@ public class OverlayGenerator extends GraphicsGenerator {
 
   public BufferedImage generate() throws Exception {
     try {
+      service.refreshGameInfos();
+
       BufferedImage backgroundImage = super.loadBackground(new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().getString("overlay.background")));
       BufferedImage rotated = rotateRight(backgroundImage);
 

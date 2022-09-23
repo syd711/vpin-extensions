@@ -2,6 +2,7 @@ package de.mephisto.vpin.extensions;
 
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
+import de.mephisto.vpin.VPinServiceException;
 import de.mephisto.vpin.extensions.generator.HighscoreCardGenerator;
 import de.mephisto.vpin.extensions.generator.OverlayGenerator;
 import de.mephisto.vpin.extensions.util.Config;
@@ -13,29 +14,33 @@ import org.slf4j.LoggerFactory;
 
 public class ServiceRunner implements TableStatusChangeListener {
   private final static Logger LOG = LoggerFactory.getLogger(ServiceRunner.class);
-  private final VPinService service;
+  private VPinService service;
 
   public ServiceRunner() {
-    service = VPinService.create(true);
-    LOG.info("ServiceRunner started.");
-
-    LOG.info("Added VPin service listener for highscore changes.");
-    service.addTableStatusChangeListener(this);
-
-    String targetScreen = Config.getCardGeneratorConfig().get("popper.screen");
-    if (StringUtils.isEmpty(targetScreen)) {
-      LOG.info("Skipped starting highscore card generator, no PinUP popper target screen configured.");
-    }
-
     try {
-      LOG.info("Executing highscore overlay generation.");
-      OverlayGenerator.generateOverlay(service);
-    } catch (Exception e) {
-      LOG.error("Initial overlay generation failed: " + e.getMessage(), e);
-    }
+      service = VPinService.create(true);
+      LOG.info("ServiceRunner started.");
 
-    LOG.info("Overlay window listener started.");
-    OverlayWindowFX.launch(OverlayWindowFX.class);
+      LOG.info("Added VPin service listener for highscore changes.");
+      service.addTableStatusChangeListener(this);
+
+      String targetScreen = Config.getCardGeneratorConfig().get("popper.screen");
+      if (StringUtils.isEmpty(targetScreen)) {
+        LOG.info("Skipped starting highscore card generator, no PinUP popper target screen configured.");
+      }
+
+      try {
+        LOG.info("Executing highscore overlay generation.");
+        OverlayGenerator.generateOverlay(service);
+      } catch (Exception e) {
+        LOG.error("Initial overlay generation failed: " + e.getMessage(), e);
+      }
+
+      LOG.info("Overlay window listener started.");
+      OverlayWindowFX.launch(OverlayWindowFX.class);
+    } catch (VPinServiceException e) {
+      LOG.error("Failed to start service runner: " + e.getMessage(), e);
+    }
   }
 
   @Override

@@ -22,6 +22,8 @@ This section gives a brief overview about the functionality provided by this pro
 *Configuration screen for highscore card generation.*
 
 <img src="/documentation/sample-card-1.png" width="300"><img src="/documentation/sample-card-2.png" width="300">
+<img src="/documentation/sample-card-3.png" width="300"><img src="/documentation/sample-card-4.png" width="300">
+<img src="/documentation/sample-card-5.png" width="300">
 
 *Samples generated with the highscore card generator.*
 

@@ -110,7 +110,7 @@ public class OverlayGraphics extends VPinGraphics {
         String scoreString = score.getPosition() + ". " + score.getUserInitials() + " " + score.getScore();
         scores.add(scoreString);
 
-        int singleScoreWidth = g.getFontMetrics().stringWidth(title);
+        int singleScoreWidth = g.getFontMetrics().stringWidth(scoreString);
         if (scoreWidth < singleScoreWidth) {
           scoreWidth = singleScoreWidth;
         }
@@ -122,7 +122,12 @@ public class OverlayGraphics extends VPinGraphics {
     }
     else {
       for(int i=1; i<= 3; i++) {
-        scores.add( i + ". ??? 000.000.000");
+        String scoreString = i + ". ??? 000.000.000";
+        int singleScoreWidth = g.getFontMetrics().stringWidth(scoreString);
+        if (scoreWidth < singleScoreWidth) {
+          scoreWidth = singleScoreWidth;
+        }
+        scores.add(scoreString);
       }
     }
 
@@ -130,6 +135,7 @@ public class OverlayGraphics extends VPinGraphics {
     int wheelWidth = (3 * SCORE_FONT_SIZE) + (3 * ROW_SEPARATOR);
     int totalScoreAndWheelWidth = scoreWidth + wheelWidth;
 
+    tableNameY = tableNameY + ROW_SEPARATOR;
     for (String score : scores) {
       position++;
       int scoreY = tableNameY + (position * SCORE_FONT_SIZE) + (position * ROW_SEPARATOR);
@@ -144,7 +150,6 @@ public class OverlayGraphics extends VPinGraphics {
       g.drawImage(wheelImage, imageWidth / 2 - totalScoreAndWheelWidth / 2, wheelY, wheelWidth, wheelWidth, null);
     }
 
-    returnOffset += TITLE_FONT_SIZE / 2;
     return returnOffset;
   }
 

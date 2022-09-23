@@ -2,6 +2,7 @@ package de.mephisto.vpin.extensions;
 
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
+import de.mephisto.vpin.VPinServiceException;
 import de.mephisto.vpin.extensions.cardsettings.CardSettingsTabActionListener;
 import de.mephisto.vpin.extensions.resources.ResourceLoader;
 import de.mephisto.vpin.extensions.table.TableScanProgressModel;
@@ -66,11 +67,17 @@ class Splash extends JWindow {
       setVisible(true);
 
       new Thread(() -> {
-        checkForUpdates();
+        try {
+          checkForUpdates();
 
-        vPinService = VPinService.create(false);
-        runInitialCheck();
-        startMain();
+          vPinService = VPinService.create(false);
+          runInitialCheck();
+          startMain();
+        } catch (VPinServiceException e) {
+          LOG.error("Failed to start UI: " + e.getMessage(), e);
+          JOptionPane.showMessageDialog(this.getContentPane(), "Failed to start VPin Extension configuration window: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          System.exit(0);
+        }
       }).start();
     } catch (Exception e) {
       LOG.error("Failed to launch: " + e.getMessage(), e);

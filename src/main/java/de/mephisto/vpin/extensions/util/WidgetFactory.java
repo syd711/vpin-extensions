@@ -16,9 +16,11 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
@@ -94,6 +96,34 @@ public class WidgetFactory {
     String selection = store.getString(property);
     if (!StringUtils.isEmpty(selection)) {
       combo.setSelectedItem(selection);
+    }
+
+    parent.add(new JLabel(title));
+    parent.add(combo, "span 3");
+    parent.add(new JLabel(""), "width 30:200:200");
+    parent.add(new JLabel(""), "wrap");
+
+    return combo;
+  }
+
+  public static JComboBox createCombobox(JPanel parent, File folder, String prefix, String title, PropertiesStore store, String property) {
+    String[] files = folder.list((dir, name) -> name.startsWith(prefix));
+    Vector<String> data = new Vector<>(Arrays.asList(files));
+    final JComboBox combo = new JComboBox(data);
+    combo.addActionListener(e -> {
+      String selectedItem = (String) combo.getSelectedItem();
+      if (selectedItem == null) {
+        selectedItem = "";
+      }
+      store.set(property, selectedItem);
+    });
+    String selection = store.getString(property);
+    if (!StringUtils.isEmpty(selection)) {
+      combo.setSelectedItem(selection);
+    }
+    else {
+      combo.setSelectedItem(files[0]);
+      store.set(property, files[0]);
     }
 
     parent.add(new JLabel(title));

@@ -68,6 +68,7 @@ public class CardSettingsTab extends JPanel {
 
     /******************************** Generator Fields ****************************************************************/
     WidgetFactory.createFileChooser(settingsPanel, "Background Image:", "Select File", store, "card.background", "highscore-card-background.jpg");
+    WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES), "highscore-card-background-","Background Image:", store, "card.background");
     WidgetFactory.createTextField(settingsPanel, "Card Title:", store, "card.title.text", "Highscore");
     WidgetFactory.createFontSelector(settingsPanel, "Title Font:", store, "card.title.font", 120);
     WidgetFactory.createFontSelector(settingsPanel, "Table Name Font:", store, "card.table.font", 100);

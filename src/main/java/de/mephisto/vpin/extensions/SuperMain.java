@@ -7,6 +7,9 @@ public class SuperMain {
     if(args != null && args.length > 0 && args[0].contains("config")) {
       new Splash();
     }
+    else if(args != null && args.length > 0 && args[0].contains("test")) {
+      new FXTest().main(args);
+    }
     else if(args != null && args.length > 0 && args[0].contains("overlay")) {
       OverlayGenerator.main(args);
     }

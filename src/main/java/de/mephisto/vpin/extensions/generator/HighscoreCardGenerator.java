@@ -33,7 +33,7 @@ public class HighscoreCardGenerator extends GraphicsGenerator {
 
   BufferedImage generate(GameInfo game, PopperScreen screen, File target) throws Exception {
     try {
-      File sourceFile = new File("./resources", Config.getCardGeneratorConfig().get("card.background"));
+      File sourceFile = new File(SystemInfo.RESOURCES + "backgrounds", Config.getCardGeneratorConfig().get("card.background"));
       BufferedImage backgroundImage = super.loadBackground(sourceFile);
       HighscoreCardGraphics.drawHighscores(backgroundImage, game);
 

@@ -16,7 +16,6 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,7 +56,7 @@ public class WidgetFactory {
 
   public static void createTableSelector(VPinService service, JPanel parent, String title, PropertiesStore store, String property, boolean filterForHighscores) {
     List<GameInfo> gameInfos = service.getActiveGameInfos();
-    if(filterForHighscores) {
+    if (filterForHighscores) {
       gameInfos = gameInfos.stream().filter(g -> g.hasHighscore()).collect(Collectors.toList());
     }
     Vector<GameInfo> data = new Vector<>(gameInfos);
@@ -106,8 +105,8 @@ public class WidgetFactory {
     return combo;
   }
 
-  public static JComboBox createCombobox(JPanel parent, File folder, String prefix, String title, PropertiesStore store, String property) {
-    String[] files = folder.list((dir, name) -> name.startsWith(prefix));
+  public static JComboBox createCombobox(JPanel parent, File folder, String title, PropertiesStore store, String property) {
+    String[] files = folder.list((dir, name) -> name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg"));
     Vector<String> data = new Vector<>(Arrays.asList(files));
     final JComboBox combo = new JComboBox(data);
     combo.addActionListener(e -> {
@@ -128,7 +127,46 @@ public class WidgetFactory {
 
     parent.add(new JLabel(title));
     parent.add(combo, "span 3");
-    parent.add(new JLabel(""), "width 30:200:200");
+    JButton openButton = new JButton("Upload Background");
+    parent.add(openButton);
+    openButton.addActionListener(e -> {
+      final JFileChooser field = new JFileChooser();
+      field.setCurrentDirectory(new File("./"));
+      field.setFileFilter(new FileFilter() {
+        @Override
+        public boolean accept(File f) {
+          return f.isDirectory() || f.getName().endsWith("png") || f.getName().endsWith(".jpg") || f.getName().endsWith(".jpeg");
+        }
+
+        @Override
+        public String getDescription() {
+          return "Pictures";
+        }
+      });
+      int returnCode = field.showOpenDialog(parent);
+      if (returnCode == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = field.getSelectedFile();
+        String name = selectedFile.getName();
+        File target = new File(SystemInfo.RESOURCES, name);
+        Path normalizedSource = Paths.get(selectedFile.getAbsolutePath()).normalize();
+        Path normalizedTarget = Paths.get(target.getAbsolutePath()).normalize();
+        if (!normalizedSource.toString().equals(normalizedTarget.toString())) {
+          if (target.exists()) {
+            target.delete();
+          }
+          try {
+            FileUtils.copyFile(selectedFile, target);
+            LOG.info("Written " + target.getAbsolutePath());
+            combo.addItem(target.getName());
+            combo.setSelectedItem(target.getName());
+          } catch (IOException ex) {
+            LOG.error("Error selecting file: " + ex.getMessage(), ex);
+          }
+        }
+
+        store.set(property, field.getSelectedFile().getName());
+      }
+    });
     parent.add(new JLabel(""), "wrap");
 
     return combo;

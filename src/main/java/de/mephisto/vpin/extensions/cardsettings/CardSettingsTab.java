@@ -19,6 +19,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +30,8 @@ import java.util.stream.Collectors;
 
 public class CardSettingsTab extends JPanel {
   private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(CardSettingsTab.class);
+  private final JLabel previewLabel;
+  private final JComboBox backgroundSelector;
 
   private VPinService service;
 
@@ -67,8 +71,24 @@ public class CardSettingsTab extends JPanel {
 
 
     /******************************** Generator Fields ****************************************************************/
-    WidgetFactory.createFileChooser(settingsPanel, "Background Image:", "Select File", store, "card.background", "highscore-card-background.jpg");
-    WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES), "highscore-card-background-","Background Image:", store, "card.background");
+
+    backgroundSelector = WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES + "backgrounds/"),"Background Image:", store, "card.background");
+    backgroundSelector.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        ImageIcon previewIcon = getPreviewIcon();
+        if(previewIcon != null) {
+          previewLabel.setIcon(previewIcon);
+        }
+      }
+    });
+    previewLabel = WidgetFactory.createLabel(settingsPanel, "", "");
+    ImageIcon previewIcon = getPreviewIcon();
+    if(previewIcon != null) {
+      previewLabel.setIcon(previewIcon);
+    }
+
+
     WidgetFactory.createTextField(settingsPanel, "Card Title:", store, "card.title.text", "Highscore");
     WidgetFactory.createFontSelector(settingsPanel, "Title Font:", store, "card.title.font", 120);
     WidgetFactory.createFontSelector(settingsPanel, "Table Name Font:", store, "card.table.font", 100);
@@ -136,6 +156,19 @@ public class CardSettingsTab extends JPanel {
 
     iconLabel.setIcon(getPreviewImage());
     previewPanel.add(iconLabel);
+  }
+
+  private ImageIcon getPreviewIcon() {
+    try {
+      File file = new File(SystemInfo.RESOURCES + "backgrounds/", (String) backgroundSelector.getSelectedItem());
+      BufferedImage image = ImageIO.read(file);
+      int percentage = 10;
+      Image newimg = image.getScaledInstance(image.getWidth() * percentage / 100, image.getHeight() * percentage / 100, Image.SCALE_SMOOTH); // scale it the smooth way
+      return new ImageIcon(newimg);
+    } catch (IOException e) {
+      LOG.error("Failed to read background preview image: " + e.getMessage(), e);
+    }
+    return null;
   }
 
   private String getScreenStatusMessage(String screenName) {

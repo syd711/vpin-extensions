@@ -128,13 +128,16 @@ ratios supported by the PinUP popper screen configuration.
 
 ### Screen Setup in PinUP Popper
 
+*(TODO - maybe errorneous)*
+
 There is already a good documentation for this available at https://www.nailbuster.com/wikipinup/doku.php.
 The basic steps to show the generated highscore cards are explained here again nonetheless.
-The given screenshots are showing the setup where highscore cards are shown on the __Other 2__ screen.
+The given screenshots are showing the setup where highscore cards are shown on the __Other 2__ screen
+and the screen is shown when the configured controller key is pressed.
 
-__Make sure that the screen is active in the global settings:__
+__Make sure that the screen is active in the pub pack:__
 
-<img src="/documentation/display-settings.png" width="800">
+<img src="/documentation/pup-pack-settings.png" width="800">
 
 __Also check that the screen is visible in the screen settings...__
 

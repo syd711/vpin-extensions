@@ -52,7 +52,7 @@ public class GamesTable extends JTable {
           c.setBackground(Color.decode("#FF9999"));
         }
         else if (!game.hasHighscore()) {
-          c.setBackground(Color.decode("#FFCC33"));
+          c.setBackground(Color.decode("#FFFF99"));
         }
 
         return c;

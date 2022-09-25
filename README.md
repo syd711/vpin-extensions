@@ -225,6 +225,15 @@ To fix this problem, ensure that the path information written into the file __./
 
 *(Do not mind the escaped ':' character, the will work no matter if the ':' is escaped or not. Also use '/' instead of '\\'.)*
 
+### I got encoding problems on my highscore cards!
+
+Users have reported whitespace problems for their generated highscore cards.
+You can change this by settings a comma as number separator in your windows settings.
+See also: https://forums.gameex.com/forums/topic/26335-scores-files-text-from-pinemhi-contains-strange-characters-as-thousands-separator/
+
+
+![](./documentation/region-settings.png)
+
 ## See Also
 [Used Third-Party Libraries](./documentation/third-party-licenses/licenses.xml)
 

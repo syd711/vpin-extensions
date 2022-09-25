@@ -243,7 +243,6 @@
                                     <directory>./</directory>
                                     <includes>
                                         <include>install.bat</include>
-                                        <include>*.properties</include>
                                     </includes>
                                 </resource>
                             </resources>

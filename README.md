@@ -12,6 +12,7 @@ which are generated everytime a table highscore changes.
 * [Configure DOF Rules](#configure-dof-rules)
 * [Table Overview](#table-overview)
 * [Service Status](#service-status)
+* [Trouble Shooting](#trouble-shooting)
 
 ## Overview
 
@@ -211,7 +212,21 @@ window stays open. Once started, you can use test the shortcut defined for the o
 As an alternative, the __startService.bat__ script can be executed to start a temporary service instance. 
 
 
+## Trouble Shooting
+
+
+### I got the following error during startup!
+
+![](./documentation/env-error-1.png)
+
+The paths for __PinUPPopper__ and the __VisualPinball__ are tried to re resolved automatically.
+However, older PinUP System installations may be located on a different device.
+To fix this problem, ensure that the path information written into the file __./resources/env.properties__ are correct.
+
+*(Do not mind the escaped ':' character, the will work no matter if the ':' is escaped or not. Also use '/' instead of '\\'.)*
+
 ## See Also
 [Used Third-Party Libraries](./documentation/third-party-licenses/licenses.xml)
 
 For license texts have a look at [Third-Party Libraries](./documentation/third-party-licenses/)
+

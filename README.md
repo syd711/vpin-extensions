@@ -228,7 +228,7 @@ To fix this problem, ensure that the path information written into the file __./
 ### I got encoding problems on my highscore cards!
 
 Users have reported whitespace problems for their generated highscore cards.
-You can change this by settings a comma as number separator in your windows settings.
+You can fix this by settings a comma as number separator in your windows settings.
 See also: https://forums.gameex.com/forums/topic/26335-scores-files-text-from-pinemhi-contains-strange-characters-as-thousands-separator/
 
 

@@ -214,6 +214,16 @@ As an alternative, the __startService.bat__ script can be executed to start a te
 
 ## Trouble Shooting
 
+### The shortcut for the highscore overlay isn't working!
+
+Make sure that the service is installed (Service Tab in the UI).
+Once installed, the service will start after your VPin has been booted.
+If the shortcut is still not working, check if the file given file exists:
+
+__C:/Users/<USERNAME>/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/vpin-service.bat__
+
+A double click on it starts the service. 
+
 
 ### I got the following error during startup!
 

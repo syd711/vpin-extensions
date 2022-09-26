@@ -3,9 +3,9 @@ package de.mephisto.vpin.extensions;
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.VPinServiceException;
-import de.mephisto.vpin.extensions.cardsettings.CardSettingsTabActionListener;
 import de.mephisto.vpin.extensions.resources.ResourceLoader;
 import de.mephisto.vpin.extensions.table.TableScanProgressModel;
+import de.mephisto.vpin.extensions.util.MessageWithLink;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
 import de.mephisto.vpin.extensions.util.Updater;
@@ -51,7 +51,7 @@ class Splash extends JWindow {
       label.setForeground(Color.WHITE);
       panel.add(label);
 
-      label = new JLabel("Version "+ Updater.getCurrentVersion());
+      label = new JLabel("Version " + Updater.getCurrentVersion());
       label.setBounds(30, 80, 600, 200);
       font = new Font("Tahoma", Font.PLAIN, 14);
       label.setFont(font);
@@ -87,7 +87,6 @@ class Splash extends JWindow {
   }
 
 
-
   private void runInitialCheck() {
     List<GameInfo> gameInfos = vPinService.getGameInfos();
     boolean romFound = false;
@@ -101,12 +100,12 @@ class Splash extends JWindow {
       Splash.this.setVisible(false);
       int option = JOptionPane.showConfirmDialog(this, "It seems that no ROM scan has been performed yet.\n" +
           "The ROM name of each table is required in order to scan the highscore information.\n\nScan for ROM names? (This may take a while)", "Table Scan", JOptionPane.YES_NO_OPTION);
-      if(option == JOptionPane.YES_OPTION) {
+      if (option == JOptionPane.YES_OPTION) {
         ProgressDialog d = new ProgressDialog(null, new TableScanProgressModel(vPinService, "Resolving ROM Names"));
         ProgressResultModel progressResultModel = d.showDialog();
 
         JOptionPane.showMessageDialog(this, "Finished ROM scan, found ROM names of "
-                + (progressResultModel.getProcessed()-progressResultModel.getSkipped()) + " from " + progressResultModel.getProcessed() + " tables.",
+                + (progressResultModel.getProcessed() - progressResultModel.getSkipped()) + " from " + progressResultModel.getProcessed() + " tables.",
             "Generation Finished", JOptionPane.INFORMATION_MESSAGE);
         LOG.info("Finished global ROM scan.");
         Splash.this.setVisible(true);
@@ -118,10 +117,13 @@ class Splash extends JWindow {
   private void checkForUpdates() {
     try {
       String nextVersion = Updater.checkForUpdate();
-      if(!StringUtils.isEmpty(nextVersion)) {
+      if (!StringUtils.isEmpty(nextVersion)) {
         Splash.this.setVisible(false);
-        int option = JOptionPane.showConfirmDialog(this, "New version " + nextVersion + " found. Download and install update?", "New Update Found", JOptionPane.YES_NO_OPTION);
-        if(option == JOptionPane.YES_OPTION) {
+        int option = JOptionPane.showConfirmDialog(this, new MessageWithLink("New version " + nextVersion + " found. Download and install update?<br><br>" +
+            "Release Notes:<br><a href=\"https://github.com/syd711/vpin-extensions/releases/tag/" + nextVersion + "\">https://github.com/syd711/vpin-extensions/releases/tag/" + nextVersion + "</a>"), "Update Available",
+            JOptionPane.YES_NO_OPTION);
+
+        if (option == JOptionPane.YES_OPTION) {
           try {
             Updater.update(nextVersion);
             JOptionPane.showMessageDialog(null, "Update downloaded successfully. Please restart application.", "Information", JOptionPane.INFORMATION_MESSAGE);

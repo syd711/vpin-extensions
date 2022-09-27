@@ -2,6 +2,7 @@ package de.mephisto.vpin.extensions.cardsettings;
 
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
+import de.mephisto.vpin.b2s.B2SImageRatio;
 import de.mephisto.vpin.extensions.ConfigWindow;
 import de.mephisto.vpin.extensions.generator.HighscoreCardGenerator;
 import de.mephisto.vpin.extensions.util.Config;
@@ -64,15 +65,21 @@ public class CardSettingsTab extends JPanel {
     JLabel warnLabel = WidgetFactory.createLabel(settingsPanel, getScreenStatusMessage(store.getString("popper.screen")), Color.RED);
 
     JLabel separator = new JLabel("");
-    separator.setPreferredSize(new Dimension(1, 30));
+    separator.setPreferredSize(new Dimension(1, 24));
     settingsPanel.add(separator, "wrap");
 
     WidgetFactory.createTableSelector(service, settingsPanel, "Sample Table:", store, "card.sampleTable", true);
 
+    separator = new JLabel("");
+    separator.setPreferredSize(new Dimension(1, 12));
+    settingsPanel.add(separator, "wrap");
 
     /******************************** Generator Fields ****************************************************************/
 
-    backgroundSelector = WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES + "backgrounds/"),"Background Image:", store, "card.background");
+    WidgetFactory.createCheckbox(settingsPanel, "", "Prefer DirectB2S Background (if available)", store, "card.useDirectB2S");
+    WidgetFactory.createCombobox(settingsPanel, Arrays.asList(B2SImageRatio.RATIO_16x9.toString(), B2SImageRatio.RATIO_4x3.toString()),"", store, "card.ratio");
+
+    backgroundSelector = WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES + "backgrounds/"),"Default Background:", store, "card.background");
     backgroundSelector.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {

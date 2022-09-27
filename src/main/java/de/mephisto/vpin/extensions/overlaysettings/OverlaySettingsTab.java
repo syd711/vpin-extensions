@@ -4,6 +4,7 @@ import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.ConfigWindow;
 import de.mephisto.vpin.extensions.generator.GraphicsGenerator;
 import de.mephisto.vpin.extensions.generator.OverlayGenerator;
+import de.mephisto.vpin.extensions.generator.VPinGraphics;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.extensions.util.Keys;
 import de.mephisto.vpin.extensions.util.WidgetFactory;
@@ -138,7 +139,7 @@ public class OverlaySettingsTab extends JPanel {
         file = new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().get("overlay.background"));
       }
       BufferedImage backgroundImage = ImageIO.read(file);
-      BufferedImage image = GraphicsGenerator.rotateRight(backgroundImage);
+      BufferedImage image = VPinGraphics.rotateRight(backgroundImage);
       int percentage = 900 * 100 / image.getHeight();
       Image newimg = image.getScaledInstance(image.getWidth() * percentage / 100, image.getHeight() * percentage / 100, Image.SCALE_SMOOTH); // scale it the smooth way
       return new ImageIcon(newimg);  // transform it back

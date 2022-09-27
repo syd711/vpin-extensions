@@ -3,8 +3,11 @@ package de.mephisto.vpin.extensions.generator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class VPinGraphics {
   private final static Logger LOG = LoggerFactory.getLogger(VPinGraphics.class);
@@ -18,17 +21,45 @@ public class VPinGraphics {
         RenderingHints.KEY_TEXT_ANTIALIASING,
         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
   }
-
-  static void registerFonts(java.util.List<Font> fonts) throws Exception {
-    try {
-      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      for (Font font : fonts) {
-        ge.registerFont(font);
-      }
-    } catch (Exception e) {
-      LOG.error("Failed to register fonts: " + e.getMessage(), e);
-      throw e;
+  protected BufferedImage loadBackground(File file) throws Exception {
+//    ImageIcon imageIcon = new ImageIcon(file.getAbsolutePath());
+//    Image tmpImage = imageIcon.getImage();
+//    BufferedImage bufferedImage = new BufferedImage(1280, 720, BufferedImage.TYPE_INT_ARGB);
+//    bufferedImage.getGraphics().drawImage(tmpImage, 0, 0, null);
+//    tmpImage.flush();
+//    return bufferedImage;
+    if(!file.exists()) {
+      throw new FileNotFoundException("File not found " + file.getAbsolutePath());
     }
+    return ImageIO.read(file);
+  }
+
+  public static BufferedImage rotateLeft(BufferedImage image) {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    GraphicsConfiguration gc = gd.getDefaultConfiguration();
+    return create(image, -Math.PI / 2, gc);
+  }
+
+  public static BufferedImage rotateRight(BufferedImage image) {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    GraphicsConfiguration gc = gd.getDefaultConfiguration();
+    return create(image, Math.PI / 2, gc);
+  }
+
+  private static BufferedImage create(BufferedImage image, double angle, GraphicsConfiguration gc) {
+    double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
+    int w = image.getWidth(), h = image.getHeight();
+    int neww = (int) Math.floor(w * cos + h * sin), newh = (int) Math.floor(h
+        * cos + w * sin);
+    int transparency = image.getColorModel().getTransparency();
+    BufferedImage result = gc.createCompatibleImage(neww, newh, transparency);
+    Graphics2D g = result.createGraphics();
+    g.translate((neww - w) / 2, (newh - h) / 2);
+    g.rotate(angle, w / 2, h / 2);
+    g.drawRenderedImage(image, null);
+    return result;
   }
 
   static void setDefaultColor(Graphics g, String fontColor) {
@@ -64,7 +95,7 @@ public class VPinGraphics {
   }
 
   static void drawBorder(BufferedImage image, int strokeWidth) {
-    if(strokeWidth <= 0) {
+    if (strokeWidth <= 0) {
       return;
     }
 
@@ -75,6 +106,6 @@ public class VPinGraphics {
     int height = image.getHeight();
 
     graphics.setColor(Color.WHITE);
-    graphics.drawRect(strokeWidth/2, strokeWidth/2, width-strokeWidth, height-strokeWidth);
+    graphics.drawRect(strokeWidth / 2, strokeWidth / 2, width - strokeWidth, height - strokeWidth);
   }
 }

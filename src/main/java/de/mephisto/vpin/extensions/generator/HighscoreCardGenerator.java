@@ -33,9 +33,7 @@ public class HighscoreCardGenerator extends GraphicsGenerator {
 
   BufferedImage generate(GameInfo game, PopperScreen screen, File target) throws Exception {
     try {
-      File sourceFile = new File(SystemInfo.RESOURCES + "backgrounds", Config.getCardGeneratorConfig().get("card.background"));
-      BufferedImage backgroundImage = super.loadBackground(sourceFile);
-      HighscoreCardGraphics.drawHighscores(backgroundImage, game);
+      BufferedImage backgroundImage = new HighscoreCardGraphics().drawHighscores(game);
 
       if(target == null) {
         target = game.getPopperScreenMedia(screen);
@@ -45,11 +43,11 @@ public class HighscoreCardGenerator extends GraphicsGenerator {
         target.delete();
       }
 
-      if(sourceFile.getName().endsWith(".png")) {
+      if(target.getName().endsWith(".png")) {
         super.writePNG(backgroundImage, target);
       }
       else {
-        super.writePNG(backgroundImage, target);
+        super.writeJPG(backgroundImage, target);
       }
       return backgroundImage;
     } catch (Exception e) {

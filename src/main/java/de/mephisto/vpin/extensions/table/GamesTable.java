@@ -33,8 +33,9 @@ public class GamesTable extends JTable {
     getColumnModel().getColumn(1).setPreferredWidth(160);
     getColumnModel().getColumn(2).setPreferredWidth(40);
     getColumnModel().getColumn(3).setPreferredWidth(40);
-    getColumnModel().getColumn(4).setPreferredWidth(30);
-    getColumnModel().getColumn(5).setPreferredWidth(240);
+    getColumnModel().getColumn(4).setPreferredWidth(10);
+    getColumnModel().getColumn(5).setPreferredWidth(10);
+    getColumnModel().getColumn(6).setPreferredWidth(240);
 
     List<GameInfo> games = service.getGameInfos();
     setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
@@ -83,6 +84,7 @@ public class GamesTable extends JTable {
       tablesTab.highscoreButton.setEnabled(selection != null);
       tablesTab.scanButton.setEnabled(selection != null);
       tablesTab.highscoreButton.setEnabled(selection != null && selection.hasHighscore());
+      tablesTab.showDirectB2SButton.setEnabled(selection != null && selection.getDirectB2SFile().exists());
     }
   }
 }

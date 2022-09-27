@@ -42,9 +42,15 @@ public class GameTableModel extends AbstractTableModel {
       return gameInfo.getRom();
     }
     if(columnIndex == 4) {
-      return gameInfo.getNumberPlays();
+      return "         " + gameInfo.getNumberPlays();
     }
     if(columnIndex == 5) {
+      if(gameInfo.getDirectB2SFile().exists()) {
+        return "         X";
+      }
+      return "";
+    }
+    if(columnIndex == 6) {
       if(StringUtils.isEmpty(gameInfo.getRom())) {
         return "No rom information found for table.";
       }

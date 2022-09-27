@@ -1,8 +1,6 @@
 package de.mephisto.vpin.extensions.generator;
 
-import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
-import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.util.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,20 +31,9 @@ public class OverlayGenerator extends GraphicsGenerator {
   public BufferedImage generate() throws Exception {
     try {
       service.refreshGameInfos();
-
-      BufferedImage backgroundImage = super.loadBackground(new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().getString("overlay.background")));
-      BufferedImage rotated = rotateRight(backgroundImage);
-
-      int selection = Config.getOverlayGeneratorConfig().getInt("overlay.challengedTable");
-      GameInfo gameOfTheMonth = null;
-      if (selection > 0) {
-        gameOfTheMonth = service.getGameInfo(selection);
-      }
-      OverlayGraphics.drawGames(rotated, service, gameOfTheMonth);
-
-      BufferedImage rotatedTwice = rotateLeft(rotated);
-      super.writeJPG(rotatedTwice, GENERATED_OVERLAY_FILE);
-      return rotatedTwice;
+      BufferedImage bufferedImage = new OverlayGraphics().drawGames(service);
+      super.writeJPG(bufferedImage, GENERATED_OVERLAY_FILE);
+      return bufferedImage;
     } catch (Exception e) {
       LOG.error("Failed to generate overlay: " + e.getMessage(), e);
       throw e;

@@ -18,6 +18,7 @@ public class TablesTab extends JPanel {
   JButton highscoreButton;
   JButton scanButton;
   JButton scanAllButton;
+  JButton showDirectB2SButton;
 
   public TablesTab(ConfigWindow configWindow, VPinService service) {
     super(new BorderLayout());
@@ -50,6 +51,10 @@ public class TablesTab extends JPanel {
     highscoreButton = WidgetFactory.createButton(toolBar, "tableHighscore", "Show Highscore", this.actionListener);
     highscoreButton.setEnabled(false);
     toolBar.add(highscoreButton);
+
+    showDirectB2SButton = WidgetFactory.createButton(toolBar, "showDirectB2S", "Show DirectB2S Background", this.actionListener);
+    showDirectB2SButton.setEnabled(false);
+    toolBar.add(showDirectB2SButton);
   }
 
   public GamesTable getGamesTable() {

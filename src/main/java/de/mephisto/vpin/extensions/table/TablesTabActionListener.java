@@ -2,6 +2,7 @@ package de.mephisto.vpin.extensions.table;
 
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
+import de.mephisto.vpin.VPinServiceException;
 import de.mephisto.vpin.extensions.ConfigWindow;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
@@ -9,8 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class TablesTabActionListener implements ActionListener {
@@ -30,14 +34,14 @@ public class TablesTabActionListener implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     if (e.getActionCommand().equals("tableRescan")) {
       GameInfo selection = tablesTab.getGamesTable().getSelection();
-      if(selection != null) {
+      if (selection != null) {
         int option = JOptionPane.showConfirmDialog(this.configWindow, "Re-scan table '" + selection.getGameDisplayName() + "' for it's ROM name?", "Information", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.OK_OPTION) {
           tablesTab.scanButton.setEnabled(false);
           String rom = service.rescanRom(selection);
-          if(rom == null) {
+          if (rom == null) {
             JOptionPane.showMessageDialog(configWindow, "Finished table ROM scan, no ROM name could be resolved for '" + selection.getGameDisplayName() + "'.\n\n" +
-                "This means this table will be ignored for the overall highscore and highscore card generation.",
+                    "This means this table will be ignored for the overall highscore and highscore card generation.",
                 "Scan Finished", JOptionPane.INFORMATION_MESSAGE);
           }
           else {
@@ -48,6 +52,7 @@ public class TablesTabActionListener implements ActionListener {
           tablesTab.gameTableModel.fireTableDataChanged();
           tablesTab.scanButton.setEnabled(false);
           tablesTab.highscoreButton.setEnabled(false);
+          tablesTab.showDirectB2SButton.setEnabled(false);
         }
       }
     }
@@ -56,6 +61,26 @@ public class TablesTabActionListener implements ActionListener {
           "Re-scan all tables for their ROM names? (This may take a while.)", "Table Scan", JOptionPane.OK_CANCEL_OPTION);
       if (input == JOptionPane.OK_OPTION) {
         scanAll();
+      }
+    }
+    else if (e.getActionCommand().equals("showDirectB2S")) {
+      GameInfo selection = tablesTab.getGamesTable().getSelection();
+      if (selection != null) {
+        File directB2SFile = selection.getDirectB2SFile();
+        if (directB2SFile.exists()) {
+          try {
+            File b2SImage = service.getB2SImage(selection, null);
+            if (b2SImage != null && b2SImage.exists()) {
+              try {
+                Desktop.getDesktop().open(b2SImage);
+              } catch (IOException ex) {
+                LOG.error("Failed to open " + b2SImage.getAbsolutePath() + ": " + ex.getMessage(), ex);
+              }
+            }
+          } catch (VPinServiceException ex) {
+            JOptionPane.showMessageDialog(configWindow, ex.getMessage(), "Image Extraction Failed", JOptionPane.WARNING_MESSAGE);
+          }
+        }
       }
     }
     else if (e.getActionCommand().equals("tableHighscore")) {
@@ -76,7 +101,7 @@ public class TablesTabActionListener implements ActionListener {
     ProgressResultModel progressResultModel = d.showDialog();
 
     JOptionPane.showMessageDialog(configWindow, "Finished ROM scan, found ROM names of "
-            + (progressResultModel.getProcessed()-progressResultModel.getSkipped()) + " from " + progressResultModel.getProcessed() + " tables.",
+            + (progressResultModel.getProcessed() - progressResultModel.getSkipped()) + " from " + progressResultModel.getProcessed() + " tables.",
         "Generation Finished", JOptionPane.INFORMATION_MESSAGE);
     LOG.info("Finished global ROM scan.");
     service.refreshGameInfos();

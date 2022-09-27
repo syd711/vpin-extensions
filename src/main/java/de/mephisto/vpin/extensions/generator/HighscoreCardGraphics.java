@@ -1,9 +1,12 @@
 package de.mephisto.vpin.extensions.generator;
 
 import de.mephisto.vpin.GameInfo;
+import de.mephisto.vpin.b2s.B2SImageRatio;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.highscores.Highscore;
 import de.mephisto.vpin.highscores.Score;
+import de.mephisto.vpin.util.SystemInfo;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +39,9 @@ public class HighscoreCardGraphics extends VPinGraphics {
 
   private static int TITLE_Y_OFFSET = Config.getCardGeneratorConfig().getInt("card.title.y.offset");
 
+  private static boolean USE_DIRECTB2S = Config.getCardGeneratorConfig().getBoolean("card.useDirectB2S");
+  private static B2SImageRatio DIRECTB2S_RATIO = B2SImageRatio.valueOf(Config.getCardGeneratorConfig().getString("card.ratio", B2SImageRatio.RATIO_16x9.name()));
+
   private static void initValues() {
     ROW_SEPARATOR = Config.getCardGeneratorConfig().getInt("card.highscores.row.separator");
     ROW_PADDING_LEFT = Config.getCardGeneratorConfig().getInt("card.highscores.row.padding.left");
@@ -55,24 +61,36 @@ public class HighscoreCardGraphics extends VPinGraphics {
     TABLE_FONT_SIZE = Config.getCardGeneratorConfig().getInt("card.table.font.size");
 
     TITLE_Y_OFFSET = Config.getCardGeneratorConfig().getInt("card.title.y.offset");
+
+    USE_DIRECTB2S = Config.getCardGeneratorConfig().getBoolean("card.useDirectB2S");
+    DIRECTB2S_RATIO = B2SImageRatio.valueOf(Config.getCardGeneratorConfig().getString("card.ratio", B2SImageRatio.RATIO_16x9.name()));
   }
 
-  public static void drawHighscores(BufferedImage image, GameInfo game) throws Exception {
+  public BufferedImage drawHighscores(GameInfo game) throws Exception {
     initValues();
+
+    File sourceFile = new File(SystemInfo.RESOURCES + "backgrounds", Config.getCardGeneratorConfig().get("card.background"));
+    File directB2S = new File(SystemInfo.RESOURCES + "b2s", FilenameUtils.getBaseName(game.getGameFileName()) + ".png");
+    if(USE_DIRECTB2S) {
+      sourceFile = directB2S;
+    }
+    BufferedImage backgroundImage = super.loadBackground(sourceFile);
 
     float alphaWhite = Config.getCardGeneratorConfig().getFloat("card.alphacomposite.white");
     float alphaBlack = Config.getCardGeneratorConfig().getFloat("card.alphacomposite.black");
-    applyAlphaComposites(image, alphaWhite, alphaBlack);
-    renderTableChallenge(image, game);
+    applyAlphaComposites(backgroundImage, alphaWhite, alphaBlack);
+    renderTableChallenge(backgroundImage, game);
 
     int borderWidth = Config.getCardGeneratorConfig().getInt("card.border.width");
-    drawBorder(image, borderWidth);
+    drawBorder(backgroundImage, borderWidth);
+
+    return backgroundImage;
   }
 
   /**
    * The upper section, usually with the three topscores.
    */
-  private static void renderTableChallenge(BufferedImage image, GameInfo game) throws Exception {
+  private void renderTableChallenge(BufferedImage image, GameInfo game) throws Exception {
     Highscore highscore = game.resolveHighscore();
     if (highscore != null) {
       Graphics g = image.getGraphics();

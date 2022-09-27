@@ -5,6 +5,7 @@ import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.highscores.Highscore;
 import de.mephisto.vpin.highscores.Score;
+import de.mephisto.vpin.util.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,17 +61,29 @@ public class OverlayGraphics extends VPinGraphics {
     ROW_HEIGHT = TABLE_FONT_SIZE + ROW_SEPARATOR + SCORE_FONT_SIZE;
   }
 
-  public static void drawGames(BufferedImage image, VPinService service, GameInfo gameOfTheMonth) throws Exception {
+  public BufferedImage drawGames(VPinService service) throws Exception {
     initValues();
+
+    BufferedImage backgroundImage = super.loadBackground(new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().getString("overlay.background")));
+    BufferedImage rotated = rotateRight(backgroundImage);
+
+    int selection = Config.getOverlayGeneratorConfig().getInt("overlay.challengedTable");
+    GameInfo gameOfTheMonth = null;
+    if (selection > 0) {
+      gameOfTheMonth = service.getGameInfo(selection);
+    }
+
     float alphaWhite = Config.getOverlayGeneratorConfig().getFloat("overlay.alphacomposite.white");
     float alphaBlack = Config.getOverlayGeneratorConfig().getFloat("overlay.alphacomposite.black");
-    applyAlphaComposites(image, alphaWhite, alphaBlack);
+    applyAlphaComposites(rotated, alphaWhite, alphaBlack);
 
     int highscoreListYOffset = TITLE_Y_OFFSET + TITLE_FONT_SIZE;
     if (gameOfTheMonth != null) {
-      highscoreListYOffset = renderTableChallenge(image, gameOfTheMonth, highscoreListYOffset);
+      highscoreListYOffset = renderTableChallenge(rotated, gameOfTheMonth, highscoreListYOffset);
     }
-    renderHighscoreList(image, gameOfTheMonth, service, highscoreListYOffset);
+    renderHighscoreList(rotated, gameOfTheMonth, service, highscoreListYOffset);
+
+    return rotateLeft(rotated);
   }
 
   /**

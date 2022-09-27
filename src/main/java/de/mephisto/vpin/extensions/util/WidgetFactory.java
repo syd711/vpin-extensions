@@ -189,6 +189,21 @@ public class WidgetFactory {
     return label;
   }
 
+  public static JCheckBox createCheckbox(JPanel parent, String title, String label, PropertiesStore store, String key) {
+    parent.add(new JLabel(label));
+    final JCheckBox field = new JCheckBox(title);
+    field.setMinimumSize(new Dimension(330, 26));
+    field.setBackground(ConfigWindow.DEFAULT_BG_COLOR);
+    field.addActionListener(e -> {
+      boolean checked = field.isSelected();
+      store.set(key, String.valueOf(checked));
+    });
+    field.setSelected(store.getBoolean(key));
+    parent.add(field, "span 4");
+    parent.add(new JLabel(""), "wrap");
+    return field;
+  }
+
   public static JCheckBox createCheckbox(JPanel parent, String title, PropertiesStore store, String key) {
     parent.add(new JLabel(""));
     final JCheckBox field = new JCheckBox(title);

@@ -21,6 +21,9 @@ public class GameTableColumnModel extends DefaultTableColumnModel {
     column.setHeaderValue("#Played");
     addColumn(column);
     column = new TableColumn(5);
+    column.setHeaderValue("directb2s File");
+    addColumn(column);
+    column = new TableColumn(6);
     column.setHeaderValue("Status");
     addColumn(column);
   }

@@ -8,7 +8,7 @@ public class SuperMain {
       new Splash();
     }
     else if(args != null && args.length > 0 && args[0].contains("test")) {
-      new FXTest().main(args);
+      FXTest.main(args);
     }
     else if(args != null && args.length > 0 && args[0].contains("overlay")) {
       OverlayGenerator.main(args);

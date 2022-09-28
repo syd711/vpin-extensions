@@ -4,7 +4,7 @@ import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.b2s.B2SImageRatio;
 import de.mephisto.vpin.extensions.ConfigWindow;
-import de.mephisto.vpin.extensions.generator.HighscoreCardGenerator;
+import de.mephisto.vpin.extensions.generator.CardGenerator;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
@@ -33,6 +33,8 @@ public class CardSettingsTab extends JPanel {
   private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(CardSettingsTab.class);
   private final JLabel previewLabel;
   private final JComboBox backgroundSelector;
+  private final JComboBox ratioCombo;
+  private final JCheckBox useB2SCheckbox;
 
   private VPinService service;
 
@@ -76,8 +78,16 @@ public class CardSettingsTab extends JPanel {
 
     /******************************** Generator Fields ****************************************************************/
 
-    WidgetFactory.createCheckbox(settingsPanel, "", "Prefer DirectB2S Background (if available)", store, "card.useDirectB2S");
-    WidgetFactory.createCombobox(settingsPanel, Arrays.asList(B2SImageRatio.RATIO_16x9.toString(), B2SImageRatio.RATIO_4x3.toString()),"", store, "card.ratio");
+    useB2SCheckbox = WidgetFactory.createCheckbox(settingsPanel, "", "Prefer DirectB2S Background (if available)", store, "card.useDirectB2S");
+    useB2SCheckbox.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        ratioCombo.setEnabled(useB2SCheckbox.isSelected());
+      }
+    });
+
+    ratioCombo = WidgetFactory.createCombobox(settingsPanel, Arrays.asList(B2SImageRatio.RATIO_16x9.toString(), B2SImageRatio.RATIO_4x3.toString()), "Force Image Ratio:", store, "card.ratio");
+    ratioCombo.setEnabled(store.getBoolean("card.useDirectB2S"));
 
     backgroundSelector = WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES + "backgrounds/"),"Default Background:", store, "card.background");
     backgroundSelector.addActionListener(new ActionListener() {
@@ -104,6 +114,7 @@ public class CardSettingsTab extends JPanel {
     WidgetFactory.createSpinner(settingsPanel, "Padding Top:", "px", store, "card.title.y.offset", 80);
     WidgetFactory.createSpinner(settingsPanel, "Padding Left:", "px", store, "card.highscores.row.padding.left", 60);
     WidgetFactory.createSpinner(settingsPanel, "Row Separator:", "px", store, "card.highscores.row.separator", 10);
+    WidgetFactory.createSlider(settingsPanel, "Blur Background:", store, "card.blur");
     WidgetFactory.createSlider(settingsPanel, "Brighten Background:", store, "card.alphacomposite.white");
     WidgetFactory.createSlider(settingsPanel, "Darken Background:", store, "card.alphacomposite.black");
     WidgetFactory.createSlider(settingsPanel, "Border Size:", store, "card.border.width");
@@ -197,7 +208,7 @@ public class CardSettingsTab extends JPanel {
       GameInfo gameInfo = this.getSampleGame();
       if (gameInfo != null && getScreen() != null) {
         File file = new File(SystemInfo.RESOURCES, Config.getCardGeneratorConfig().get("card.background"));
-        File sampleFile = HighscoreCardGenerator.SAMPLE_FILE;
+        File sampleFile = CardGenerator.SAMPLE_FILE;
         if (sampleFile.exists()) {
           file = sampleFile;
         }
@@ -246,7 +257,12 @@ public class CardSettingsTab extends JPanel {
 
       iconLabel.setVisible(false);
       generateButton.setEnabled(false);
-      HighscoreCardGenerator.generateCard(getSampleGame(), getScreen(), HighscoreCardGenerator.SAMPLE_FILE);
+
+      File directB2SImage = getSampleGame().getDirectB2SImage();
+      if(directB2SImage.exists()) {
+        directB2SImage.delete();
+      }
+      CardGenerator.generateCard(service, getSampleGame(), getScreen(), CardGenerator.SAMPLE_FILE);
       iconLabel.setIcon(getPreviewImage());
       generateButton.setEnabled(true);
       iconLabel.setVisible(true);
@@ -280,7 +296,7 @@ public class CardSettingsTab extends JPanel {
 
   public void showGeneratedCard() {
     try {
-      File file = HighscoreCardGenerator.SAMPLE_FILE;
+      File file = CardGenerator.SAMPLE_FILE;
       if (file.exists()) {
         Desktop.getDesktop().open(file);
       }

@@ -1,12 +1,14 @@
 package de.mephisto.vpin.extensions.generator;
 
 import de.mephisto.vpin.GameInfo;
+import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.b2s.B2SImageRatio;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.highscores.Highscore;
 import de.mephisto.vpin.highscores.Score;
+import de.mephisto.vpin.util.ImageCropper;
+import de.mephisto.vpin.util.ImageUtil;
 import de.mephisto.vpin.util.SystemInfo;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +19,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HighscoreCardGraphics extends VPinGraphics {
-  private final static Logger LOG = LoggerFactory.getLogger(HighscoreCardGraphics.class);
+public class CardGraphics extends VPinGraphics {
+  private final static Logger LOG = LoggerFactory.getLogger(CardGraphics.class);
 
   private static int ROW_SEPARATOR = Config.getCardGeneratorConfig().getInt("card.highscores.row.separator");
   private static int ROW_PADDING_LEFT = Config.getCardGeneratorConfig().getInt("card.highscores.row.padding.left");
@@ -38,6 +40,7 @@ public class HighscoreCardGraphics extends VPinGraphics {
   private static int TABLE_FONT_SIZE = Config.getCardGeneratorConfig().getInt("card.table.font.size");
 
   private static int TITLE_Y_OFFSET = Config.getCardGeneratorConfig().getInt("card.title.y.offset");
+  private static int BLUR_PIXELS = Config.getCardGeneratorConfig().getInt("card.blur");
 
   private static boolean USE_DIRECTB2S = Config.getCardGeneratorConfig().getBoolean("card.useDirectB2S");
   private static B2SImageRatio DIRECTB2S_RATIO = B2SImageRatio.valueOf(Config.getCardGeneratorConfig().getString("card.ratio", B2SImageRatio.RATIO_16x9.name()));
@@ -61,20 +64,32 @@ public class HighscoreCardGraphics extends VPinGraphics {
     TABLE_FONT_SIZE = Config.getCardGeneratorConfig().getInt("card.table.font.size");
 
     TITLE_Y_OFFSET = Config.getCardGeneratorConfig().getInt("card.title.y.offset");
+    BLUR_PIXELS = Config.getCardGeneratorConfig().getInt("card.blur");
 
     USE_DIRECTB2S = Config.getCardGeneratorConfig().getBoolean("card.useDirectB2S");
     DIRECTB2S_RATIO = B2SImageRatio.valueOf(Config.getCardGeneratorConfig().getString("card.ratio", B2SImageRatio.RATIO_16x9.name()));
   }
 
-  public BufferedImage drawHighscores(GameInfo game) throws Exception {
+  public BufferedImage drawHighscores(VPinService service, GameInfo game) throws Exception {
     initValues();
 
     File sourceFile = new File(SystemInfo.RESOURCES + "backgrounds", Config.getCardGeneratorConfig().get("card.background"));
-    File directB2S = new File(SystemInfo.RESOURCES + "b2s", FilenameUtils.getBaseName(game.getGameFileName()) + ".png");
-    if(USE_DIRECTB2S) {
-      sourceFile = directB2S;
+    if (USE_DIRECTB2S && game.getDirectB2SFile().exists()) {
+      File b2sImage = game.getDirectB2SImage();
+      if (!b2sImage.exists()) {
+        sourceFile = service.createDirectB2SImage(game, DIRECTB2S_RATIO, 1280);
+      }
     }
+
     BufferedImage backgroundImage = super.loadBackground(sourceFile);
+    if (USE_DIRECTB2S) {
+      ImageCropper cropper = new ImageCropper(backgroundImage);
+      backgroundImage = cropper.crop(DIRECTB2S_RATIO.getXRatio(), DIRECTB2S_RATIO.getYRatio());
+    }
+
+    if(BLUR_PIXELS > 0) {
+      backgroundImage = ImageUtil.blurImage(backgroundImage, BLUR_PIXELS);
+    }
 
     float alphaWhite = Config.getCardGeneratorConfig().getFloat("card.alphacomposite.white");
     float alphaBlack = Config.getCardGeneratorConfig().getFloat("card.alphacomposite.black");
@@ -107,7 +122,7 @@ public class HighscoreCardGraphics extends VPinGraphics {
       g.setFont(new Font(TABLE_FONT_NAME, TABLE_FONT_STYLE, TABLE_FONT_SIZE));
       String tableName = game.getGameDisplayName();
       int width = g.getFontMetrics().stringWidth(tableName);
-      int tableNameY = titleY + TABLE_FONT_SIZE + TABLE_FONT_SIZE/2;
+      int tableNameY = titleY + TABLE_FONT_SIZE + TABLE_FONT_SIZE / 2;
       g.drawString(tableName, imageWidth / 2 - width / 2, tableNameY);
 
 

@@ -2,7 +2,6 @@ package de.mephisto.vpin.extensions.overlaysettings;
 
 import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.ConfigWindow;
-import de.mephisto.vpin.extensions.generator.GraphicsGenerator;
 import de.mephisto.vpin.extensions.generator.OverlayGenerator;
 import de.mephisto.vpin.extensions.generator.VPinGraphics;
 import de.mephisto.vpin.extensions.util.Config;
@@ -99,6 +98,7 @@ public class OverlaySettingsTab extends JPanel {
     WidgetFactory.createSpinner(settingsPanel, "Padding Top:", "px", store, "overlay.title.y.offset", 80);
     WidgetFactory.createSpinner(settingsPanel, "Padding Left:", "px", store, "overlay.highscores.row.padding.left", 60);
     WidgetFactory.createSpinner(settingsPanel, "Row Separator:", "px", store, "overlay.highscores.row.separator", 32);
+    WidgetFactory.createSlider(settingsPanel, "Blur Background:", store, "overlay.blur");
     WidgetFactory.createSlider(settingsPanel, "Brighten Background:", store, "overlay.alphacomposite.white");
     WidgetFactory.createSlider(settingsPanel, "Darken Background:", store, "overlay.alphacomposite.black");
     WidgetFactory.createCheckbox(settingsPanel, "Ignore Tables without Wheel Icon", store, "overlay.skipWithMissingWheels");

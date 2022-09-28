@@ -3,7 +3,7 @@ package de.mephisto.vpin.extensions;
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.VPinServiceException;
-import de.mephisto.vpin.extensions.generator.HighscoreCardGenerator;
+import de.mephisto.vpin.extensions.generator.CardGenerator;
 import de.mephisto.vpin.extensions.generator.OverlayGenerator;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.popper.TableStatusChangeListener;
@@ -55,7 +55,7 @@ public class ServiceRunner implements TableStatusChangeListener {
       if (StringUtils.isEmpty(targetScreen)) {
         GameInfo gameInfo = tableStatusChangedEvent.getGameInfo();
         LOG.info("Executing highscore card generation for '" + gameInfo + "'");
-        HighscoreCardGenerator.generateCard(gameInfo);
+        CardGenerator.generateCard(service, gameInfo);
       }
 
       LOG.info("Executing highscore overlay generation.");

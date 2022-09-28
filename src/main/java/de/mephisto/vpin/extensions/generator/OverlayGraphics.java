@@ -5,6 +5,7 @@ import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.highscores.Highscore;
 import de.mephisto.vpin.highscores.Score;
+import de.mephisto.vpin.util.ImageUtil;
 import de.mephisto.vpin.util.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,8 @@ public class OverlayGraphics extends VPinGraphics {
   private static int ROW_PADDING_LEFT = Config.getOverlayGeneratorConfig().getInt("overlay.highscores.row.padding.left");
   private static int ROW_HEIGHT = TABLE_FONT_SIZE + ROW_SEPARATOR + SCORE_FONT_SIZE;
 
+  private static int BLUR_PIXELS = Config.getOverlayGeneratorConfig().getInt("overlay.blur");
+
   private static void initValues() {
     HIGHSCORE_TEXT = Config.getOverlayGeneratorConfig().getString("overlay.highscores.text");
     TITLE_TEXT = Config.getOverlayGeneratorConfig().getString("overlay.title.text");
@@ -59,18 +62,22 @@ public class OverlayGraphics extends VPinGraphics {
     ROW_SEPARATOR = Config.getOverlayGeneratorConfig().getInt("overlay.highscores.row.separator");
     ROW_PADDING_LEFT = Config.getOverlayGeneratorConfig().getInt("overlay.highscores.row.padding.left");
     ROW_HEIGHT = TABLE_FONT_SIZE + ROW_SEPARATOR + SCORE_FONT_SIZE;
+
+    BLUR_PIXELS = Config.getOverlayGeneratorConfig().getInt("overlay.blur");
   }
 
   public BufferedImage drawGames(VPinService service) throws Exception {
     initValues();
-
-    BufferedImage backgroundImage = super.loadBackground(new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().getString("overlay.background")));
-    BufferedImage rotated = rotateRight(backgroundImage);
-
     int selection = Config.getOverlayGeneratorConfig().getInt("overlay.challengedTable");
     GameInfo gameOfTheMonth = null;
     if (selection > 0) {
       gameOfTheMonth = service.getGameInfo(selection);
+    }
+
+    BufferedImage backgroundImage = super.loadBackground(new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().getString("overlay.background")));
+    BufferedImage rotated = rotateRight(backgroundImage);
+    if(BLUR_PIXELS > 0) {
+      rotated = ImageUtil.blurImage(rotated, BLUR_PIXELS);
     }
 
     float alphaWhite = Config.getOverlayGeneratorConfig().getFloat("overlay.alphacomposite.white");

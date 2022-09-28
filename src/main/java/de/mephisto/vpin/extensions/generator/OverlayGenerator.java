@@ -1,6 +1,7 @@
 package de.mephisto.vpin.extensions.generator;
 
 import de.mephisto.vpin.VPinService;
+import de.mephisto.vpin.util.ImageUtil;
 import de.mephisto.vpin.util.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class OverlayGenerator extends GraphicsGenerator {
+public class OverlayGenerator {
   private final static Logger LOG = LoggerFactory.getLogger(OverlayGenerator.class);
 
   public final static File GENERATED_OVERLAY_FILE = new File(SystemInfo.RESOURCES, "overlay.jpg");
@@ -32,7 +33,7 @@ public class OverlayGenerator extends GraphicsGenerator {
     try {
       service.refreshGameInfos();
       BufferedImage bufferedImage = new OverlayGraphics().drawGames(service);
-      super.writeJPG(bufferedImage, GENERATED_OVERLAY_FILE);
+      ImageUtil.write(bufferedImage, GENERATED_OVERLAY_FILE);
       return bufferedImage;
     } catch (Exception e) {
       LOG.error("Failed to generate overlay: " + e.getMessage(), e);

@@ -14,7 +14,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class TablesTabActionListener implements ActionListener {
@@ -66,20 +65,15 @@ public class TablesTabActionListener implements ActionListener {
     else if (e.getActionCommand().equals("showDirectB2S")) {
       GameInfo selection = tablesTab.getGamesTable().getSelection();
       if (selection != null) {
-        File directB2SFile = selection.getDirectB2SFile();
-        if (directB2SFile.exists()) {
-          try {
-            File b2SImage = service.getB2SImage(selection, null);
-            if (b2SImage != null && b2SImage.exists()) {
-              try {
-                Desktop.getDesktop().open(b2SImage);
-              } catch (IOException ex) {
-                LOG.error("Failed to open " + b2SImage.getAbsolutePath() + ": " + ex.getMessage(), ex);
-              }
-            }
-          } catch (VPinServiceException ex) {
-            JOptionPane.showMessageDialog(configWindow, ex.getMessage(), "Image Extraction Failed", JOptionPane.WARNING_MESSAGE);
+        try {
+          File directB2SFileTemp = service.extractDirectB2SBackgroundImage(selection);
+          if (directB2SFileTemp != null && directB2SFileTemp.exists()) {
+            Desktop.getDesktop().open(directB2SFileTemp);
           }
+        } catch (VPinServiceException ex) {
+          JOptionPane.showMessageDialog(configWindow, ex.getMessage(), "Image Extraction Failed", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception ex) {
+          JOptionPane.showMessageDialog(configWindow, ex.getMessage(), "Cannot open image: " + ex.getMessage(), JOptionPane.WARNING_MESSAGE);
         }
       }
     }

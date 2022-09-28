@@ -5,7 +5,7 @@ import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.util.ProgressModel;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
 import de.mephisto.vpin.popper.PopperScreen;
-import de.mephisto.vpin.extensions.generator.HighscoreCardGenerator;
+import de.mephisto.vpin.extensions.generator.CardGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,10 +17,12 @@ public class GeneratorProgressModel extends ProgressModel {
   private final Iterator<GameInfo> iterator;
   private final List<GameInfo> gameInfos;
 
+  private VPinService service;
   private PopperScreen screen;
 
   public GeneratorProgressModel(VPinService service, PopperScreen screen, String title) {
     super(title);
+    this.service = service;
     this.screen = screen;
     gameInfos = service.getGameInfos();
     iterator = gameInfos.iterator();
@@ -41,7 +43,7 @@ public class GeneratorProgressModel extends ProgressModel {
     try {
       GameInfo gameInfo = iterator.next();
       if (gameInfo.resolveHighscore() != null) {
-        HighscoreCardGenerator.generateCard(gameInfo, screen);
+        CardGenerator.generateCard(service, gameInfo, screen);
       }
       else {
         progressResultModel.addSkipped();

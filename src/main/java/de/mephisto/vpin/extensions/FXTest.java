@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class FXTest extends Application  {
+public class FXTest extends Application {
   private Stage stage;
 
   public static void main(String[] args) {

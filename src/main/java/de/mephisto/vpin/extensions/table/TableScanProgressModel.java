@@ -39,7 +39,7 @@ public class TableScanProgressModel extends ProgressModel {
     try {
       GameInfo gameInfo = iterator.next();
       String rom = service.rescanRom(gameInfo);
-      if(rom == null) {
+      if (rom == null) {
         progressResultModel.addSkipped();
       }
       progressResultModel.addProcessed();

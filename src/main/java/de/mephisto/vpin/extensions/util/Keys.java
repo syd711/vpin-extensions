@@ -6,10 +6,10 @@ import java.util.*;
 /**
  * Strg/Ctrl-Left: 2
  * Strg/Ctrl-Right: 32
- *
+ * <p>
  * Shift-Left: 1
  * Shift-Right: 16
- *
+ * <p>
  * Alt-Left: 8
  */
 public class Keys {
@@ -24,6 +24,7 @@ public class Keys {
     MODIFIERS.put("Right-CTRL", 32);
 //    MODIFIERS.put("ALT", 8);
   }
+
   public static int[] KEY_CODES = {KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4, KeyEvent.VK_F5,
       KeyEvent.VK_F6, KeyEvent.VK_F7, KeyEvent.VK_F8, KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11, KeyEvent.VK_F12,
       KeyEvent.VK_A,
@@ -75,7 +76,7 @@ public class Keys {
   public static String getModifierName(int number) {
     Set<Map.Entry<String, Integer>> entries = MODIFIERS.entrySet();
     for (Map.Entry<String, Integer> entry : entries) {
-      if(entry.getValue() == number) {
+      if (entry.getValue() == number) {
         return entry.getKey();
       }
     }

@@ -55,7 +55,7 @@ public class Updater {
     PropertiesStore store = PropertiesStore.create(target);
     String latestVersion = store.getString("version");
     target.delete();
-    if(latestVersion.equals(VERSION)) {
+    if (latestVersion.equals(VERSION)) {
       return null;
     }
     return latestVersion;

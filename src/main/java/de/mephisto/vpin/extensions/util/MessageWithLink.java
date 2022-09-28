@@ -21,7 +21,7 @@ public class MessageWithLink extends JEditorPane {
             Desktop.getDesktop().browse(e.getURL().toURI());
           }
         } catch (Exception ex) {
-         LOG.error("Failed to open hyperlink: " + ex.getMessage(), ex);
+          LOG.error("Failed to open hyperlink: " + ex.getMessage(), ex);
         }
       }
     });
@@ -39,7 +39,7 @@ public class MessageWithLink extends JEditorPane {
     StringBuffer style = new StringBuffer("font-family:" + font.getFamily() + ";");
     style.append("font-weight:" + (font.isBold() ? "bold" : "normal") + ";");
     style.append("font-size:" + font.getSize() + "pt;");
-    style.append("background-color: rgb("+color.getRed()+","+color.getGreen()+","+color.getBlue()+");");
+    style.append("background-color: rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ");");
     return style;
   }
 }

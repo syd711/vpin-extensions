@@ -120,7 +120,7 @@ class Splash extends JWindow {
       if (!StringUtils.isEmpty(nextVersion)) {
         Splash.this.setVisible(false);
         int option = JOptionPane.showConfirmDialog(this, new MessageWithLink("New version " + nextVersion + " found. Download and install update?<br><br>" +
-            "Release Notes:<br><a href=\"https://github.com/syd711/vpin-extensions/releases/tag/" + nextVersion + "\">https://github.com/syd711/vpin-extensions/releases/tag/" + nextVersion + "</a>"), "Update Available",
+                "Release Notes:<br><a href=\"https://github.com/syd711/vpin-extensions/releases/tag/" + nextVersion + "\">https://github.com/syd711/vpin-extensions/releases/tag/" + nextVersion + "</a>"), "Update Available",
             JOptionPane.YES_NO_OPTION);
 
         if (option == JOptionPane.YES_OPTION) {

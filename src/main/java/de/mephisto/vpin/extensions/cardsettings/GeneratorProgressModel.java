@@ -2,10 +2,10 @@ package de.mephisto.vpin.extensions.cardsettings;
 
 import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
+import de.mephisto.vpin.extensions.generator.CardGenerator;
 import de.mephisto.vpin.extensions.util.ProgressModel;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
 import de.mephisto.vpin.popper.PopperScreen;
-import de.mephisto.vpin.extensions.generator.CardGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

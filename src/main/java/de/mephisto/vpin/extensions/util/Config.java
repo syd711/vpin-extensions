@@ -1,7 +1,6 @@
 package de.mephisto.vpin.extensions.util;
 
 import de.mephisto.vpin.util.PropertiesStore;
-import org.slf4j.MDC;
 
 /**
  * Utility for accessing the different config files.

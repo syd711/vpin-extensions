@@ -139,7 +139,7 @@ public class DOFCommandTestDialog extends JDialog implements ActionListener {
     try {
       Unit unit = (Unit) boardSelector.getSelectedItem();
       String port = (String) outputCombo.getSelectedItem();
-      if(unit != null) {
+      if (unit != null) {
         List<String> commands = Arrays.asList(String.valueOf(unit.getId()), String.valueOf(port), String.valueOf(value));
         DOFCommandResult dofCommandResult = DOFCommandExecutor.executeDOFTester(commands);
         JOptionPane.showMessageDialog(this, "Command Result: " + dofCommandResult.getOut(), "Result", JOptionPane.INFORMATION_MESSAGE);

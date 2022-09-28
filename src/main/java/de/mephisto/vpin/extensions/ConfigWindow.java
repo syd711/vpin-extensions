@@ -1,18 +1,13 @@
 package de.mephisto.vpin.extensions;
 
-import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.cardsettings.CardSettingsTab;
 import de.mephisto.vpin.extensions.commands.CommandsTab;
+import de.mephisto.vpin.extensions.overlaysettings.OverlaySettingsTab;
 import de.mephisto.vpin.extensions.resources.ResourceLoader;
 import de.mephisto.vpin.extensions.service.ServiceTab;
-import de.mephisto.vpin.extensions.util.Updater;
-import de.mephisto.vpin.extensions.util.ProgressDialog;
-import de.mephisto.vpin.extensions.util.ProgressResultModel;
-import de.mephisto.vpin.extensions.overlaysettings.OverlaySettingsTab;
-import de.mephisto.vpin.extensions.table.TableScanProgressModel;
 import de.mephisto.vpin.extensions.table.TablesTab;
-import org.apache.commons.lang3.StringUtils;
+import de.mephisto.vpin.extensions.util.Updater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +15,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 public class ConfigWindow extends JFrame {
   private final static Logger LOG = LoggerFactory.getLogger(ConfigWindow.class);
@@ -52,7 +46,6 @@ public class ConfigWindow extends JFrame {
 
       setUIFont(new javax.swing.plaf.FontUIResource("Tahoma", Font.PLAIN, 14));
       UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
 
 
       this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

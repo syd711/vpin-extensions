@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverlayGraphics extends VPinGraphics {
+public class OverlayGraphics {
   private final static Logger LOG = LoggerFactory.getLogger(OverlayGraphics.class);
 
   private static String HIGHSCORE_TEXT = Config.getOverlayGeneratorConfig().getString("overlay.highscores.text");
@@ -74,33 +74,33 @@ public class OverlayGraphics extends VPinGraphics {
       gameOfTheMonth = service.getGameInfo(selection);
     }
 
-    BufferedImage backgroundImage = super.loadBackground(new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().getString("overlay.background")));
-    BufferedImage rotated = rotateRight(backgroundImage);
-    if(BLUR_PIXELS > 0) {
+    BufferedImage backgroundImage = ImageUtil.loadBackground(new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().getString("overlay.background")));
+    BufferedImage rotated = ImageUtil.rotateRight(backgroundImage);
+    if (BLUR_PIXELS > 0) {
       rotated = ImageUtil.blurImage(rotated, BLUR_PIXELS);
     }
 
     float alphaWhite = Config.getOverlayGeneratorConfig().getFloat("overlay.alphacomposite.white");
     float alphaBlack = Config.getOverlayGeneratorConfig().getFloat("overlay.alphacomposite.black");
-    applyAlphaComposites(rotated, alphaWhite, alphaBlack);
+    ImageUtil.applyAlphaComposites(rotated, alphaWhite, alphaBlack);
 
     int highscoreListYOffset = TITLE_Y_OFFSET + TITLE_FONT_SIZE;
     if (gameOfTheMonth != null) {
-      highscoreListYOffset = renderTableChallenge(rotated, gameOfTheMonth, highscoreListYOffset);
+      highscoreListYOffset = renderTableChallenge(rotated, gameOfTheMonth);
     }
+
     renderHighscoreList(rotated, gameOfTheMonth, service, highscoreListYOffset);
 
-    return rotateLeft(rotated);
+    return ImageUtil.rotateLeft(rotated);
   }
 
   /**
    * The upper section, usually with the three topscores.
    */
-  private static int renderTableChallenge(BufferedImage image, GameInfo challengedGame, int highscoreListYOffset) throws Exception {
+  private static int renderTableChallenge(BufferedImage image, GameInfo challengedGame) throws Exception {
     Highscore highscore = challengedGame.resolveHighscore();
-    int returnOffset = highscoreListYOffset;
     Graphics g = image.getGraphics();
-    setDefaultColor(g, Config.getOverlayGeneratorConfig().getString("overlay.font.color"));
+    ImageUtil.setDefaultColor(g, Config.getOverlayGeneratorConfig().getString("overlay.font.color"));
     int imageWidth = image.getWidth();
 
     g.setFont(new Font(TITLE_FONT_NAME, TITLE_FONT_STYLE, TITLE_FONT_SIZE));
@@ -141,7 +141,7 @@ public class OverlayGraphics extends VPinGraphics {
       }
     }
     else {
-      for(int i=1; i<= 3; i++) {
+      for (int i = 1; i <= 3; i++) {
         String scoreString = i + ". ??? 000.000.000";
         int singleScoreWidth = g.getFontMetrics().stringWidth(scoreString);
         if (scoreWidth < singleScoreWidth) {
@@ -164,18 +164,18 @@ public class OverlayGraphics extends VPinGraphics {
 
     File wheelIconFile = challengedGame.getWheelIconFile();
     int wheelY = tableNameY + ROW_SEPARATOR;
-    returnOffset = wheelY * 2 + SCORE_FONT_SIZE * 2;
+
     if (wheelIconFile.exists()) {
       BufferedImage wheelImage = ImageIO.read(wheelIconFile);
       g.drawImage(wheelImage, imageWidth / 2 - totalScoreAndWheelWidth / 2, wheelY, wheelWidth, wheelWidth, null);
     }
 
-    return returnOffset;
+    return wheelY * 2 + SCORE_FONT_SIZE * 2;
   }
 
   private static void renderHighscoreList(BufferedImage image, GameInfo gameOfTheMonth, VPinService service, int highscoreListYOffset) throws Exception {
     Graphics g = image.getGraphics();
-    setDefaultColor(g, Config.getOverlayGeneratorConfig().getString("overlay.font.color"));
+    ImageUtil.setDefaultColor(g, Config.getOverlayGeneratorConfig().getString("overlay.font.color"));
     int imageWidth = image.getWidth();
     int imageHeight = image.getHeight();
 

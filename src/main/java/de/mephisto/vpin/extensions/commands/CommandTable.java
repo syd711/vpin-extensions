@@ -30,7 +30,7 @@ public class CommandTable extends JTable {
     setRowHeight(20);
     addMouseListener(new MouseAdapter() {
       public void mousePressed(MouseEvent mouseEvent) {
-        JTable table =(JTable) mouseEvent.getSource();
+        JTable table = (JTable) mouseEvent.getSource();
         Point point = mouseEvent.getPoint();
         if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
           commandsTab.editRule();

@@ -89,19 +89,19 @@ public class CardSettingsTab extends JPanel {
     ratioCombo = WidgetFactory.createCombobox(settingsPanel, Arrays.asList(B2SImageRatio.RATIO_16x9.toString(), B2SImageRatio.RATIO_4x3.toString()), "Force Image Ratio:", store, "card.ratio");
     ratioCombo.setEnabled(store.getBoolean("card.useDirectB2S"));
 
-    backgroundSelector = WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES + "backgrounds/"),"Default Background:", store, "card.background");
+    backgroundSelector = WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES + "backgrounds/"), "Default Background:", store, "card.background");
     backgroundSelector.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         ImageIcon previewIcon = getPreviewIcon();
-        if(previewIcon != null) {
+        if (previewIcon != null) {
           previewLabel.setIcon(previewIcon);
         }
       }
     });
     previewLabel = WidgetFactory.createLabel(settingsPanel, "", "");
     ImageIcon previewIcon = getPreviewIcon();
-    if(previewIcon != null) {
+    if (previewIcon != null) {
       previewLabel.setIcon(previewIcon);
     }
 
@@ -259,7 +259,7 @@ public class CardSettingsTab extends JPanel {
       generateButton.setEnabled(false);
 
       File directB2SImage = getSampleGame().getDirectB2SImage();
-      if(directB2SImage.exists()) {
+      if (directB2SImage.exists()) {
         directB2SImage.delete();
       }
       CardGenerator.generateCard(service, getSampleGame(), getScreen(), CardGenerator.SAMPLE_FILE);

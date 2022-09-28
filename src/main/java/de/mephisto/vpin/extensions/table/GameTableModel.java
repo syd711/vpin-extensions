@@ -29,32 +29,32 @@ public class GameTableModel extends AbstractTableModel {
   public Object getValueAt(int rowIndex, int columnIndex) {
     List<GameInfo> gameInfos = service.getGameInfos();
     GameInfo gameInfo = gameInfos.get(rowIndex);
-    if(columnIndex == 0) {
+    if (columnIndex == 0) {
       return gameInfo.getId();
     }
-    if(columnIndex == 1) {
+    if (columnIndex == 1) {
       return gameInfo.getGameDisplayName();
     }
-    if(columnIndex == 2) {
+    if (columnIndex == 2) {
       return gameInfo.getEmulatorName();
     }
-    if(columnIndex == 3) {
+    if (columnIndex == 3) {
       return gameInfo.getRom();
     }
-    if(columnIndex == 4) {
+    if (columnIndex == 4) {
       return "         " + gameInfo.getNumberPlays();
     }
-    if(columnIndex == 5) {
-      if(gameInfo.getDirectB2SFile().exists()) {
+    if (columnIndex == 5) {
+      if (gameInfo.getDirectB2SFile().exists()) {
         return "         X";
       }
       return "";
     }
-    if(columnIndex == 6) {
-      if(StringUtils.isEmpty(gameInfo.getRom())) {
+    if (columnIndex == 6) {
+      if (StringUtils.isEmpty(gameInfo.getRom())) {
         return "No rom information found for table.";
       }
-      else if(!gameInfo.hasHighscore()) {
+      else if (!gameInfo.hasHighscore()) {
         return "No highscore files found.";
       }
       return "";

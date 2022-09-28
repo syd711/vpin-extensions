@@ -4,9 +4,9 @@ import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.dof.DOFCommand;
 import de.mephisto.vpin.dof.Trigger;
 import de.mephisto.vpin.dof.Unit;
-import de.mephisto.vpin.extensions.util.WidgetFactory;
 import de.mephisto.vpin.extensions.ConfigWindow;
 import de.mephisto.vpin.extensions.util.Keys;
+import de.mephisto.vpin.extensions.util.WidgetFactory;
 import de.mephisto.vpin.util.PropertiesStore;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
@@ -132,7 +132,7 @@ public class RuleDialog extends JDialog {
       timeSpinner.setValue(0);
     }
 
-    if(!keyTrigger) {
+    if (!keyTrigger) {
       this.keyCombo.setSelectedIndex(0);
       this.modifierCombo.setSelectedIndex(0);
     }
@@ -181,7 +181,7 @@ public class RuleDialog extends JDialog {
     if (hotkey != null) {
       if (hotkey.contains("+")) {
         String[] split = hotkey.split("\\+");
-        if(split.length > 1) {
+        if (split.length > 1) {
           String key = split[1];
           modifierCombo.setSelectedItem(Keys.getModifierName(Integer.parseInt(split[0])));
           keyCombo.setSelectedItem(key.toUpperCase(Locale.ROOT));

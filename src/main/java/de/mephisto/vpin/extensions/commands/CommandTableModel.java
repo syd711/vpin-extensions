@@ -39,7 +39,7 @@ public class CommandTableModel extends AbstractTableModel {
     }
     if (columnIndex == 2) {
       Unit unit = service.getUnit(command.getUnit());
-      if(unit == null) {
+      if (unit == null) {
         return "UNKNOWN UNIT";
       }
       return unit.toString();
@@ -58,10 +58,10 @@ public class CommandTableModel extends AbstractTableModel {
     }
     if (columnIndex == 7) {
       String keyBinding = command.getKeyBinding();
-      if(!StringUtils.isEmpty(keyBinding)) {
+      if (!StringUtils.isEmpty(keyBinding)) {
         if (keyBinding.contains("+")) {
           String[] split = keyBinding.split("\\+");
-          if(split.length > 1) {
+          if (split.length > 1) {
             String key = split[1];
             String modifier = Keys.getModifierName(Integer.parseInt(split[0]));
             return modifier + " + " + key;

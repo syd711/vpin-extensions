@@ -3,10 +3,10 @@ package de.mephisto.vpin.extensions.overlaysettings;
 import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.ConfigWindow;
 import de.mephisto.vpin.extensions.generator.OverlayGenerator;
-import de.mephisto.vpin.extensions.generator.VPinGraphics;
 import de.mephisto.vpin.extensions.util.Config;
 import de.mephisto.vpin.extensions.util.Keys;
 import de.mephisto.vpin.extensions.util.WidgetFactory;
+import de.mephisto.vpin.util.ImageUtil;
 import de.mephisto.vpin.util.PropertiesStore;
 import de.mephisto.vpin.util.SystemInfo;
 import net.miginfocom.swing.MigLayout;
@@ -139,7 +139,7 @@ public class OverlaySettingsTab extends JPanel {
         file = new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().get("overlay.background"));
       }
       BufferedImage backgroundImage = ImageIO.read(file);
-      BufferedImage image = VPinGraphics.rotateRight(backgroundImage);
+      BufferedImage image = ImageUtil.rotateRight(backgroundImage);
       int percentage = 900 * 100 / image.getHeight();
       Image newimg = image.getScaledInstance(image.getWidth() * percentage / 100, image.getHeight() * percentage / 100, Image.SCALE_SMOOTH); // scale it the smooth way
       return new ImageIcon(newimg);  // transform it back

@@ -3,8 +3,8 @@ package de.mephisto.vpin.extensions.commands;
 import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.dof.DOFCommand;
 import de.mephisto.vpin.dof.Trigger;
-import de.mephisto.vpin.extensions.util.WidgetFactory;
 import de.mephisto.vpin.extensions.ConfigWindow;
+import de.mephisto.vpin.extensions.util.WidgetFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

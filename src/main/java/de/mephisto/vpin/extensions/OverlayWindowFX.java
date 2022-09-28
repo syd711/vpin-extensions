@@ -42,7 +42,7 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
   public void start(Stage primaryStage) throws Exception {
     this.stage = primaryStage;
     String hotkey = Config.getOverlayGeneratorConfig().getString("overlay.hotkey");
-    if(StringUtils.isEmpty(hotkey)) {
+    if (StringUtils.isEmpty(hotkey)) {
       LOG.error("No overlay hotkey defined! Define a key binding on the overlay configuration tab and restart the service.");
     }
     else {

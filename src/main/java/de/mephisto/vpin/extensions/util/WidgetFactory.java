@@ -147,7 +147,7 @@ public class WidgetFactory {
       if (returnCode == JFileChooser.APPROVE_OPTION) {
         File selectedFile = field.getSelectedFile();
         String name = selectedFile.getName();
-        File target = new File(SystemInfo.RESOURCES, name);
+        File target = new File(SystemInfo.RESOURCES + "backgrounds", name);
         Path normalizedSource = Paths.get(selectedFile.getAbsolutePath()).normalize();
         Path normalizedTarget = Paths.get(target.getAbsolutePath()).normalize();
         if (!normalizedSource.toString().equals(normalizedTarget.toString())) {

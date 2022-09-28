@@ -177,14 +177,14 @@ public class CardSettingsTab extends JPanel {
   }
 
   private ImageIcon getPreviewIcon() {
+    File file = new File(SystemInfo.RESOURCES + "backgrounds/", (String) backgroundSelector.getSelectedItem());
     try {
-      File file = new File(SystemInfo.RESOURCES + "backgrounds/", (String) backgroundSelector.getSelectedItem());
       BufferedImage image = ImageIO.read(file);
       int percentage = 10;
       Image newimg = image.getScaledInstance(image.getWidth() * percentage / 100, image.getHeight() * percentage / 100, Image.SCALE_SMOOTH); // scale it the smooth way
       return new ImageIcon(newimg);
     } catch (IOException e) {
-      LOG.error("Failed to read background preview image: " + e.getMessage(), e);
+      LOG.error("Failed to read background preview image " + file.getAbsolutePath() + ": " + e.getMessage(), e);
     }
     return null;
   }

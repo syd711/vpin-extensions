@@ -46,4 +46,10 @@ public class Config {
   public static PropertiesStore getConfig(String name) {
     return PropertiesStore.create(name);
   }
+
+  public static void reloadAll() {
+    commandConfig = null;
+    cardConfig = null;
+    generatorConfig = null;
+  }
 }

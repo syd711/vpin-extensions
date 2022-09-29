@@ -86,7 +86,7 @@ public class CardSettingsTab extends JPanel {
       }
     });
 
-    ratioCombo = WidgetFactory.createCombobox(settingsPanel, Arrays.asList(B2SImageRatio.RATIO_16x9.toString(), B2SImageRatio.RATIO_4x3.toString()), "Force Image Ratio:", store, "card.ratio");
+    ratioCombo = WidgetFactory.createCombobox(settingsPanel, Arrays.asList(B2SImageRatio.RATIO_16x9.toString(), B2SImageRatio.RATIO_4x3.toString()), "Image Ratio:", store, "card.ratio");
     ratioCombo.setEnabled(store.getBoolean("card.useDirectB2S"));
 
     backgroundSelector = WidgetFactory.createCombobox(settingsPanel, new File(SystemInfo.RESOURCES + "backgrounds/"), "Default Background:", store, "card.background");

@@ -28,8 +28,6 @@ import java.util.logging.Logger;
 public class OverlayWindowFX extends Application implements NativeKeyListener {
   private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(OverlayGraphics.class);
 
-  private KeyChecker keyChecker;
-
   private boolean visible = false;
 
   private Stage stage;
@@ -44,9 +42,6 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
     String hotkey = Config.getOverlayGeneratorConfig().getString("overlay.hotkey");
     if (StringUtils.isEmpty(hotkey)) {
       LOG.error("No overlay hotkey defined! Define a key binding on the overlay configuration tab and restart the service.");
-    }
-    else {
-      keyChecker = new KeyChecker(hotkey);
     }
 
     Platform.setImplicitExit(false);
@@ -87,7 +82,9 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
 
   @Override
   public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-    if (keyChecker != null && keyChecker.matches(nativeKeyEvent)) {
+    String hotkey = Config.getOverlayGeneratorConfig().getString("overlay.hotkey");
+    KeyChecker keyChecker = new KeyChecker(hotkey);
+    if (keyChecker.matches(nativeKeyEvent)) {
       this.visible = !visible;
       Platform.runLater(() -> {
         LOG.info("Toggle show");

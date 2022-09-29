@@ -36,6 +36,8 @@ public class ServiceRunner implements TableStatusChangeListener {
         LOG.error("Initial overlay generation failed: " + e.getMessage(), e);
       }
 
+      new ServiceRunnerTray(service);
+
       LOG.info("Overlay window listener started.");
       OverlayWindowFX.launch(OverlayWindowFX.class);
     } catch (VPinServiceException e) {

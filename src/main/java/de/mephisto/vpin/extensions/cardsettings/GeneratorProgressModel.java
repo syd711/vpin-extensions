@@ -43,7 +43,7 @@ public class GeneratorProgressModel extends ProgressModel {
     try {
       GameInfo gameInfo = iterator.next();
       if (gameInfo.resolveHighscore() != null) {
-        CardGenerator.generateCard(service, gameInfo, screen);
+        CardGenerator.generateCard(service, gameInfo);
       }
       else {
         progressResultModel.addSkipped();

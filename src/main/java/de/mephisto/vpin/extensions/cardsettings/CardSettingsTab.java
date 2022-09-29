@@ -112,7 +112,7 @@ public class CardSettingsTab extends JPanel {
     WidgetFactory.createFontSelector(settingsPanel, "Score Font:", store, "card.score.font", 80);
     WidgetFactory.createColorChooser(configWindow, settingsPanel, "Font Color:", store, "card.font.color");
     WidgetFactory.createSpinner(settingsPanel, "Padding Top:", "px", store, "card.title.y.offset", 80);
-    WidgetFactory.createSpinner(settingsPanel, "Padding Left:", "px", store, "card.highscores.row.padding.left", 60);
+    WidgetFactory.createSpinner(settingsPanel, "Wheel Image Padding:", "px", store, "card.highscores.row.padding.left", 60);
     WidgetFactory.createSpinner(settingsPanel, "Row Separator:", "px", store, "card.highscores.row.separator", 10);
     WidgetFactory.createSlider(settingsPanel, "Blur Background:", store, "card.blur");
     WidgetFactory.createSlider(settingsPanel, "Brighten Background:", store, "card.alphacomposite.white");
@@ -262,12 +262,14 @@ public class CardSettingsTab extends JPanel {
       if (directB2SImage.exists()) {
         directB2SImage.delete();
       }
-      CardGenerator.generateCard(service, getSampleGame(), getScreen(), CardGenerator.SAMPLE_FILE);
+      CardGenerator.generateCard(service, getSampleGame(), CardGenerator.SAMPLE_FILE);
       iconLabel.setIcon(getPreviewImage());
-      generateButton.setEnabled(true);
-      iconLabel.setVisible(true);
     } catch (Exception e) {
       JOptionPane.showMessageDialog(this.configWindow, "Error generating overlay: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    finally {
+      generateButton.setEnabled(true);
+      iconLabel.setVisible(true);
     }
   }
 
@@ -277,7 +279,6 @@ public class CardSettingsTab extends JPanel {
           + "'.\nThese files will be updated or created once a highscore of a table has been updated.\n\nStart Card Generation?", "Warning", JOptionPane.YES_NO_OPTION);
       if (warning == JOptionPane.OK_OPTION) {
         service.refreshGameInfos();
-
         generateButton.setEnabled(false);
 
         ProgressDialog d = new ProgressDialog(configWindow, new GeneratorProgressModel(service, this.getScreen(), "Generating Cards"));
@@ -287,10 +288,12 @@ public class CardSettingsTab extends JPanel {
                 + (progressResultModel.getProcessed() - progressResultModel.getSkipped()) + " of " + progressResultModel.getProcessed() + " tables.",
             "Generation Finished", JOptionPane.INFORMATION_MESSAGE);
         LOG.info("Finished highscore card generation.");
-        generateButton.setEnabled(true);
       }
     } catch (Exception e) {
       JOptionPane.showMessageDialog(this.configWindow, "Error generating overlay: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    finally {
+      generateButton.setEnabled(true);
     }
   }
 

@@ -28,8 +28,8 @@ public class CardGraphics {
 
     File sourceFile = new File(SystemInfo.RESOURCES + "backgrounds", Config.getCardGeneratorConfig().get("card.background"));
     if (USE_DIRECTB2S && game.getDirectB2SFile().exists()) {
-      File b2sImage = game.getDirectB2SImage();
-      if (!b2sImage.exists()) {
+      sourceFile = game.getDirectB2SImage();
+      if (!sourceFile.exists()) {
         sourceFile = service.createDirectB2SImage(game, DIRECTB2S_RATIO, 1280);
       }
     }
@@ -59,7 +59,7 @@ public class CardGraphics {
    */
   private void renderTableChallenge(BufferedImage image, GameInfo game) throws Exception {
     int ROW_SEPARATOR = Config.getCardGeneratorConfig().getInt("card.highscores.row.separator");
-    int ROW_PADDING_LEFT = Config.getCardGeneratorConfig().getInt("card.highscores.row.padding.left");
+    int WHEEL_PADDING = Config.getCardGeneratorConfig().getInt("card.highscores.row.padding.left");
 
     String TITLE_TEXT = Config.getCardGeneratorConfig().getString("card.title.text");
 
@@ -116,19 +116,24 @@ public class CardGraphics {
         }
       }
 
-      int position = 0;
-      int wheelWidth = 3 * TITLE_FONT_SIZE + 3 * ROW_SEPARATOR;
-      for (String score : scores) {
-        position++;
-        int scoreY = tableNameY + position * TITLE_FONT_SIZE + ROW_SEPARATOR;
-        g.drawString(score, ROW_PADDING_LEFT + wheelWidth + ROW_SEPARATOR, scoreY);
-      }
+      tableNameY = tableNameY + TABLE_FONT_SIZE / 2;
 
+      //draw wheel icon
       File wheelIconFile = game.getWheelIconFile();
       int wheelY = tableNameY + ROW_SEPARATOR;
+      int wheelSize = 3 * SCORE_FONT_SIZE + 3 * ROW_SEPARATOR;
       if (wheelIconFile.exists()) {
         BufferedImage wheelImage = ImageIO.read(wheelIconFile);
-        g.drawImage(wheelImage, ROW_PADDING_LEFT, wheelY, wheelWidth, wheelWidth, null);
+        g.drawImage(wheelImage, WHEEL_PADDING, wheelY, wheelSize, wheelSize, null);
+      }
+
+
+      //the wheelsize should match the height of three score entries
+      int scoreX = WHEEL_PADDING + wheelSize + WHEEL_PADDING;
+      int scoreY = tableNameY;
+      for (String score : scores) {
+        scoreY = scoreY + SCORE_FONT_SIZE + ROW_SEPARATOR;
+        g.drawString(score, scoreX, scoreY);
       }
     }
   }

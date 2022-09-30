@@ -267,7 +267,7 @@
                 <version>1.0.1</version>
                 <executions>
                     <execution>
-                        <id>rename-file</id>
+                        <id>rename-jar1</id>
                         <phase>package</phase>
                         <goals>
                             <goal>rename</goal>

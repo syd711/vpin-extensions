@@ -76,10 +76,16 @@ public class ServiceTab extends JPanel implements ActionListener {
     switch (cmd) {
       case "start": {
         try {
+          boolean running = stateManager.isRunning();
+          if(running) {
+            stateManager.shutdown();
+          }
+
           configWindow.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
           stateManager.start();
+          stateManager.waitForRunState();
           configWindow.setCursor(null);
-          boolean running = stateManager.isRunning();
+          running = stateManager.isRunning();
           if (running) {
             JOptionPane.showMessageDialog(this, "Service start successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
           }

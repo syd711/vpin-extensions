@@ -1,4 +1,4 @@
-package de.mephisto.vpin.extensions.util;
+package de.mephisto.vpin.extensions;
 
 import de.mephisto.vpin.util.PropertiesStore;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ import java.net.URL;
 public class Updater {
   private final static Logger LOG = LoggerFactory.getLogger(Updater.class);
 
-  private final static String VERSION = "1.0.5";
+  private final static String VERSION = "1.0.6";
   private final static String BASE_URL = "https://github.com/syd711/vpin-extensions/releases/download/%s/";
   private final static String VERSION_PROPERTIES = "https://raw.githubusercontent.com/syd711/vpin-extensions/main/version.properties";
 

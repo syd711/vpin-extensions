@@ -7,7 +7,6 @@ import de.mephisto.vpin.extensions.overlaysettings.OverlaySettingsTab;
 import de.mephisto.vpin.extensions.resources.ResourceLoader;
 import de.mephisto.vpin.extensions.service.ServiceTab;
 import de.mephisto.vpin.extensions.table.TablesTab;
-import de.mephisto.vpin.extensions.util.Updater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

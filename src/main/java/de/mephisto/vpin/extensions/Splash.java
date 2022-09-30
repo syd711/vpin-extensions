@@ -8,7 +8,6 @@ import de.mephisto.vpin.extensions.table.TableScanProgressModel;
 import de.mephisto.vpin.extensions.util.MessageWithLink;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
-import de.mephisto.vpin.extensions.util.Updater;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
@@ -68,10 +67,13 @@ class Splash extends JWindow {
 
       new Thread(() -> {
         try {
+          LOG.info("Splash Screen initialized.");
           checkForUpdates();
-
+          LOG.info("Update check completed, creating VPinService instance.");
           vPinService = VPinService.create(false);
+          LOG.info("Executing first run check");
           runInitialCheck();
+          LOG.info("Starting Main");
           startMain();
         } catch (VPinServiceException e) {
           LOG.error("Failed to start UI: " + e.getMessage(), e);

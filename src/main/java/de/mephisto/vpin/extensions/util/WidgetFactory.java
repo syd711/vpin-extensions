@@ -267,7 +267,8 @@ public class WidgetFactory {
   public static void createFileChooser(JPanel parent, String label, String buttonLabel, PropertiesStore store, String property, String defaultValue) {
     parent.add(new JLabel(label));
     String value = store.getString(property, defaultValue);
-    parent.add(new JLabel(value), "span 2");
+    JLabel fileNameLabel = new JLabel(value);
+    parent.add(fileNameLabel, "span 2");
     JButton openButton = new JButton(buttonLabel);
     parent.add(openButton, "span 1");
     parent.add(new JLabel(""), "wrap");
@@ -304,6 +305,7 @@ public class WidgetFactory {
         }
 
         store.set(property, field.getSelectedFile().getName());
+        fileNameLabel.setText(field.getSelectedFile().getName());
       }
     });
   }

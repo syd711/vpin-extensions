@@ -9,6 +9,7 @@ which are generated everytime a table highscore changes.
 * [Installation](#installation)
 * [Configure Highscore Overlay](#configure-highscore-overlay)
 * [Configure Highscore Cards](#configure-highscore-cards)
+  * [Highscore Cards with DirectB2S Files](#highscore-cards-width-directb2s-files)
 * [Configure DOF Rules](#configure-dof-rules)
 * [Table Overview](#table-overview)
 * [Service Status](#service-status)
@@ -163,6 +164,18 @@ You can change or remove the screen's default media there (remember you need to 
 
 See also https://www.nailbuster.com/wikipinup/doku.php?id=faq
 
+### Highscore Cards with DirectB2S Files
+
+When highscore cards are generated, it is possible to use the background
+image from the *directb2s* file, if the file is available for the given table.
+These images can vary in size and dimension. Therefore the output ratio must be configure
+so that all cards will have the same dimensions and ratios too.
+
+![](./documentation/directb2s-set.png)
+
+Once set, the ratio will also be applied for cards that are generated from the selected background image.
+
+
 ## Configure DOF Rules
 
 __Experimental (not tested yet, board resolving may be broken)__
@@ -243,6 +256,13 @@ See also: https://forums.gameex.com/forums/topic/26335-scores-files-text-from-pi
 
 
 ![](./documentation/region-settings.png)
+
+### I want to use directb2s backgrounds, but my files are located in another folder!
+
+By default, the service assumes that these files are located in the __Tables__ folder 
+of Visual Pinball. If you only want to use the files for the background of your highscore cards,
+check the __resources/env.properties__ file and change the path there.
+Note that you have to restart the service/UI to apply the change. 
 
 ## See Also
 [Used Third-Party Libraries](./documentation/third-party-licenses/licenses.xml)

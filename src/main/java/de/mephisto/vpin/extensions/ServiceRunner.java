@@ -54,7 +54,7 @@ public class ServiceRunner implements TableStatusChangeListener {
   public void tableExited(TableStatusChangedEvent tableStatusChangedEvent) {
     try {
       String targetScreen = Config.getCardGeneratorConfig().get("popper.screen");
-      if (StringUtils.isEmpty(targetScreen)) {
+      if (!StringUtils.isEmpty(targetScreen)) {
         GameInfo gameInfo = tableStatusChangedEvent.getGameInfo();
         LOG.info("Executing highscore card generation for '" + gameInfo + "'");
         CardGenerator.generateCard(service, gameInfo);

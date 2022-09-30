@@ -15,7 +15,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OverlayGraphics {
   private final static Logger LOG = LoggerFactory.getLogger(OverlayGraphics.class);
@@ -187,10 +189,15 @@ public class OverlayGraphics {
 
     int yStart = highscoreListYOffset + ROW_SEPARATOR + TITLE_FONT_SIZE / 2;
 
-    List<GameInfo> gameInfos = service.getGameInfos();
-    gameInfos.sort((o1, o2) -> (int) (o2.getLastPlayedTime() - o1.getLastPlayedTime()));
+    List<GameInfo> gameInfosWithDate = service.getGameInfos().stream().filter(game -> game.getLastPlayed() != null).collect(Collectors.toList());
+    List<GameInfo> gameInfosWithOutDate = service.getGameInfos().stream().filter(game -> game.getLastPlayed() == null).collect(Collectors.toList());
 
-    for (GameInfo game : gameInfos) {
+    List<GameInfo> sorted = new ArrayList<>();
+    gameInfosWithDate.sort((o1, o2) -> Long.compare(o2.getLastPlayed().getTime(), o1.getLastPlayed().getTime()));
+    sorted.addAll(gameInfosWithDate);
+    sorted.addAll(gameInfosWithOutDate);
+
+    for (GameInfo game : sorted) {
       Highscore highscore = game.resolveHighscore();
       if (highscore == null) {
         LOG.info("Skipped highscore rendering of " + game.getGameDisplayName() + ", no highscore info found");

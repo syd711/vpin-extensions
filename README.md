@@ -13,7 +13,7 @@ which are generated everytime a table highscore changes.
 * [Configure DOF Rules](#configure-dof-rules)
 * [Table Overview](#table-overview)
 * [Service Status](#service-status)
-* [Trouble Shooting](#trouble-shooting)
+* [Trouble Shooting / FAQ](#trouble-shooting)
 
 ## Overview
 
@@ -263,6 +263,12 @@ By default, the service assumes that these files are located in the __Tables__ f
 of Visual Pinball. If you only want to use the files for the background of your highscore cards,
 check the __resources/env.properties__ file and change the path there.
 Note that you have to restart the service/UI to apply the change. 
+
+### Is it possible to change the highscore card format to the same format as the highscore overlay?
+
+The card background is not cropped or scaled (only if you enable the directb2s backgrounds). 
+So if you use a 4k background here, the  cards have a 4k size. 
+But the actual size is defined by popper, so you have to increase the screen you are using for the card there too.
 
 ## See Also
 [Used Third-Party Libraries](./documentation/third-party-licenses/licenses.xml)

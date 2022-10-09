@@ -8,11 +8,14 @@ import de.mephisto.vpin.extensions.table.TableScanProgressModel;
 import de.mephisto.vpin.extensions.util.MessageWithLink;
 import de.mephisto.vpin.extensions.util.ProgressDialog;
 import de.mephisto.vpin.extensions.util.ProgressResultModel;
+import de.mephisto.vpin.util.PropertiesStore;
+import de.mephisto.vpin.util.SystemInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 
 import static de.mephisto.vpin.extensions.ConfigWindow.setUIFont;
@@ -90,15 +93,8 @@ class Splash extends JWindow {
 
 
   private void runInitialCheck() {
-    List<GameInfo> gameInfos = vPinService.getGameInfos();
-    boolean romFound = false;
-    for (GameInfo gameInfo : gameInfos) {
-      if (!StringUtils.isEmpty(gameInfo.getRom())) {
-        romFound = true;
-        break;
-      }
-    }
-    if (!romFound) {
+    PropertiesStore store = PropertiesStore.create("repository.properties");
+    if (store.isEmpty()) {
       Splash.this.setVisible(false);
       int option = JOptionPane.showConfirmDialog(this, "It seems that no ROM scan has been performed yet.\n" +
           "The ROM name of each table is required in order to scan the highscore information.\n\nScan for ROM names? (This may take a while)", "Table Scan", JOptionPane.YES_NO_OPTION);

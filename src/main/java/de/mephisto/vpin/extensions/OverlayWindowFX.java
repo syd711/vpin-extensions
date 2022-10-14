@@ -1,10 +1,13 @@
 package de.mephisto.vpin.extensions;
 
+import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.generator.OverlayGenerator;
 import de.mephisto.vpin.extensions.generator.OverlayGraphics;
 import de.mephisto.vpin.extensions.resources.ResourceLoader;
 import de.mephisto.vpin.extensions.util.Config;
+import de.mephisto.vpin.popper.PopperLaunchListener;
 import de.mephisto.vpin.util.KeyChecker;
+import de.mephisto.vpin.util.SystemInfo;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -25,7 +28,7 @@ import java.io.FileInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class OverlayWindowFX extends Application implements NativeKeyListener {
+public class OverlayWindowFX extends Application implements NativeKeyListener, PopperLaunchListener {
   private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(OverlayGraphics.class);
 
   private boolean visible = false;
@@ -76,6 +79,16 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
     logger.setLevel(Level.OFF);
     logger.setUseParentHandlers(false);
     GlobalScreen.addNativeKeyListener(this);
+
+    boolean pinUPRunning = SystemInfo.getInstance().isPinUPRunning();
+    if(pinUPRunning) {
+      popperLaunched();
+    }
+    else {
+      LOG.info("Added VPin service popper status listener.");
+      VPinService service = VPinService.create(true);
+      service.addPopperLaunchListener(this);
+    }
   }
 
   @Override
@@ -108,5 +121,26 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
   @Override
   public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
 
+  }
+
+
+
+  @Override
+  public void popperLaunched() {
+    boolean launch = Config.getOverlayGeneratorConfig().getBoolean("overlay.launchOnStartup");
+    if (launch) {
+      int delay = Config.getOverlayGeneratorConfig().getInt("overlay.launchDelay", 0);
+      if (delay > 0) {
+        try {
+          Thread.sleep(delay * 1000L);
+        } catch (InterruptedException e) {
+          LOG.error("Failed to wait for delay: " + e.getMessage(), e);
+        }
+      }
+
+      if(OverlayWindowFX.INSTANCE != null) {
+        OverlayWindowFX.INSTANCE.toggleView();
+      }
+    }
   }
 }

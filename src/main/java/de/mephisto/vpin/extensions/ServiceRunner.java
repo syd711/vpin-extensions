@@ -6,13 +6,14 @@ import de.mephisto.vpin.VPinServiceException;
 import de.mephisto.vpin.extensions.generator.CardGenerator;
 import de.mephisto.vpin.extensions.generator.OverlayGenerator;
 import de.mephisto.vpin.extensions.util.Config;
+import de.mephisto.vpin.popper.PopperLaunchListener;
 import de.mephisto.vpin.popper.TableStatusChangeListener;
 import de.mephisto.vpin.popper.TableStatusChangedEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServiceRunner implements TableStatusChangeListener {
+public class ServiceRunner implements TableStatusChangeListener, PopperLaunchListener {
   private final static Logger LOG = LoggerFactory.getLogger(ServiceRunner.class);
   private VPinService service;
 
@@ -23,6 +24,9 @@ public class ServiceRunner implements TableStatusChangeListener {
 
       LOG.info("Added VPin service listener for highscore changes.");
       service.addTableStatusChangeListener(this);
+
+      LOG.info("Added VPin service popper status listener.");
+      service.addPopperLaunchListener(this);
 
       String targetScreen = Config.getCardGeneratorConfig().get("popper.screen");
       if (StringUtils.isEmpty(targetScreen)) {
@@ -64,6 +68,25 @@ public class ServiceRunner implements TableStatusChangeListener {
       OverlayGenerator.generateOverlay(service);
     } catch (Exception e) {
       LOG.error("Failed to generate highscore card for " + tableStatusChangedEvent.getGameInfo() + ": " + e.getMessage(), e);
+    }
+  }
+
+  @Override
+  public void popperLaunched() {
+    boolean launch = Config.getOverlayGeneratorConfig().getBoolean("overlay.launchOnStartup");
+    if (launch) {
+      int delay = Config.getOverlayGeneratorConfig().getInt("overlay.launchDelay", 0);
+      if (delay > 0) {
+        try {
+          Thread.sleep(delay * 1000L);
+        } catch (InterruptedException e) {
+          LOG.error("Failed to wait for delay: " + e.getMessage(), e);
+        }
+      }
+
+      if(OverlayWindowFX.INSTANCE != null) {
+        OverlayWindowFX.INSTANCE.toggleView();
+      }
     }
   }
 }

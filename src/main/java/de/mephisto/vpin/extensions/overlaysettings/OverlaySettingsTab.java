@@ -79,6 +79,14 @@ public class OverlaySettingsTab extends JPanel {
     settingsPanel.add(modifierCombo);
     settingsPanel.add(new JLabel("+"));
     settingsPanel.add(keyCombo, "wrap");
+    JCheckBox startupCheckbox = WidgetFactory.createCheckbox(settingsPanel, "", "Show after Popper Menu Launch:", store, "overlay.launchOnStartup");
+    JSpinner delaySpinner = WidgetFactory.createSpinner(settingsPanel, "Launch Delay:", "seconds", store, "overlay.launchDelay", 0);
+    delaySpinner.setEnabled(store.getBoolean("overlay.launchOnStartup"));
+    startupCheckbox.addActionListener(e -> {
+      boolean checked = startupCheckbox.isSelected();
+      delaySpinner.setEnabled(checked);
+    });
+
 
 
     JLabel separator = new JLabel("");

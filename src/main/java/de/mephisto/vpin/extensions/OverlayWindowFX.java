@@ -30,6 +30,8 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
 
   private boolean visible = false;
 
+  public static OverlayWindowFX INSTANCE;
+
   private Stage stage;
 
   public static void main(String[] args) {
@@ -39,6 +41,7 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
   @Override
   public void start(Stage primaryStage) throws Exception {
     this.stage = primaryStage;
+    OverlayWindowFX.INSTANCE = this;
     String hotkey = Config.getOverlayGeneratorConfig().getString("overlay.hotkey");
     if (StringUtils.isEmpty(hotkey)) {
       LOG.error("No overlay hotkey defined! Define a key binding on the overlay configuration tab and restart the service.");
@@ -84,18 +87,22 @@ public class OverlayWindowFX extends Application implements NativeKeyListener {
   public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
     String hotkey = Config.getOverlayGeneratorConfig().getString("overlay.hotkey");
     KeyChecker keyChecker = new KeyChecker(hotkey);
-    if (keyChecker.matches(nativeKeyEvent)) {
-      this.visible = !visible;
-      Platform.runLater(() -> {
-        LOG.info("Toggle show");
-        if (this.visible) {
-          stage.show();
-        }
-        else {
-          stage.hide();
-        }
-      });
+    if (keyChecker.matches(nativeKeyEvent) || this.visible) {
+      toggleView();
     }
+  }
+
+  public void toggleView() {
+    this.visible = !visible;
+    Platform.runLater(() -> {
+      LOG.info("Toggle show");
+      if (this.visible) {
+        stage.show();
+      }
+      else {
+        stage.hide();
+      }
+    });
   }
 
   @Override

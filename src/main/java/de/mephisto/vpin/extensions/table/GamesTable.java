@@ -33,9 +33,10 @@ public class GamesTable extends JTable {
     getColumnModel().getColumn(1).setPreferredWidth(160);
     getColumnModel().getColumn(2).setPreferredWidth(40);
     getColumnModel().getColumn(3).setPreferredWidth(40);
-    getColumnModel().getColumn(4).setPreferredWidth(10);
+    getColumnModel().getColumn(4).setPreferredWidth(20);
     getColumnModel().getColumn(5).setPreferredWidth(10);
-    getColumnModel().getColumn(6).setPreferredWidth(240);
+    getColumnModel().getColumn(6).setPreferredWidth(10);
+    getColumnModel().getColumn(7).setPreferredWidth(240);
 
     List<GameInfo> games = service.getGameInfos();
     setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {

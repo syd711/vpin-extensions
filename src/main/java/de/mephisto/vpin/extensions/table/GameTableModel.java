@@ -39,18 +39,24 @@ public class GameTableModel extends AbstractTableModel {
       return gameInfo.getEmulatorName();
     }
     if (columnIndex == 3) {
+      if(!StringUtils.isEmpty(gameInfo.getOriginalRom())) {
+        return gameInfo.getRom() + " / " + gameInfo.getOriginalRom();
+      }
       return gameInfo.getRom();
     }
     if (columnIndex == 4) {
-      return "         " + gameInfo.getNumberPlays();
+      return "         " + gameInfo.getNvOffset();
     }
     if (columnIndex == 5) {
+      return "         " + gameInfo.getNumberPlays();
+    }
+    if (columnIndex == 6) {
       if (gameInfo.getDirectB2SFile().exists()) {
         return "         X";
       }
       return "";
     }
-    if (columnIndex == 6) {
+    if (columnIndex == 7) {
       if (StringUtils.isEmpty(gameInfo.getRom())) {
         return "No rom information found for table.";
       }

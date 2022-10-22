@@ -8,8 +8,6 @@ import de.mephisto.vpin.highscores.Highscore;
 import de.mephisto.vpin.highscores.Score;
 import de.mephisto.vpin.util.ImageUtil;
 import de.mephisto.vpin.util.SystemInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,8 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CardGraphics {
-  private final static Logger LOG = LoggerFactory.getLogger(CardGraphics.class);
-
   private final int ROW_SEPARATOR = Config.getCardGeneratorConfig().getInt("card.highscores.row.separator");
   private final int WHEEL_PADDING = Config.getCardGeneratorConfig().getInt("card.highscores.row.padding.left");
 
@@ -101,7 +97,7 @@ public class CardGraphics {
       g.drawString(tableName, imageWidth / 2 - width / 2, tableNameY);
 
       if (RAW_HIGHSCORE) {
-        int yStart = tableNameY + TABLE_FONT_SIZE + TABLE_FONT_SIZE / 2;
+        int yStart = tableNameY + TABLE_FONT_SIZE;
         renderRawScore(game, image.getHeight(), image.getWidth(), highscore, g, yStart);
       }
       else {
@@ -168,34 +164,43 @@ public class CardGraphics {
     }
     g.setFont(new Font(SCORE_FONT_NAME, SCORE_FONT_STYLE, fontSize));
 
+    //debug frame
+//    g.drawRect(PADDING, yStart, remainingWidth, remainingHeight);
 
-    LOG.info("Card rendering initialized with font size " + g.getFont().getSize());
-    List<TextBlock> textBlocks = createTextBlocks(Arrays.asList(lines), g, imageHeight - PADDING);
-    LOG.info("Blocks are downscaling font size to " + g.getFont().getSize());
-
+    List<TextBlock> textBlocks = createTextBlocks(Arrays.asList(lines), g);
     List<TextColumn> textColumns = createTextColumns(textBlocks, g, remainingHeight);
-    scaleDownToWidth(remainingWidth, g, textColumns);
-    LOG.info("Columns are downscaling font size to " + g.getFont().getSize());
+    while(fontSize > 20 && textColumns.size() > 1) {
+      int downScale = g.getFont().getSize() - 1;
+      g.setFont(new Font(SCORE_FONT_NAME, SCORE_FONT_STYLE, downScale));
+      textColumns = createTextColumns(textBlocks, g, remainingHeight);
+    }
 
-    yStart = centerYToRemainingSpace(textColumns, yStart, remainingHeight);
+
+    scaleDownToWidth(remainingWidth, g, textColumns);
+//    yStart = centerYToRemainingSpace(textColumns, yStart, remainingHeight);
     int columnsWidth = getColumnsWidth(textColumns);
     int remainingXSpace = remainingWidth - columnsWidth;
 
-    int x = PADDING;
-    int wheelWidth = PADDING * 2 + TITLE_FONT_SIZE * 2;
+    int x = 0;
+    int wheelWidth = PADDING * 2 + TABLE_FONT_SIZE * 2;
     File wheelIconFile = game.getWheelIconFile();
+    boolean renderWheel = remainingXSpace > (wheelWidth + PADDING);
+    if(remainingXSpace > 250) {
+      wheelWidth = 250;
+    }
 
-    if (wheelIconFile.exists() && (remainingXSpace + 2 * PADDING) > TITLE_FONT_SIZE * 2) {
-      x = (remainingWidth - wheelWidth - columnsWidth) / 2;
-      int wheelSize = 2 * TITLE_FONT_SIZE;
+    //file exists && there is place to render it
+    if (wheelIconFile.exists() && renderWheel) {
       BufferedImage wheelImage = ImageIO.read(wheelIconFile);
-      g.drawImage(wheelImage, x, yStart, wheelSize, wheelSize, null);
-      x = x + wheelWidth;
+      x = (remainingXSpace - wheelWidth) / 2;
+      g.drawImage(wheelImage, x, yStart, wheelWidth, wheelWidth, null);
+      x = x + wheelWidth + PADDING;
     }
     else {
       x = (remainingWidth - columnsWidth) / 2;
     }
 
+    yStart = yStart + g.getFont().getSize();
     for (TextColumn textColumn : textColumns) {
       textColumn.renderAt(g, x, yStart);
       x = x + textColumn.getWidth();
@@ -271,16 +276,16 @@ public class CardGraphics {
     return columns;
   }
 
-  List<TextBlock> createTextBlocks(List<String> lines, Graphics g, int maxY) {
+  List<TextBlock> createTextBlocks(List<String> lines, Graphics g) {
     List<TextBlock> result = new ArrayList<>();
 
-    TextBlock textBlock = new TextBlock(g, maxY);
+    TextBlock textBlock = new TextBlock(g);
     for (String line : lines) {
       if (line.trim().equals("")) {
         if (!textBlock.isEmpty()) {
           result.add(textBlock);
         }
-        textBlock = new TextBlock(g, maxY);
+        textBlock = new TextBlock(g);
       }
       else {
         textBlock.addLine(line);
@@ -294,7 +299,7 @@ public class CardGraphics {
     return result;
   }
 
-  class TextColumn {
+  static class TextColumn {
     private final List<TextBlock> blocks = new ArrayList<>();
 
     TextColumn() {
@@ -331,19 +336,17 @@ public class CardGraphics {
     }
   }
 
-  class TextBlock {
-    private List<String> lines = new ArrayList<>();
+  static class TextBlock {
+    private final List<String> lines;
     private final Graphics g;
-    private final int maxY;
 
-    TextBlock(Graphics g, int maxY) {
-      this(new ArrayList<>(), g, maxY);
+    TextBlock(Graphics g) {
+      this(new ArrayList<>(), g);
     }
 
-    TextBlock(List<String> lines, Graphics g, int maxY) {
+    TextBlock(List<String> lines, Graphics g) {
       this.lines = lines;
       this.g = g;
-      this.maxY = maxY;
     }
 
     public void addLine(String line) {
@@ -361,7 +364,7 @@ public class CardGraphics {
     }
 
     public int getHeight() {
-      return (this.lines.size() + 1) * g.getFont().getSize(); //render extra blank line
+      return (this.lines.size() + 1) * (g.getFont().getSize() -1); //render extra blank line
     }
 
     public int getWidth() {

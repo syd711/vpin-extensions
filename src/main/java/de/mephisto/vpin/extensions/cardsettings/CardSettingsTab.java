@@ -251,7 +251,7 @@ public class CardSettingsTab extends JPanel {
         return new ImageIcon(image);
       }
     } catch (Exception e) {
-      LOG.error("Error loading card preview: " + e.getMessage(), e);
+      LOG.error("Error loading card preview: " + e.getMessage());
     }
     return null;
   }

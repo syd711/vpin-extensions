@@ -57,6 +57,12 @@ public class GameTableModel extends AbstractTableModel {
       return "";
     }
     if (columnIndex == 7) {
+      if (!StringUtils.isEmpty(gameInfo.getHsFileName())) {
+        return gameInfo.getHsFileName();
+      }
+      return "";
+    }
+    if (columnIndex == 8) {
       if (StringUtils.isEmpty(gameInfo.getRom())) {
         return "No rom information found for table.";
       }

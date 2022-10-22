@@ -27,6 +27,9 @@ public class GameTableColumnModel extends DefaultTableColumnModel {
     column.setHeaderValue("directb2s File");
     addColumn(column);
     column = new TableColumn(7);
+    column.setHeaderValue("EM Highscore File");
+    addColumn(column);
+    column = new TableColumn(8);
     column.setHeaderValue("Status");
     addColumn(column);
   }

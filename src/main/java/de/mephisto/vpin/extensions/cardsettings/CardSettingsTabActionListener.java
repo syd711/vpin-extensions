@@ -1,5 +1,6 @@
 package de.mephisto.vpin.extensions.cardsettings;
 
+import de.mephisto.vpin.GameInfo;
 import de.mephisto.vpin.VPinService;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,8 @@ public class CardSettingsTabActionListener implements ActionListener {
     String cmd = e.getActionCommand();
     if (cmd.equals("generateCard")) {
       cardSettingsTab.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-      this.cardSettingsTab.generateSampleCard();
+      GameInfo sampleGame = cardSettingsTab.getSampleGame();
+      this.cardSettingsTab.generateSampleCard(sampleGame);
       cardSettingsTab.setCursor(null);
     }
     else if (cmd.equals("showCard")) {

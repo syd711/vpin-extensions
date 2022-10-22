@@ -35,6 +35,10 @@ public class CardSettingsTab extends JPanel {
   private final JComboBox backgroundSelector;
   private final JComboBox ratioCombo;
   private final JCheckBox useB2SCheckbox;
+  private final JPanel previewPanel;
+  private final JCheckBox rawHighscoreCheckbox;
+  private final JSpinner rowSeparatorSpinner;
+  private final JSpinner wheelPaddingSpinner;
 
   private VPinService service;
 
@@ -70,15 +74,21 @@ public class CardSettingsTab extends JPanel {
     separator.setPreferredSize(new Dimension(1, 24));
     settingsPanel.add(separator, "wrap");
 
-    WidgetFactory.createTableSelector(service, settingsPanel, "Sample Table:", store, "card.sampleTable", true);
+    JComboBox tableSelector = WidgetFactory.createTableSelector(service, settingsPanel, "Sample Table:", store, "card.sampleTable", true, false);
+    tableSelector.addActionListener(e -> {
+      GameInfo selectedItem = (GameInfo) tableSelector.getSelectedItem();
+      if(selectedItem != null) {
+        generateSampleCard(selectedItem);
+      }
+    });
 
     separator = new JLabel("");
     separator.setPreferredSize(new Dimension(1, 12));
     settingsPanel.add(separator, "wrap");
 
     /******************************** Generator Fields ****************************************************************/
-
-    useB2SCheckbox = WidgetFactory.createCheckbox(settingsPanel, "", "Prefer DirectB2S Background (if available)", store, "card.useDirectB2S");
+    rawHighscoreCheckbox = WidgetFactory.createCheckbox(settingsPanel, "", "Render Raw Higscore:", store, "card.rawHighscore");
+    useB2SCheckbox = WidgetFactory.createCheckbox(settingsPanel, "", "Prefer DirectB2S Background (if available):", store, "card.useDirectB2S");
     useB2SCheckbox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -111,14 +121,23 @@ public class CardSettingsTab extends JPanel {
     WidgetFactory.createFontSelector(settingsPanel, "Table Name Font:", store, "card.table.font", 100);
     WidgetFactory.createFontSelector(settingsPanel, "Score Font:", store, "card.score.font", 80);
     WidgetFactory.createColorChooser(configWindow, settingsPanel, "Font Color:", store, "card.font.color");
-    WidgetFactory.createSpinner(settingsPanel, "Padding Top:", "px", store, "card.title.y.offset", 80);
-    WidgetFactory.createSpinner(settingsPanel, "Wheel Image Padding:", "px", store, "card.highscores.row.padding.left", 60);
-    WidgetFactory.createSpinner(settingsPanel, "Row Separator:", "px", store, "card.highscores.row.separator", 10);
+    WidgetFactory.createSpinner(settingsPanel, "Padding:", "px", store, "card.title.y.offset", 80);
+    wheelPaddingSpinner = WidgetFactory.createSpinner(settingsPanel, "Wheel Image Padding:", "px", store, "card.highscores.row.padding.left", 60);
+    rowSeparatorSpinner = WidgetFactory.createSpinner(settingsPanel, "Row Separator:", "px", store, "card.highscores.row.separator", 10);
     WidgetFactory.createSlider(settingsPanel, "Blur Background:", store, "card.blur");
     WidgetFactory.createSlider(settingsPanel, "Brighten Background:", store, "card.alphacomposite.white");
     WidgetFactory.createSlider(settingsPanel, "Darken Background:", store, "card.alphacomposite.black");
     WidgetFactory.createSlider(settingsPanel, "Border Size:", store, "card.border.width");
 
+    rawHighscoreCheckbox.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        rowSeparatorSpinner.setEnabled(!rawHighscoreCheckbox.isSelected());
+        wheelPaddingSpinner.setEnabled(!rawHighscoreCheckbox.isSelected());
+      }
+    });
+    rowSeparatorSpinner.setEnabled(!rawHighscoreCheckbox.isSelected());
+    wheelPaddingSpinner.setEnabled(!rawHighscoreCheckbox.isSelected());
 
     settingsPanel.add(new JLabel(""));
     generateButton = new JButton("Generate Sample Card");
@@ -161,12 +180,12 @@ public class CardSettingsTab extends JPanel {
     /******************************** Preview *************************************************************************/
 
 
-    JPanel previewPanel = new JPanel();
+    previewPanel = new JPanel();
     previewPanel.setMinimumSize(new Dimension(780, configWindow.getHeight() - 20));
     previewPanel.setBackground(Color.BLACK);
-    TitledBorder b = BorderFactory.createTitledBorder("Sample Preview");
-    b.setTitleColor(Color.WHITE);
-    previewPanel.setBorder(b);
+    TitledBorder preview = BorderFactory.createTitledBorder("Sample Preview");
+    preview.setTitleColor(Color.WHITE);
+    previewPanel.setBorder(preview);
     add(previewPanel, BorderLayout.CENTER);
     previewPanel.setLayout(new MigLayout("gap rel 8 insets 10", "left"));
     iconLabel = new JLabel("");
@@ -213,10 +232,23 @@ public class CardSettingsTab extends JPanel {
           file = sampleFile;
         }
         BufferedImage image = ImageIO.read(file);
-        int maxWidth = 540;
+        int maxWidth = previewPanel.getWidth();
+        if(maxWidth == 0) {
+          maxWidth = 740;
+        }
+
         int percentage = (maxWidth * 100 / image.getWidth()) - 7;
-        Image newimg = image.getScaledInstance(image.getWidth() * percentage / 100, image.getHeight() * percentage / 100, Image.SCALE_SMOOTH); // scale it the smooth way
-        return new ImageIcon(newimg);  // transform it back
+
+        int newWidth = image.getWidth() * percentage / 100;
+        int newHeight = image.getHeight() * percentage / 100;
+
+        if(newWidth < image.getWidth() && newHeight < image.getHeight()) {
+          Image newimg = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH); // scale it the smooth way
+          ImageIcon imageIcon = new ImageIcon(newimg);
+          return imageIcon;
+        }
+
+        return new ImageIcon(image);
       }
     } catch (Exception e) {
       LOG.error("Error loading card preview: " + e.getMessage(), e);
@@ -232,7 +264,7 @@ public class CardSettingsTab extends JPanel {
     return null;
   }
 
-  GameInfo getSampleGame() {
+  public GameInfo getSampleGame() {
     int gameId = Config.getCardGeneratorConfig().getInt("card.sampleTable");
     if (gameId > 0) {
       return service.getGameInfo(gameId);
@@ -247,9 +279,8 @@ public class CardSettingsTab extends JPanel {
     return null;
   }
 
-  public void generateSampleCard() {
+  public void generateSampleCard(GameInfo sampleGame) {
     try {
-      GameInfo sampleGame = getSampleGame();
       if (sampleGame.resolveHighscore() == null) {
         JOptionPane.showMessageDialog(this, "No highscore files found for " + sampleGame.toString() + ".\nCheck the 'Table Overview' tab for tables with existing highscore files.", "Error", JOptionPane.INFORMATION_MESSAGE);
         return;
@@ -258,16 +289,15 @@ public class CardSettingsTab extends JPanel {
       iconLabel.setVisible(false);
       generateButton.setEnabled(false);
 
-      File directB2SImage = getSampleGame().getDirectB2SImage();
+      File directB2SImage = sampleGame.getDirectB2SImage();
       if (directB2SImage.exists()) {
         directB2SImage.delete();
       }
-      CardGenerator.generateCard(service, getSampleGame(), CardGenerator.SAMPLE_FILE);
+      CardGenerator.generateCard(service, sampleGame, CardGenerator.SAMPLE_FILE);
       iconLabel.setIcon(getPreviewImage());
     } catch (Exception e) {
       JOptionPane.showMessageDialog(this.configWindow, "Error generating overlay: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    finally {
+    } finally {
       generateButton.setEnabled(true);
       iconLabel.setVisible(true);
     }
@@ -291,8 +321,7 @@ public class CardSettingsTab extends JPanel {
       }
     } catch (Exception e) {
       JOptionPane.showMessageDialog(this.configWindow, "Error generating overlay: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    finally {
+    } finally {
       generateButton.setEnabled(true);
     }
   }

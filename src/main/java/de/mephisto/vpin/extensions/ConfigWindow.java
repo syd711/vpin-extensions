@@ -32,12 +32,12 @@ public class ConfigWindow extends JFrame {
     try {
       ConfigWindow.instance = this;
 
-      setSize(1346, 990);
+      setSize(1800, 1024);
       Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
       int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
       int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
       setLocation(x, y);
-      setResizable(false);
+//      setResizable(false);
 
       // setting the title of Frame
       setTitle("VPin Extensions (" + Updater.getCurrentVersion() + ")");

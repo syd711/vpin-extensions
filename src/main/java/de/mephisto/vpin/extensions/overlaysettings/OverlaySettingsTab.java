@@ -33,6 +33,7 @@ public class OverlaySettingsTab extends JPanel {
 
   final JLabel iconLabel;
   final JButton generateButton;
+  private final JPanel previewPanel;
 
   public OverlaySettingsTab(ConfigWindow configWindow, VPinService service) {
     this.configWindow = configWindow;
@@ -93,7 +94,7 @@ public class OverlaySettingsTab extends JPanel {
     separator.setPreferredSize(new Dimension(1, 30));
     settingsPanel.add(separator, "wrap");
 
-    WidgetFactory.createTableSelector(service, settingsPanel, "Challenged Table:", store, "overlay.challengedTable", false);
+    WidgetFactory.createTableSelector(service, settingsPanel, "Challenged Table:", store, "overlay.challengedTable", false, true);
 
     /******************************** Generator Fields ****************************************************************/
     WidgetFactory.createFileChooser(settingsPanel, "Background Image:", "Select File", store, "overlay.background", "background4k.jpg");
@@ -129,7 +130,7 @@ public class OverlaySettingsTab extends JPanel {
     /******************************** Preview *************************************************************************/
 
 
-    JPanel previewPanel = new JPanel();
+    previewPanel = new JPanel();
     previewPanel.setLayout(new BorderLayout());
     previewPanel.setBackground(Color.BLACK);
     TitledBorder b = BorderFactory.createTitledBorder("Overlay Preview");
@@ -146,11 +147,25 @@ public class OverlaySettingsTab extends JPanel {
       if (!OverlayGenerator.GENERATED_OVERLAY_FILE.exists()) {
         file = new File(SystemInfo.RESOURCES, Config.getOverlayGeneratorConfig().get("overlay.background"));
       }
-      BufferedImage backgroundImage = ImageIO.read(file);
-      BufferedImage image = ImageUtil.rotateRight(backgroundImage);
-      int percentage = 900 * 100 / image.getHeight();
-      Image newimg = image.getScaledInstance(image.getWidth() * percentage / 100, image.getHeight() * percentage / 100, Image.SCALE_SMOOTH); // scale it the smooth way
-      return new ImageIcon(newimg);  // transform it back
+      BufferedImage image = ImageIO.read(file);
+      image = ImageUtil.rotateRight(image);
+
+      int maxHeight = previewPanel.getHeight();
+      if(maxHeight == 0) {
+        maxHeight = 900;
+      }
+      int percentage = (maxHeight * 100 / image.getHeight()) - 2;
+
+      int newWidth = image.getWidth() * percentage / 100;
+      int newHeight = image.getHeight() * percentage / 100;
+
+      if(newWidth < image.getWidth() && newHeight < image.getHeight()) {
+        Image newimg = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH); // scale it the smooth way
+        ImageIcon imageIcon = new ImageIcon(newimg);
+        return imageIcon;
+      }
+
+      return new ImageIcon(image);
 
     } catch (Exception e) {
       LOG.error("Error loading overlay preview: " + e.getMessage(), e);

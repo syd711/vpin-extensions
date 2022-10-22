@@ -54,8 +54,12 @@ public class WidgetFactory {
     return button;
   }
 
-  public static void createTableSelector(VPinService service, JPanel parent, String title, PropertiesStore store, String property, boolean filterForHighscores) {
-    List<GameInfo> gameInfos = service.getActiveGameInfos();
+  public static JComboBox createTableSelector(VPinService service, JPanel parent, String title, PropertiesStore store, String property, boolean filterForHighscores, boolean useActiveGamesOnly) {
+    List<GameInfo> gameInfos = service.getGameInfos();
+    if(useActiveGamesOnly) {
+      gameInfos = service.getActiveGameInfos();
+    }
+
     if (filterForHighscores) {
       gameInfos = gameInfos.stream().filter(g -> g.hasHighscore()).collect(Collectors.toList());
     }
@@ -80,6 +84,8 @@ public class WidgetFactory {
     parent.add(tableSelection, "span 3");
     parent.add(new JLabel(""), "width 30:200:200");
     parent.add(new JLabel(""), "wrap");
+
+    return tableSelection;
   }
 
   public static JComboBox createCombobox(JPanel parent, List<String> values, String title, PropertiesStore store, String property) {

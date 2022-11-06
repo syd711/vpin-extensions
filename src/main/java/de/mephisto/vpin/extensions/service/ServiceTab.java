@@ -3,6 +3,8 @@ package de.mephisto.vpin.extensions.service;
 import de.mephisto.vpin.StateManager;
 import de.mephisto.vpin.VPinService;
 import de.mephisto.vpin.extensions.ConfigWindow;
+import de.mephisto.vpin.extensions.util.Config;
+import de.mephisto.vpin.extensions.util.Keys;
 import de.mephisto.vpin.extensions.util.WidgetFactory;
 import net.miginfocom.swing.MigLayout;
 import org.slf4j.Logger;
@@ -12,6 +14,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.Vector;
 
 public class ServiceTab extends JPanel implements ActionListener {
   private final static Logger LOG = LoggerFactory.getLogger(ServiceTab.class);
@@ -21,6 +25,7 @@ public class ServiceTab extends JPanel implements ActionListener {
   private final JButton startButton;
   private final JButton installButton;
   private final StateManager stateManager;
+  private final JComboBox keyCombo;
 
 
   public ServiceTab(ConfigWindow configWindow, VPinService service) {
@@ -40,6 +45,26 @@ public class ServiceTab extends JPanel implements ActionListener {
 
     installButton = WidgetFactory.createConfigButton(settingsPanel, "install", "Install Autostart", "VPin Service Installation:", this);
     startButton = WidgetFactory.createConfigButton(settingsPanel, "start", "Start Test Service", "Service Test Instance:", this);
+
+
+
+
+    keyCombo = new JComboBox(new DefaultComboBoxModel(new Vector(Keys.getKeyNames())));
+    keyCombo.setActionCommand("keyCombo");
+    keyCombo.addActionListener(this);
+
+
+    JLabel separator = new JLabel("");
+    separator.setPreferredSize(new Dimension(1, 24));
+    settingsPanel.add(separator, "wrap");
+
+    settingsPanel.add(new JLabel("PinUP Popper Killswitch:"));
+    settingsPanel.add(keyCombo, "wrap");
+
+    String hotkey = Config.getServiceConfig().getString("killswitch.key");
+    if(hotkey != null) {
+      keyCombo.setSelectedItem(hotkey.toUpperCase(Locale.ROOT));
+    }
 
     this.updateStatus();
   }
@@ -69,15 +94,19 @@ public class ServiceTab extends JPanel implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    installButton.setEnabled(false);
-    startButton.setEnabled(false);
 
     String cmd = e.getActionCommand();
     switch (cmd) {
+      case "keyCombo": {
+        this.saveOverlayKeyBinding();
+        break;
+      }
       case "start": {
         try {
+          installButton.setEnabled(false);
+          startButton.setEnabled(false);
           boolean running = stateManager.isRunning();
-          if(running) {
+          if (running) {
             stateManager.shutdown();
           }
 
@@ -97,16 +126,22 @@ public class ServiceTab extends JPanel implements ActionListener {
           LOG.error("Failed start the VPin Service. " + ex.getMessage());
           JOptionPane.showMessageDialog(this, "Failed to start the VPin Service. " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        this.updateStatus();
         break;
       }
       case "stop": {
+        installButton.setEnabled(false);
+        startButton.setEnabled(false);
         configWindow.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         stateManager.shutdown();
         configWindow.setCursor(null);
         JOptionPane.showMessageDialog(this, "Service shutdown successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        this.updateStatus();
         break;
       }
       case "install": {
+        installButton.setEnabled(false);
+        startButton.setEnabled(false);
         try {
           configWindow.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
           stateManager.install();
@@ -117,9 +152,12 @@ public class ServiceTab extends JPanel implements ActionListener {
           LOG.error("Failed to install the VPin Service. " + ex.getMessage());
           JOptionPane.showMessageDialog(this, "Failed to install the VPin Service. " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        this.updateStatus();
         break;
       }
       case "uninstall": {
+        installButton.setEnabled(false);
+        startButton.setEnabled(false);
         try {
           configWindow.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
           stateManager.uninstall();
@@ -130,10 +168,18 @@ public class ServiceTab extends JPanel implements ActionListener {
           LOG.error("Failed to uninstall the VPin Service: " + ex.getMessage());
           JOptionPane.showMessageDialog(this, "Failed to uninstall the VPin Service: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        this.updateStatus();
         break;
       }
     }
+  }
 
-    this.updateStatus();
+  private void saveOverlayKeyBinding() {
+    String key = (String) keyCombo.getSelectedItem();
+    if (key != null && key.length() > 0) {
+      key = key.toLowerCase();
+    }
+
+    Config.getServiceConfig().set("killswitch.key", key);
   }
 }

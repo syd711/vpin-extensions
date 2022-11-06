@@ -8,7 +8,7 @@ import de.mephisto.vpin.util.PropertiesStore;
 public class Config {
   private final static String GENERATOR_CONFIG_FILENAME = "overlay-generator.properties";
   private final static String CARD_CONFIG_FILENAME = "card-generator.properties";
-  private final static String COMMAND_CONFIG_FILENAME = "commands.properties";
+  private final static String SERVICE_CONFIG_FILENAME = "service.properties";
   private final static String VERSION_CONFIG_FILENAME = "../version.properties";
 
   private static PropertiesStore generatorConfig;
@@ -29,9 +29,9 @@ public class Config {
     return generatorConfig;
   }
 
-  public static PropertiesStore getCommandConfig() {
+  public static PropertiesStore getServiceConfig() {
     if (commandConfig == null) {
-      commandConfig = PropertiesStore.create(COMMAND_CONFIG_FILENAME);
+      commandConfig = PropertiesStore.create(SERVICE_CONFIG_FILENAME);
     }
     return commandConfig;
   }

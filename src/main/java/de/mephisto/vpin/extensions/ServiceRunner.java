@@ -6,7 +6,6 @@ import de.mephisto.vpin.VPinServiceException;
 import de.mephisto.vpin.extensions.generator.CardGenerator;
 import de.mephisto.vpin.extensions.generator.OverlayGenerator;
 import de.mephisto.vpin.extensions.util.Config;
-import de.mephisto.vpin.popper.PopperLaunchListener;
 import de.mephisto.vpin.popper.TableStatusChangeListener;
 import de.mephisto.vpin.popper.TableStatusChangedEvent;
 import org.apache.commons.lang3.StringUtils;
@@ -54,6 +53,9 @@ public class ServiceRunner implements TableStatusChangeListener {
   @Override
   public void tableExited(TableStatusChangedEvent tableStatusChangedEvent) {
     try {
+      LOG.info("Table exit event received, waiting 5 seconds before overlay config generation.");
+      Thread.sleep(5000);
+
       String targetScreen = Config.getCardGeneratorConfig().get("popper.screen");
       if (!StringUtils.isEmpty(targetScreen)) {
         GameInfo gameInfo = tableStatusChangedEvent.getGameInfo();

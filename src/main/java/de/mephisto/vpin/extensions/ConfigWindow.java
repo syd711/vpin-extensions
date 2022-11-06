@@ -56,16 +56,16 @@ public class ConfigWindow extends JFrame {
       tabbedPane.addTab("Highscore Cards Settings", null, new CardSettingsTab(this, service), "Highscore Generation Settings");
       tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
-      tabbedPane.addTab("DOF Event Rules (Experimental)", null, new CommandsTab(this, service), "Create custom DOF rules");
-      tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
+//      tabbedPane.addTab("DOF Event Rules (Experimental)", null, new CommandsTab(this, service), "Create custom DOF rules");
+//      tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
       TablesTab tablesTab = new TablesTab(this, service);
       tabbedPane.addTab("Table Overview", null, tablesTab, "Status of all tables");
-      tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
+      tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
       ServiceTab serviceTab = new ServiceTab(this, service);
-      tabbedPane.addTab("Service Status", null, serviceTab, "Status of the VPin Service");
-      tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
+      tabbedPane.addTab("Service Utils", null, serviceTab, "Status of the VPin Service");
+      tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
 
       tabbedPane.setBackground(DEFAULT_BG_COLOR);
@@ -73,7 +73,6 @@ public class ConfigWindow extends JFrame {
       tabbedPane.setBackgroundAt(1, DEFAULT_BG_COLOR);
       tabbedPane.setBackgroundAt(2, DEFAULT_BG_COLOR);
       tabbedPane.setBackgroundAt(3, DEFAULT_BG_COLOR);
-      tabbedPane.setBackgroundAt(4, DEFAULT_BG_COLOR);
       add(tabbedPane);
 
       Action escapeAction = new AbstractAction() {

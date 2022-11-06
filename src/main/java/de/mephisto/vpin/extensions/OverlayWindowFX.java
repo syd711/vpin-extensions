@@ -99,10 +99,21 @@ public class OverlayWindowFX extends Application implements NativeKeyListener, P
   @Override
   public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
     String hotkey = Config.getOverlayGeneratorConfig().getString("overlay.hotkey");
-    KeyChecker keyChecker = new KeyChecker(hotkey);
-    if (keyChecker.matches(nativeKeyEvent) || this.visible) {
+    String killKey = Config.getServiceConfig().getString("killswitch.key");
+    KeyChecker overlaykeyChecker = new KeyChecker(hotkey);
+    if (overlaykeyChecker.matches(nativeKeyEvent) || this.visible) {
       toggleView();
     }
+
+    KeyChecker killKeyChecker = new KeyChecker(killKey);
+    if(killKeyChecker.matches(nativeKeyEvent)) {
+      restartPopper();
+    }
+  }
+
+  private void restartPopper() {
+    LOG.info("Killswitch pressed, restarting popper.");
+    SystemInfo.getInstance().restartPinUPPopper();
   }
 
   public void toggleView() {

@@ -49,11 +49,12 @@ public class Updater {
   }
 
   public static String checkForUpdate() throws Exception {
-    File target = File.createTempFile("vpin-version", "properties");
+    File target = File.createTempFile("vpin-version", ".properties");
     target.deleteOnExit();
     download(VERSION_PROPERTIES, target);
     PropertiesStore store = PropertiesStore.create(target);
     String latestVersion = store.getString("version");
+    LOG.info("Latest version available is " + latestVersion);
     target.delete();
     if (latestVersion.equals(VERSION)) {
       return null;

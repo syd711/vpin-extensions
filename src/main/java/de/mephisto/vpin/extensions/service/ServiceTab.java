@@ -46,9 +46,6 @@ public class ServiceTab extends JPanel implements ActionListener {
     installButton = WidgetFactory.createConfigButton(settingsPanel, "install", "Install Autostart", "VPin Service Installation:", this);
     startButton = WidgetFactory.createConfigButton(settingsPanel, "start", "Start Test Service", "Service Test Instance:", this);
 
-
-
-
     keyCombo = new JComboBox(new DefaultComboBoxModel(new Vector(Keys.getKeyNames())));
     keyCombo.setActionCommand("keyCombo");
     keyCombo.addActionListener(this);
@@ -58,7 +55,7 @@ public class ServiceTab extends JPanel implements ActionListener {
     separator.setPreferredSize(new Dimension(1, 24));
     settingsPanel.add(separator, "wrap");
 
-    settingsPanel.add(new JLabel("PinUP Popper Killswitch:"));
+    settingsPanel.add(new JLabel("PinUP Popper Reset:"));
     settingsPanel.add(keyCombo, "wrap");
 
     String hotkey = Config.getServiceConfig().getString("killswitch.key");

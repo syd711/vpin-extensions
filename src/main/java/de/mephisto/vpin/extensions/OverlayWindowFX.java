@@ -33,6 +33,8 @@ public class OverlayWindowFX extends Application implements NativeKeyListener, P
 
   private boolean visible = false;
 
+  private boolean initialLaunchExecuted = false;
+
   public static OverlayWindowFX INSTANCE;
 
   private Stage stage;
@@ -107,6 +109,8 @@ public class OverlayWindowFX extends Application implements NativeKeyListener, P
 
     KeyChecker killKeyChecker = new KeyChecker(killKey);
     if(killKeyChecker.matches(nativeKeyEvent)) {
+      String keyText = NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode());
+      LOG.info("Kill switch key event '" + keyText + "' (" + nativeKeyEvent.getKeyCode() + ")");
       restartPopper();
     }
   }
@@ -134,12 +138,12 @@ public class OverlayWindowFX extends Application implements NativeKeyListener, P
 
   }
 
-
-
   @Override
   public void popperLaunched() {
+    LOG.info("Received Popper Launch Event");
     boolean launch = Config.getOverlayGeneratorConfig().getBoolean("overlay.launchOnStartup");
-    if (launch) {
+    if (launch && !initialLaunchExecuted) {
+      initialLaunchExecuted = true;
       int delay = Config.getOverlayGeneratorConfig().getInt("overlay.launchDelay", 0);
       if (delay > 0) {
         try {

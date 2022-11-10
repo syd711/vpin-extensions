@@ -10,7 +10,6 @@ which are generated everytime a table highscore changes.
 * [Configure Highscore Overlay](#configure-highscore-overlay)
 * [Configure Highscore Cards](#configure-highscore-cards)
   * [Highscore Cards with DirectB2S Files](#highscore-cards-width-directb2s-files)
-* [Configure DOF Rules](#configure-dof-rules)
 * [Table Overview](#table-overview)
 * [Service Status](#service-status)
 * [Trouble Shooting / FAQ](#trouble-shooting)
@@ -36,14 +35,6 @@ This overlay can be opend with a configurable shortcut while playing.
 <img src="./documentation/screen-overlay-1.png" width="800">
 
 *Configuration screen for overlay screen generation.*
-
-
-The __DOF Event Rules__ sections allows to trigger DOF commands based on events emitted by the 
-system or PinUP Popper:
-
-<img src="./documentation/screen-dof-1.png" width="800">
-
-*Configuration screen for DOF rules.*
 
 
 The __Table Overview__ gives an overview about all tables installed in PinUP Popper
@@ -174,19 +165,6 @@ so that all cards will have the same dimensions and ratios too.
 ![](./documentation/directb2s-set.png)
 
 Once set, the ratio will also be applied for cards that are generated from the selected background image.
-
-
-## Configure DOF Rules
-
-__Experimental (not tested yet, board resolving may be broken)__
-
-The DOF rules allow you to react on specific system and PinUP Popper events.
-They can be used to trigger toys when a table is started or exited.
-
-![](./documentation/dof-rule.png)
-
-Every rule starts with a description and has additional attributes defining
-which pin should be triggered when and/or for how long.
 
 
 ## Table Overview

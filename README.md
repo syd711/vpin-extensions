@@ -1,3 +1,5 @@
+# This project has been moved into https://github.com/syd711/vpin-studio
+
 # VPin Extensions
 
 VPin Extensions provides an easy generation of highscore cards for Visual Pinball tables running with VPX 
